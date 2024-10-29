@@ -92,7 +92,7 @@ create_symlink ~/github/dotfiles-latest/zshrc/zshrc-file.sh ~/.zshrc
 create_symlink ~/github/dotfiles-latest/bashrc/bashrc-file.sh ~/.bashrc
 create_symlink ~/github/dotfiles-latest/tmux/tmux.conf.sh ~/.tmux.conf
 # create_symlink ~/github/dotfiles-latest/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
-# create_symlink ~/github/dotfiles-latest/kitty/kitty.conf ~/.config/kitty/kitty.conf
+create_symlink ~/github/dotfiles-latest/kitty/kitty.conf ~/.config/kitty/kitty.conf
 # create_symlink ~/github/dotfiles-latest/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 # create_symlink ~/github/dotfiles-latest/yabai/yabairc ~/.yabairc
 # create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
@@ -491,10 +491,10 @@ if [ "$OS" = 'Mac' ]; then
   # Starship
   # Not sure if counts a CLI tool, because it only makes my prompt more useful
   # https://starship.rs/config/#prompt
-  if command -v starship &>/dev/null; then
-    export STARSHIP_CONFIG=$HOME/github/dotfiles-latest/starship-config/active-config.toml
-    eval "$(starship init zsh)" >/dev/null 2>&1
-  fi
+  # if command -v starship &>/dev/null; then
+  #   export STARSHIP_CONFIG=$HOME/github/dotfiles-latest/starship-config/active-config.toml
+  #   eval "$(starship init zsh)" >/dev/null 2>&1
+  # fi
 
   # eza
   # ls replacement
@@ -959,7 +959,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # bindkey -M viins 'jj' vi-cmd-mode
 
 # plugins=(git history yarn copypath safe-pase golang vi-mode)
-plugins=(git history yarn copypath safe-paste golang)
+plugins=(git yarn copypath safe-paste golang)
 
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # export FZF_BASE="/usr/local/bin/fzf"
@@ -993,11 +993,12 @@ plugins=(git history yarn copypath safe-paste golang)
 # export GOROOT=$(brew --prefix golang)/libexec
 # export PATH=$PATH:$GOROOT/bin
 #
-# # AWS
-# awsu() {
-#     export AWS_PROFILE=$1
-# }
-#
+
+# AWS
+awsu() {
+    export AWS_PROFILE=$1
+}
+
 # Clear terminal
 function clear() {
   reset && printf '\033[2J\033[3J\033[1;1H'
