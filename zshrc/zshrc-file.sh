@@ -112,7 +112,7 @@ create_symlink ~/github/dotfiles-latest/neovim/lazyvim/ ~/.config/lazyvim
 # If I don't do this, my daily note with hyper+t+r won't work
 # If you want to open the daily note with a different distro, update the "nvim"
 # symlink, for example you can change it from "neobean" to "lazyvim"
-create_symlink ~/github/dotfiles-latest/neovim/nvim/ ~/.config/nvim
+create_symlink ~/github/dotfiles-latest/neovim/specvim/ ~/.config/nvim
 # create_symlink ~/github/dotfiles-latest/sketchybar/felixkratz ~/.config/sketchybar
 # create_symlink ~/github/dotfiles-latest/sketchybar/default ~/.config/sketchybar
 # create_symlink ~/github/dotfiles-latest/sketchybar/neutonfoo ~/.config/sketchybar
@@ -362,7 +362,7 @@ if [ "$OS" = 'Mac' ]; then
   #
   # Notice that both "v" and "nvim" start "neobean"
   # "vk" opens kickstart and "vl" opens lazyvim
-  alias v='export NVIM_APPNAME="neobean" && /usr/local/bin/nvim'
+  alias v='export NVIM_APPNAME="specvim" && /usr/local/bin/nvim'
   alias vq='export NVIM_APPNAME="quarto-nvim-kickstarter" && /usr/local/bin/nvim'
   alias vk='export NVIM_APPNAME="kickstart.nvim" && /usr/local/bin/nvim'
   alias vl='export NVIM_APPNAME="lazyvim" && /usr/local/bin/nvim'
