@@ -18,7 +18,6 @@ local cmd = {
 }
 
 return {
-
 	angular = {
 		cmd = cmd,
 		filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "htmlangular" },

@@ -10,6 +10,7 @@ local servers = {
 	-- dockerls = {},
 	-- bufls = {},
 	-- nil_ls = {},
+	angularls = lang.angular,
 	ts_ls = lang.ts,
 	gopls = lang.go,
 	lua_ls = lang.lua,
