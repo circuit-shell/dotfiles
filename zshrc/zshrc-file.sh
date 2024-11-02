@@ -1,32 +1,35 @@
+# #############################################################################
+# SECTION: Auto pull dotfiles
+# #############################################################################
+ echo "Pulling latest changes, please wait..."
+ (cd ~/github/dotfiles-latest && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
+# #############################################################################
+
+
+# ###########################################################################
+# SECTION: SSH key configuration
+# # Add SSH keys to the agent as these keys won't persist after the computer is restarted
+# # Check and add the personal GitHub key
+# if [ -f ~/.ssh/key-github-pers ]; then
+#   ssh-add ~/.ssh/key-github-pers >/dev/null 2>&1
+# fi
+# # Check and add the work GitHub key
+# if [ -f ~/.ssh/id_rsa ]; then
+#   ssh-add ~/.ssh/id_rsa >/dev/null 2>&1
+# fi
+# ###########################################################################
+  
+
+# #############################################################################
+# SECTION: Imports
 source ~/github/dotfiles-latest/zshrc/helper/functions.sh
 source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
+# #############################################################################
 
-colorscheme_profile="pikachu.sh"
-~/github/dotfiles-latest/zshrc/colorscheme-set.sh "$colorscheme_profile"
 
-# ~/.config is used by neovim, alacritty and karabiner
-mkdir -p ~/.config
-mkdir -p ~/.config/kitty/
-mkdir -p ~/github/obsidian_main
-
-# Creating symlinks
-create_symlink ~/github/dotfiles-latest/vimrc/vimrc-file ~/.vimrc
-create_symlink ~/github/dotfiles-latest/vimrc/vimrc-file ~/github/obsidian_main/.obsidian.vimrc
-create_symlink ~/github/dotfiles-latest/zshrc/zshrc-file.sh ~/.zshrc
-create_symlink ~/github/dotfiles-latest/tmux/tmux.conf.sh ~/.tmux.conf
-create_symlink ~/github/dotfiles-latest/kitty/kitty.conf ~/.config/kitty/kitty.conf
-create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
-create_symlink ~/github/dotfiles-latest/neovim/kickstart.nvim/ ~/.config/kickstart.nvim
-create_symlink ~/github/dotfiles-latest/neovim/lazyvim/ ~/.config/lazyvim
-create_symlink ~/github/dotfiles-latest/neovim/specvim/ ~/.config/nvim
-
-# create_symlink ~/github/dotfiles-latest/sketchybar/felixkratz ~/.config/sketchybar
-# create_symlink ~/github/dotfiles-latest/sketchybar/default ~/.config/sketchybar
-# create_symlink ~/github/dotfiles-latest/sketchybar/neutonfoo ~/.config/sketchybar
-
-# Autocompletion settings
-# https://github.com/Phantas0s/.dotfiles/blob/master/zsh/completion.zsh
-# These have to be on the top, I remember I had issues with some autocompletions if not
+# #############################################################################
+# SECTION: Autocompletion settings
+# These have to be on the top, I remember I had issues this if not
 zmodload zsh/complist
 autoload -U compinit
 compinit
@@ -54,7 +57,28 @@ zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
 # zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 # Colors for files and directory
 # zstyle ':completion:*:*:*:*:default' list-colors '${(s.:.)LS_COLORS}'
+# #############################################################################
 
+
+# #############################################################################
+# SECTION: Create directories and symlinks
+mkdir -p ~/.config
+mkdir -p ~/.config/kitty/
+mkdir -p ~/github/obsidian_main
+create_symlink ~/github/dotfiles-latest/vimrc/vimrc-file ~/.vimrc
+create_symlink ~/github/dotfiles-latest/vimrc/vimrc-file ~/github/obsidian_main/.obsidian.vimrc
+create_symlink ~/github/dotfiles-latest/zshrc/zshrc-file.sh ~/.zshrc
+create_symlink ~/github/dotfiles-latest/tmux/tmux.conf.sh ~/.tmux.conf
+create_symlink ~/github/dotfiles-latest/kitty/kitty.conf ~/.config/kitty/kitty.conf
+create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
+# create_symlink ~/github/dotfiles-latest/sketchybar/felixkratz ~/.config/sketchybar
+# create_symlink ~/github/dotfiles-latest/sketchybar/default ~/.config/sketchybar
+# create_symlink ~/github/dotfiles-latest/sketchybar/neutonfoo ~/.config/sketchybar
+# #############################################################################
+
+
+# #############################################################################
+# SECTION: history settings
 # Current number of entries Zsh is configured to store in memory (HISTSIZE)
 # How many commands Zsh is configured to save to the history file (SAVEHIST)
 # echo "HISTSIZE: $HISTSIZE"
@@ -80,15 +104,11 @@ setopt incappendhistory
 setopt histignoredups
 # Exclude commands that start with a space
 setopt histignorespace
-
-# #############################################################################
-#                       AUTO-PULL SECTION
-# #############################################################################
- echo "Pulling latest changes, please wait..."
- (cd ~/github/dotfiles-latest && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
 # #############################################################################
 
-# Detect OS
+
+## #############################################################################
+# SECTION: Detect OS
 case "$(uname -s)" in
 Darwin)
   OS='Mac'
@@ -100,10 +120,31 @@ Linux)
   OS='Other'
   ;;
 esac
+# #############################################################################
 
-# macOS-specific configurations
+
+# #############################################################################
+# Section: MacOS-specific configurations
 if [ "$OS" = 'Mac' ]; then
+  
 
+  # #############################################################################
+  # SECTION: MacOS-specific configurations
+  # Stuff that I want to load, but not to have visible in my public dotfiles
+  if [ -f "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local" ]; then
+    source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local"
+  fi
+  # Configuration below is local only, not in icloud
+  if [ -f "$HOME/.zshrc_local/env-setup.sh" ]; then
+    source "$HOME/.zshrc_local/env-setup.sh"
+  fi
+  # Set JAVA_HOME to the OpenJDK installation managed by Homebrew
+  export JAVA_HOME="/opt/homebrew/opt/openjdk"
+  # Add JAVA_HOME/bin to the beginning of the PATH
+  export PATH="$JAVA_HOME/bin:$PATH"
+
+  # ###########################################################################
+  # SECTION: install xterm info
   install_xterm_kitty_terminfo() {
     # Attempt to get terminfo for xterm-kitty
     if ! infocmp xterm-kitty &>/dev/null; then
@@ -128,96 +169,32 @@ if [ "$OS" = 'Mac' ]; then
     fi
   }
   install_xterm_kitty_terminfo
+  # ############################################################################
+ 
 
-  # Open man pages in neovim, if neovim is installed
-  if command -v nvim &>/dev/null; then
-    export MANPAGER='nvim +Man!'
-    export MANWIDTH=999
-  fi
-
-  #############################################################################
-  #                        Cursor configuration
-  #############################################################################
-
-  # # NOTE: I think the issues with my cursor started happening when I moved to wezterm
-  # # and started using the "wezterm" terminfo file, when in wezterm, I switched to
-  # # the "xterm-kitty" terminfo file, and the cursor is working great without
-  # # the configuration below. Leaving the config here as reference in case it
-  # # needs to be tested with another terminal emulator in the future
-
-  # # https://unix.stackexchange.com/questions/433273/changing-cursor-style-based-on-mode-in-both-zsh-and-vim
-  # # You can customise the type of cursor you want (blinking or not, |, rectangle or _)
-  # # by changing the numbers in the following sequences \e[5 q (5 is for beam, 1 is for block) as follows:
-  # #  Set cursor style (DECSCUSR), VT520.
-  # # 0  ⇒  blinking block.
-  # # 1  ⇒  blinking block (default).
-  # # 2  ⇒  steady block.
-  # # 3  ⇒  blinking underline.
-  # # 4  ⇒  steady underline.
-  # # 5  ⇒  blinking bar, xterm.
-  # # 6  ⇒  steady bar, xterm.
-
-  # # vi mode
-  # bindkey -v
-  # export KEYTIMEOUT=1
-  #
-  # # Change cursor shape for different vi modes.
-  # function zle-keymap-select {
-  #   if [[ ${KEYMAP} == vicmd ]] ||
-  #     [[ $1 = 'block' ]]; then
-  #     echo -ne '\e[1 q'
-  #   elif [[ ${KEYMAP} == main ]] ||
-  #     [[ ${KEYMAP} == viins ]] ||
-  #     [[ ${KEYMAP} = '' ]] ||
-  #     [[ $1 = 'beam' ]]; then
-  #     echo -ne '\e[5 q'
-  #   fi
-  # }
-  # zle -N zle-keymap-select
-  # zle-line-init() {
-  #   zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-  #   echo -ne "\e[5 q"
-  # }
-  # zle -N zle-line-init
-  # echo -ne '\e[5 q'                # Use beam shape cursor on startup.
-  # preexec() { echo -ne '\e[5 q'; } # Use beam shape cursor for each new prompt.
-
-  #############################################################################
-  #                        Colorscheme configuration
-  #############################################################################
-
-
-  #############################################################################
-
-  # Add SSH keys to the agent as these keys won't persist after the computer is restarted
-  # Check and add the personal GitHub key
-  if [ -f ~/.ssh/key-github-pers ]; then
-    ssh-add ~/.ssh/key-github-pers >/dev/null 2>&1
-  fi
-
-  # Check and add the work GitHub key
-  if [ -f ~/.ssh/id_rsa ]; then
-    ssh-add ~/.ssh/id_rsa >/dev/null 2>&1
-  fi
-
-  # disable auto-update when running 'brew something'
+  # ############################################################################
+  # SECTION: Misc config
+  # Disable auto-update when running 'brew something'
   export HOMEBREW_NO_AUTO_UPDATE="1"
+  # Brew autocompletion settings
+  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
+  # -v makes command display a description of how the shell would
+  # invoke the command, so you're checking if the command exists and is executable.
+  if command -v brew &>/dev/null; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-  # Stuff that I want to load, but not to have visible in my public dotfiles
-  if [ -f "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local" ]; then
-    source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local"
+    autoload -Uz compinit
+    compinit
   fi
 
-  # Configuration below is local only, not in icloud
-  if [ -f "$HOME/.zshrc_local/env-setup.sh" ]; then
-    source "$HOME/.zshrc_local/env-setup.sh"
-  fi
+  # ############################################################################
+  
 
-  # Set JAVA_HOME to the OpenJDK installation managed by Homebrew
-  export JAVA_HOME="/opt/homebrew/opt/openjdk"
-  # Add JAVA_HOME/bin to the beginning of the PATH
-  export PATH="$JAVA_HOME/bin:$PATH"
-
+  # ############################################################################
+  # SECTION: nvim
+  create_symlink ~/github/dotfiles-latest/neovim/kickstart.nvim/ ~/.config/kickstart.nvim
+  create_symlink ~/github/dotfiles-latest/neovim/lazyvim/ ~/.config/lazyvim
+  create_symlink ~/github/dotfiles-latest/neovim/specvim/ ~/.config/nvim
   # You can use NVIM_APPNAME=nvim-NAME to maintain multiple configurations.
   #
   # NVIM_APPNAME is the name of the directory inside ~/.config
@@ -229,39 +206,52 @@ if [ "$OS" = 'Mac' ]; then
   #
   # Notice that both "v" and "nvim" start "neobean"
   # "vk" opens kickstart and "vl" opens lazyvim
+  # alias nvim='export NVIM_APPNAME="nvim" && /usr/local/bin/nvim'
   alias v='export NVIM_APPNAME="nvim" && /usr/local/bin/nvim'
   alias vq='export NVIM_APPNAME="quarto-nvim-kickstarter" && /usr/local/bin/nvim'
   alias vk='export NVIM_APPNAME="kickstart.nvim" && /usr/local/bin/nvim'
   alias vl='export NVIM_APPNAME="lazyvim" && /usr/local/bin/nvim'
-  # I'm also leaving this "nvim" alias, which points to the "nvim" APPNAME, but
-  # that APPNAME in fact points to my "neobean" config in the symlinks section
-  # If I don't do this, my daily note doesn't work
-  #
-  # If you want to open the daily note with a different distro, update the "nvim"
-  # symlink in the symlinks section
-  #
-  # If you don't understand what I mean by "daily note" go and watch my daily
-  # note video
-  # https://youtu.be/W3hgsMoUcqo
-  # alias nvim='export NVIM_APPNAME="nvim" && /usr/local/bin/nvim'
+ 
 
-  # https://github.com/antlr/antlr4/blob/master/doc/getting-started.md#unix
-  # Add antlr-4.13.1-complete.jar to your CLASSPATH
-  # export CLASSPATH=".:/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH"
-  # Create an alias for running ANTLR's TestRig
-  # alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
-  # alias grun='java -Xmx500M -cp "/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig'
+  # Open man pages with nvim
+  if command -v nvim &>/dev/null; then 
+    export MANPAGER='nvim +Man!'
+    export MANWIDTH=999
+  fi
+  # Set up vi mode
+  # test {really} long (command) using a { lot } of symbols {page} and {abc} and other ones [find] () "test page" {'command 2'}
+  if [ -f "$(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]; then
+    source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+    bindkey -r '\e/'
+    # Following 4 lines modify the escape key to `kj`
+    ZVM_VI_ESCAPE_BINDKEY=kj
+    ZVM_VI_INSERT_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY
+    ZVM_VI_VISUAL_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY
+    ZVM_VI_OPPEND_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY
 
-  # export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+    function zvm_after_lazy_keybindings() {
+      # Remap to go to the beginning of the line
+      zvm_bindkey vicmd 'gh' beginning-of-line
+      # Remap to go to the end of the line
+      zvm_bindkey vicmd 'gl' end-of-line
+    }
 
-  # Add templ to PATH if it is installed
-  # templ is installed with
-  # go install github.com/a-h/templ/cmd/templ@latest
-  # if [ -x "$HOME/go/bin/templ" ]; then
-  #   export PATH=$PATH:$HOME/go/bin
-  # fi
+    # NOTE: My cursor was not blinking when using wezterm with the "wezterm"
+    # terminfo, setting it to a blinking cursor below fixed that
+    # I also set my term to "xterm-kitty" for this to work
+    # This also specifies the blinking cursor
+    # ZVM_CURSOR_STYLE_ENABLED=false
+    ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BEAM
+    ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
+    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
+    # Source .fzf.zsh so that the ctrl+r bindkey is given back fzf
+    zvm_after_init_commands+=('[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh')
+  fi
+  # ###########################################################################
 
-  # sketchybar
+
+  # ###########################################################################
+  # SECTION: sketchybar
   # This will update the brew package count after running a brew upgrade, brew
   # update or brew outdated command
   # Personally I added "list" and "install", and everything that is after but
@@ -285,8 +275,11 @@ if [ "$OS" = 'Mac' ]; then
       fi
     }
   fi
+  # ###########################################################################
 
-  # Luaver
+
+  # ###########################################################################
+  # SECTION: Luaver
   # luaver can be used to install multiple lua and luarocks versions
   # Commands below downloads and uses a specific version
   # my_lua_touse=5.1 && luaver install $my_lua_touse && luaver set-default $my_lua_touse && luaver use $my_lua_touse
@@ -303,24 +296,11 @@ if [ "$OS" = 'Mac' ]; then
   [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
   # Line below won't work with zsh, there's no zsh completions I guess
   # [ -s ~/.luaver/completions/luaver.bash ] && . ~/.luaver/completions/luaver.bash
+  # ###########################################################################
 
-  # Brew autocompletion settings
-  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
-  # -v makes command display a description of how the shell would
-  # invoke the command, so you're checking if the command exists and is executable.
-  if command -v brew &>/dev/null; then
-    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
-    autoload -Uz compinit
-    compinit
-  fi
-
-  #############################################################################
-  #                       Command line tools
-  #############################################################################
-
-  # Tool that I use the most and the #1 in my heart is tmux
-
+  # ###########################################################################
+  # SECTION: fzf
   # Initialize fzf if installed
   # https://github.com/junegunn/fzf
   # The following are custom fzf menus I configured
@@ -336,50 +316,36 @@ if [ "$OS" = 'Mac' ]; then
   # telnet ::<TAB>
   #
   if [ -f ~/.fzf.zsh ]; then
-
     # After installing fzf with brew, you have to run the install script
     # echo -e "y\ny\nn" | /opt/homebrew/opt/fzf/install
-
     source ~/.fzf.zsh
-
     # Preview file content using bat
     export FZF_CTRL_T_OPTS="
     --preview 'bat -n --color=always {}'
     --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
     # Use :: as the trigger sequence instead of the default **
     export FZF_COMPLETION_TRIGGER='::'
-
     # Eldritch Colorscheme / theme
     # https://github.com/eldritch-theme/fzf
     export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
   fi
+  # ###########################################################################
 
-  # Starship
-  # Not sure if counts a CLI tool, because it only makes my prompt more useful
-  # https://starship.rs/config/#prompt
-  # if command -v starship &>/dev/null; then
-  #   export STARSHIP_CONFIG=$HOME/github/dotfiles-latest/starship-config/active-config.toml
-  #   eval "$(starship init zsh)" >/dev/null 2>&1
-  # fi
 
-  # eza
+  # ###########################################################################
+  # SECTION: eza
   # ls replacement
-  # exa is unmaintained, so now using eza
-  # https://github.com/ogham/exa
-  # https://github.com/eza-community/eza
-  # uses colours to distinguish file types and metadata. It knows about
-  # symlinks, extended attributes, and Git.
   if command -v eza &>/dev/null; then
     alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions'
     alias ll='eza -lhg'
     alias lla='eza -alhg'
     alias tree='eza --tree'
   fi
+  # ###########################################################################
 
-  # Bat -> Cat with wings
-  # https://github.com/sharkdp/bat
-  # Supports syntax highlighting for a large number of programming and markup languages
+  
+  # ###########################################################################
+  # SECTION: Bat -> Cat with wings
   if command -v bat &>/dev/null; then
     # --style=plain - removes line numbers and git modifications
     # --paging=never - doesnt pipe it through less
@@ -387,80 +353,42 @@ if [ "$OS" = 'Mac' ]; then
     alias catt='bat'
     alias cata='bat --show-all --paging=never'
   fi
+  # ###########################################################################
 
-  # Zsh Vi Mode
-  # vi(vim) mode plugin for ZSH
-  # https://github.com/jeffreytse/zsh-vi-mode
-  # Insert mode to type and edit text
-  # Normal mode to use vim commands
-  # test {really} long (command) using a { lot } of symbols {page} and {abc} and other ones [find] () "test page" {'command 2'}
-  if [ -f "$(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]; then
-    source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-    bindkey -r '\e/'
-    # Following 4 lines modify the escape key to `kj`
-    ZVM_VI_ESCAPE_BINDKEY=kj
-    ZVM_VI_INSERT_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY
-    ZVM_VI_VISUAL_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY
-    ZVM_VI_OPPEND_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY
-
-    function zvm_after_lazy_keybindings() {
-      # Remap to go to the beginning of the line
-      zvm_bindkey vicmd 'gh' beginning-of-line
-      # Remap to go to the end of the line
-      zvm_bindkey vicmd 'gl' end-of-line
-    }
-
-    # Disable the cursor style feature
-    # I my cursor above in the cursor section
-    # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#custom-cursor-style
-    #
-    # NOTE: My cursor was not blinking when using wezterm with the "wezterm"
-    # terminfo, setting it to a blinking cursor below fixed that
-    # I also set my term to "xterm-kitty" for this to work
-    #
-    # This also specifies the blinking cursor
-    # ZVM_CURSOR_STYLE_ENABLED=false
-    ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BEAM
-    ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLINKING_BLOCK
-    ZVM_OPPEND_MODE_CURSOR=$ZVM_CURSOR_BLINKING_UNDERLINE
-
-    # Source .fzf.zsh so that the ctrl+r bindkey is given back fzf
-    zvm_after_init_commands+=('[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh')
-  fi
-
+ 
+  # ###########################################################################
+  # SECTION: zsh-autosuggestions
   # https://github.com/zsh-users/zsh-autosuggestions
   # Right arrow to accept suggestion
   if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   fi
-
-  # Changed from z.lua to zoxide, as it's more maintaned
-  # smarter cd command, it remembers which directories you use most
-  # frequently, so you can "jump" to them in just a few keystrokes.
-  # https://github.com/ajeetdsouza/zoxide
-  # https://github.com/skywind3000/z.lua
+  # ###########################################################################
+  
+ 
+  # ###########################################################################
+  # SECTION: z cd replacement
+  # Useful commands
+  # z foo<SPACE><TAB>  # show interactive completions
   if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
-
     alias cd='z'
     # Alias below is same as 'cd -', takes to the previous directory
     alias cdd='z -'
-
-    #Since I migrated from z.lua, I can import my data
-    # zoxide import --from=z "$HOME/.zlua" --merge
-
-    # Useful commands
-    # z foo<SPACE><TAB>  # show interactive completions
   fi
+  # ###########################################################################
+  
 
-  #############################################################################
-
+  # ###########################################################################
+  # SECTION: MySQL
   # Add MySQL client to PATH, if it exists
   if [ -d "/opt/homebrew/opt/mysql-client/bin" ]; then
     export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
   fi
+  # ###########################################################################
 
-  # Source Google Cloud SDK configurations, if Homebrew and the SDK are installed
+  # ###########################################################################
+  # SECTION: Google Cloud SDK configurations
   if command -v brew &>/dev/null; then
     if [ -f "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc" ]; then
       source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
@@ -469,13 +397,19 @@ if [ "$OS" = 'Mac' ]; then
       source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
     fi
   fi
+  # ###########################################################################
 
+
+  # ###########################################################################
   # Initialize kubernetes kubectl completion if kubectl is installed
   # https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/#enable-shell-autocompletion
   if command -v kubectl &>/dev/null; then
     source <(kubectl completion zsh)
   fi
+  # ###########################################################################
+  
 
+  # ###########################################################################
   # Check if chruby is installed
   # Source chruby scripts if they exist
   # Working instructions to install on macos can be found on the jekyll site
