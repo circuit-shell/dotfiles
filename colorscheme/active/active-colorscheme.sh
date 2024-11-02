@@ -3,23 +3,23 @@
 # Filename: ~/github/dotfiles-latest/colorscheme/list/linkarzu-colors.sh
 # ~/github/dotfiles-latest/colorscheme/list/linkarzu-colors.sh
 
-linkarzu_color01="#949ae5"
-linkarzu_color02="#37f499"
-linkarzu_color03="#04d1f9"
-linkarzu_color04="#987afb"
-linkarzu_color05="#19dfcf"
-linkarzu_color06="#1682ef"
+linkarzu_color01="#fbe260"
+linkarzu_color02="#fad61d"
+linkarzu_color03="#fdf2bb"
+linkarzu_color04="#e19720"
+linkarzu_color05="#ebfafa"
+linkarzu_color06="#f62d14"
 # Markdown codeblock
 linkarzu_color07="#1c242f"
-linkarzu_color08="#5fa9f4"
+linkarzu_color08="#811e09"
 # Comments
 linkarzu_color09="#a5afc2"
 # Terminal and neovim background
 linkarzu_color10="#0D1116"
 # Underline spellbad
-linkarzu_color11="#f16c75"
+linkarzu_color11="#f62d14"
 # Underline spellcap
-linkarzu_color12="#f1fc79"
+linkarzu_color12="#fad61d"
 # line across cursor
 linkarzu_color13="#314154"
 # Cursor and tmux windows text

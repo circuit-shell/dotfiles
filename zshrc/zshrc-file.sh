@@ -1,8 +1,8 @@
 source ~/github/dotfiles-latest/zshrc/helper/functions.sh
 source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
 
-colorscheme_profile="linkarzu-colors.sh"
-clear
+colorscheme_profile="pikachu.sh"
+~/github/dotfiles-latest/zshrc/colorscheme-set.sh "$colorscheme_profile"
 
 # ~/.config is used by neovim, alacritty and karabiner
 mkdir -p ~/.config
@@ -186,7 +186,6 @@ if [ "$OS" = 'Mac' ]; then
   #                        Colorscheme configuration
   #############################################################################
 
-  ~/github/dotfiles-latest/zshrc/colorscheme-set.sh "$colorscheme_profile"
 
   #############################################################################
 
@@ -397,6 +396,7 @@ if [ "$OS" = 'Mac' ]; then
   # test {really} long (command) using a { lot } of symbols {page} and {abc} and other ones [find] () "test page" {'command 2'}
   if [ -f "$(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]; then
     source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+    bindkey -r '\e/'
     # Following 4 lines modify the escape key to `kj`
     ZVM_VI_ESCAPE_BINDKEY=kj
     ZVM_VI_INSERT_ESCAPE_BINDKEY=$ZVM_VI_ESCAPE_BINDKEY

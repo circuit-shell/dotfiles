@@ -70,8 +70,8 @@ function awsu() {
 }
 
 # Clear terminal
-function clear() {
-  reset && printf '\033[2J\033[3J\033[1;1H'
+function cls() {
+  clear && printf '\e[3J'
 }
 
 
