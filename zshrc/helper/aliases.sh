@@ -42,5 +42,19 @@ alias lla='ls -alh'
 alias python='python3'
 alias history='history -30'
 
+# kubernetes, if you need help, just run 'kgp --help' for example
+alias k='kubectl'
+alias kx='kubectx'
+# alias ks='kubeswap'
+alias ks='kubens'
+alias kga='kubectl get all'
+alias kgp='kubectl get pods'
+alias kgpa='kubectl get pods --all-namespaces'
+alias kgpo='kubectl get pods -o wide'
+
 # golang aliases
 alias coverage='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
+
+
+
+

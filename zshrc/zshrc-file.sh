@@ -25,8 +25,6 @@
 source ~/github/dotfiles-latest/zshrc/helper/functions.sh
 source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
 source ~/github/dotfiles-latest/zshrc/helper/g-plugin.sh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # #############################################################################
 
 
@@ -96,18 +94,20 @@ if [[ ! -f $HISTFILE ]]; then
   touch $HISTFILE
   chmod 600 $HISTFILE
 fi
-# Append commands to the history file as they are entered
 setopt appendhistory
-# Record timestamp of each command (helpful for auditing)
 setopt extendedhistory
-# Share command history data between all sessions
 setopt sharehistory
-# Incrementally append to the history file, rather than waiting until the shell exits
+setopt share_history
 setopt incappendhistory
-# Ignore duplicate commands in a row
 setopt histignoredups
-# Exclude commands that start with a space
+setopt hist_expire_dups_first
+setopt hist_verify
 setopt histignorespace
+
+
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+
 # #############################################################################
 
 
@@ -176,26 +176,7 @@ if [ "$OS" = 'Mac' ]; then
   # ############################################################################
  
 
-  # ############################################################################
-  # SECTION: Misc config
-  ENABLE_CORRECTION="false"
-  COMPLETION_WAITING_DOTS="true"
-  export HOMEBREW_NO_AUTO_UPDATE="1"
-  export LANG=en_US.UTF-8
-  # Brew autocompletion settings
-  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
-  # -v makes command display a description of how the shell would
-  # invoke the command, so you're checking if the command exists and is executable.
-  if command -v brew &>/dev/null; then
-    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-    autoload -Uz compinit
-    compinit
-  fi
-
-  # Theme configuration
-  source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
-  # ############################################################################
-  
+ 
 
   # ############################################################################
   # SECTION: nvim
@@ -321,7 +302,7 @@ if [ "$OS" = 'Mac' ]; then
   # ssh ::<tab><name> - shows you list of hosts in case don't remember exact name
   # kill -9 ::<tab><name> - find and kill a process
   # telnet ::<TAB>
-  #
+
   if [ -f ~/.fzf.zsh ]; then
     # After installing fzf with brew, you have to run the install script
     # echo -e "y\ny\nn" | /opt/homebrew/opt/fzf/install
@@ -332,6 +313,9 @@ if [ "$OS" = 'Mac' ]; then
     --bind 'ctrl-/:change-preview-window(down|hidden|)'"
     # Use :: as the trigger sequence instead of the default **
     export FZF_COMPLETION_TRIGGER='::'
+    # DISABLE_FZF_KEY_BINDINGS="true"
+    # # DISABLE_FZF_AUTO_COMPLETION="false"
+    # # export FZF_BASE="/usr/local/bin/fzf"
     # Eldritch Colorscheme / theme
     # https://github.com/eldritch-theme/fzf
     export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
@@ -369,6 +353,16 @@ if [ "$OS" = 'Mac' ]; then
   # Right arrow to accept suggestion
   if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  fi
+  # ###########################################################################
+ 
+
+  # ###########################################################################
+  # SECTION: zsh-syntax-highlighting
+  # https://github.com/zsh-users/zsh-syntax-highlighting
+  # Right arrow to accept suggestion
+  if [ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   fi
   # ###########################################################################
   
@@ -432,18 +426,29 @@ if [ "$OS" = 'Mac' ]; then
     # You can also put a conditional check here if you want
     chruby ruby-3.1.3
   fi
-
+  
+  # ############################################################################
+  # SECTION: Misc config
+  ENABLE_CORRECTION="false"
+  COMPLETION_WAITING_DOTS="true"
+  export HOMEBREW_NO_AUTO_UPDATE="1"
+  export LANG=en_US.UTF-8
+  export PATH="$(brew --prefix)/bin:$PATH"
+  if command -v brew &>/dev/null; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+    autoload -Uz compinit
+    compinit
+    source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+  fi
+  # ############################################################################
+  
 fi
 
 
 
 # plugins=(git history yarn copypath safe-pase golang vi-mode)
 
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# export FZF_BASE="/usr/local/bin/fzf"
-# DISABLE_FZF_KEY_BINDINGS="true"
-# # DISABLE_FZF_AUTO_COMPLETION="false"
-#
+
 # # User configuration
 #
 # # flutter
@@ -479,4 +484,10 @@ fi
 # export SDKMAN_DIR="$HOME/.sdkman"
 # [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-export PATH="/usr/local/sbin:$PATH"
+# export PATH="/usr/local/sbin:$PATH"
+# eval "$(/opt/homebrew/bin/brew shellenv)"
+# export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/openjdk/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Applications/Wireshark.app/Contents/MacOS:/opt/homebrew/opt/libpq/bin:/Applications/kitty.app/Contents/MacOS:/Users/spectr3r-system/.orbstack/bin:/Users/spectr3r-system/.orbstack/bin
+# export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/openjdk/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Applications/Wireshark.app/Contents/MacOS:/opt/homebrew/opt/libpq/bin:/Applications/kitty.app/Contents/MacOS:/Users/spectr3r-system/.orbstack/bin:/Users/spectr3r-system/.orbstack/bin
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

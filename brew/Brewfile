@@ -1,0 +1,43 @@
+# Tap into homebrew services
+tap "homebrew/bundle" 
+tap "homebrew/services"  
+
+# Brew Installations
+brew "pyenv"
+brew "wget"
+brew "fzf"
+brew "git"
+brew "powerlevel10k"
+brew "tmux"
+brew "tree"
+brew "watch"
+brew "zoxide"
+brew "bat"
+brew "eza"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "zsh-vi-mode"
+brew "jq"
+brew "fd"
+brew "fontconfig"
+brew "bind"
+brew "helm"
+# brew "kubernetes-cli"
+# brew "mysql-client"
+brew "pngpaste"  # Used by obsidian.nvim to paste images
+brew "trash" # CLI tool that moves files or folder to the trash, used by neo-tree.nvim
+brew "htop"
+brew "neofetch"
+brew "neovim"
+brew "gnu-sed"
+brew "ripgrep"
+brew "jesseduffield/lazygit/lazygit"
+
+# Cask Installations
+cask "font-meslo-lg-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-fira-code-nerd-font"
+cask "cursorcerer"  
+cask "hot"  # Not essentials, but added them here, as I install them all the time ;)
+cask "sf-symbols"
+
