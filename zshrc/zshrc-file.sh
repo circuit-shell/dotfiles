@@ -24,6 +24,9 @@
 # SECTION: Imports
 source ~/github/dotfiles-latest/zshrc/helper/functions.sh
 source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
+source ~/github/dotfiles-latest/zshrc/helper/g-plugin.sh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # #############################################################################
 
 
@@ -84,6 +87,7 @@ create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
 # echo "HISTSIZE: $HISTSIZE"
 # echo "SAVEHIST: $SAVEHIST"
 # Store 10,000 entries in the command history
+HIST_STAMPS="yyyy-mm-dd"
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
@@ -174,19 +178,22 @@ if [ "$OS" = 'Mac' ]; then
 
   # ############################################################################
   # SECTION: Misc config
-  # Disable auto-update when running 'brew something'
+  ENABLE_CORRECTION="false"
+  COMPLETION_WAITING_DOTS="true"
   export HOMEBREW_NO_AUTO_UPDATE="1"
+  export LANG=en_US.UTF-8
   # Brew autocompletion settings
   # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
   # -v makes command display a description of how the shell would
   # invoke the command, so you're checking if the command exists and is executable.
   if command -v brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
     autoload -Uz compinit
     compinit
   fi
 
+  # Theme configuration
+  source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
   # ############################################################################
   
 
@@ -372,7 +379,7 @@ if [ "$OS" = 'Mac' ]; then
   # z foo<SPACE><TAB>  # show interactive completions
   if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
-    alias cd='z'
+    # alias cd='z'
     # Alias below is same as 'cd -', takes to the previous directory
     alias cdd='z -'
   fi
@@ -397,6 +404,9 @@ if [ "$OS" = 'Mac' ]; then
       source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
     fi
   fi
+  # # Google Cloud SDK.
+  # if [ -f '/Users/adrio/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/adrio/google-cloud-sdk/path.zsh.inc'; fi
+  # if [ -f '/Users/adrio/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/adrio/google-cloud-sdk/completion.zsh.inc'; fi
   # ###########################################################################
 
 
@@ -426,31 +436,8 @@ if [ "$OS" = 'Mac' ]; then
 fi
 
 
-# Theme configuration
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# User configuration
-# ENABLE_CORRECTION="false"
-# COMPLETION_WAITING_DOTS="true"
-# HIST_STAMPS="yyyy-mm-dd"
- # ZSH_THEME="spectrer"
-
-# ---- Zoxide (better cd) ----
-# eval "$(zoxide init zsh)"
-
-# vi mode
-# VI_MODE_SET_CURSOR=true
-# VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
-# VI_MODE_CURSOR_NORMAL=2
-# VI_MODE_CURSOR_VISUAL=4
-# VI_MODE_CURSOR_INSERT=5
-# VI_MODE_CURSOR_OPPEND=0
-# INSERT_MODE_INDICATOR="%F{yellow}+%f"
-# bindkey -M viins 'jj' vi-cmd-mode
 
 # plugins=(git history yarn copypath safe-pase golang vi-mode)
-plugins=(git yarn copypath safe-paste golang)
 
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # export FZF_BASE="/usr/local/bin/fzf"
@@ -458,8 +445,6 @@ plugins=(git yarn copypath safe-paste golang)
 # # DISABLE_FZF_AUTO_COMPLETION="false"
 #
 # # User configuration
-# export CHROME_EXECUTABLE="/Applications/Arc.app/Contents/MacOS/Arc"
-# export LANG=en_US.UTF-8
 #
 # # flutter
 # export PATH="$PATH:$HOME/development/flutter/bin"
@@ -485,19 +470,10 @@ plugins=(git yarn copypath safe-paste golang)
 # export PATH=$PATH:$GOROOT/bin
 
 
-
-# # Google Cloud SDK.
-# if [ -f '/Users/adrio/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/adrio/google-cloud-sdk/path.zsh.inc'; fi
-# if [ -f '/Users/adrio/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/adrio/google-cloud-sdk/completion.zsh.inc'; fi
-
 # oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
-if [ -f ${HOME}/.zplug/init.zsh ]; then
-    source ${HOME}/.zplug/init.zsh
-fi
-
-source $ZSH/oh-my-zsh.sh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# export ZSH="${HOME}/.oh-my-zsh"
+# plugins=(git yarn copypath safe-paste golang)
+# source $ZSH/oh-my-zsh.sh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 # export SDKMAN_DIR="$HOME/.sdkman"

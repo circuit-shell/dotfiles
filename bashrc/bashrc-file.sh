@@ -119,7 +119,7 @@ if [ "$OS" = 'Mac' ]; then
   if command -v zoxide &>/dev/null; then
     eval "$(zoxide init bash)"
 
-    alias cd='z'
+    # alias cd='z'
     # Alias below is same as 'cd -', takes to the previous directory
     alias cdd='z -'
 
