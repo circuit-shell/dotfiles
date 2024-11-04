@@ -38,6 +38,9 @@ bind -r P select-window -p
 bind -n C-Tab select-window -n
 bind -n S-C-Tab select-window -p
 
+
+bind-key b send-keys -R \; clear-history
+
 bind _ split-window -h 
 bind - split-window -v
 bind a kill-pane

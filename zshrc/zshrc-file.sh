@@ -136,13 +136,13 @@ if [ "$OS" = 'Mac' ]; then
   # #############################################################################
   # SECTION: MacOS-specific configurations
   # Stuff that I want to load, but not to have visible in my public dotfiles
-  if [ -f "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local" ]; then
-    source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local"
-  fi
+  # if [ -f "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local" ]; then
+    # source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local"
+  # fi
   # Configuration below is local only, not in icloud
-  if [ -f "$HOME/.zshrc_local/env-setup.sh" ]; then
-    source "$HOME/.zshrc_local/env-setup.sh"
-  fi
+  # if [ -f "$HOME/.zshrc_local/env-setup.sh" ]; then
+    # source "$HOME/.zshrc_local/env-setup.sh"
+  # fi
   # Set JAVA_HOME to the OpenJDK installation managed by Homebrew
   export JAVA_HOME="/opt/homebrew/opt/openjdk"
   # Add JAVA_HOME/bin to the beginning of the PATH
@@ -478,6 +478,16 @@ if [ "$OS" = 'Mac' ]; then
   # export SDKMAN_DIR="$HOME/.sdkman"
   # [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   # ############################################################################
+  #
+
+  ############################################################################
+  # SECTION: private config
+  #
+  # source ~/github/dotfiles-latest/zshrc/helper/private.sh
+  if [ -f ~/github/dotfiles-latest/zshrc/helper/private.sh ]; then
+    source ~/github/dotfiles-latest/zshrc/helper/private.sh
+  fi
+
 fi
 # ############################################################################
 
