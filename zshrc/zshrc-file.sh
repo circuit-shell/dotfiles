@@ -445,13 +445,9 @@ if [ "$OS" = 'Mac' ]; then
   unset ZSH_AUTOSUGGEST_USE_ASYNC
   # ############################################################################
 fi
+
 # ############################################################################
-
-# plugins=(git history yarn copypath safe-pase golang vi-mode)
-
-
-# # User configuration
-#
+# SECTION: languages/tools configuration
 # # flutter
 # export PATH="$PATH:$HOME/development/flutter/bin"
 #
@@ -475,20 +471,9 @@ fi
 # export GOROOT=$(brew --prefix golang)/libexec
 # export PATH=$PATH:$GOROOT/bin
 
-
-# oh-my-zsh installation.
-# export ZSH="${HOME}/.oh-my-zsh"
-# plugins=(git yarn copypath safe-paste golang)
-# source $ZSH/oh-my-zsh.sh
-
+# # java
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+# export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 # export SDKMAN_DIR="$HOME/.sdkman"
 # [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# export PATH="/usr/local/sbin:$PATH"
-# eval "$(/opt/homebrew/bin/brew shellenv)"
-# export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/openjdk/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Applications/Wireshark.app/Contents/MacOS:/opt/homebrew/opt/libpq/bin:/Applications/kitty.app/Contents/MacOS:/Users/spectr3r-system/.orbstack/bin:/Users/spectr3r-system/.orbstack/bin
-# export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/openjdk/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Applications/Wireshark.app/Contents/MacOS:/opt/homebrew/opt/libpq/bin:/Applications/kitty.app/Contents/MacOS:/Users/spectr3r-system/.orbstack/bin:/Users/spectr3r-system/.orbstack/bin
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
