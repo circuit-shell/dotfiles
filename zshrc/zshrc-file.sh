@@ -96,15 +96,10 @@ if [[ ! -f $HISTFILE ]]; then
   chmod 600 $HISTFILE
 fi
 
-# setopt appendhistory
-# setopt extendedhistory
-# setopt incappendhistory
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_verify
-# setopt hist_ignore_space
-
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
