@@ -38,11 +38,15 @@ bind -r P select-window -p
 bind -n C-Tab select-window -n
 bind -n S-C-Tab select-window -p
 
-
+# clear the screen
 bind-key b send-keys -R \; clear-history
 
-bind _ split-window -h 
-bind - split-window -v
+
+
+
+bind c new-window -c "#{pane_current_path}"
+bind _ split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
 bind a kill-pane
 bind -r j resize-pane -D 5
 bind -r k resize-pane -U 5
