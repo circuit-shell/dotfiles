@@ -95,15 +95,20 @@ if [[ ! -f $HISTFILE ]]; then
   touch $HISTFILE
   chmod 600 $HISTFILE
 fi
-setopt appendhistory
-setopt extendedhistory
-setopt sharehistory
+# setopt appendhistory
+# setopt extendedhistory
+# setopt sharehistory
+# setopt share_history
+# setopt incappendhistory
+# setopt histignoredups
+# setopt hist_expire_dups_first
+# setopt hist_verify
+# setopt histignorespace
+
 setopt share_history
-setopt incappendhistory
-setopt histignoredups
 setopt hist_expire_dups_first
+setopt hist_ignore_dups
 setopt hist_verify
-setopt histignorespace
 
 
 bindkey '^[[A' history-search-backward
