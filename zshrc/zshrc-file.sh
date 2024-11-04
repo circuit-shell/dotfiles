@@ -18,7 +18,7 @@
 #   ssh-add ~/.ssh/id_rsa >/dev/null 2>&1
 # fi
 # ###########################################################################
-  
+
 
 # #############################################################################
 # SECTION: Autocompletion settings
@@ -131,7 +131,7 @@ esac
 # #############################################################################
 # Section: MacOS-specific configurations
 if [ "$OS" = 'Mac' ]; then
-  
+
 
   # #############################################################################
   # SECTION: MacOS-specific configurations
@@ -175,9 +175,9 @@ if [ "$OS" = 'Mac' ]; then
   }
   install_xterm_kitty_terminfo
   # ############################################################################
- 
 
- 
+
+
 
   # ############################################################################
   # SECTION: nvim
@@ -195,15 +195,15 @@ if [ "$OS" = 'Mac' ]; then
   #
   # Notice that both "v" and "nvim" start "neobean"
   # "vk" opens kickstart and "vl" opens lazyvim
-  # alias nvim='export NVIM_APPNAME="nvim" && /usr/local/bin/nvim'
-  alias v='export NVIM_APPNAME="nvim" && /usr/local/bin/nvim'
-  alias vq='export NVIM_APPNAME="quarto-nvim-kickstarter" && /usr/local/bin/nvim'
-  alias vk='export NVIM_APPNAME="kickstart.nvim" && /usr/local/bin/nvim'
-  alias vl='export NVIM_APPNAME="lazyvim" && /usr/local/bin/nvim'
- 
+  # alias nvim='export NVIM_APPNAME="nvim" && $(brew --prefix)/bin/nvim'
+  alias v='export NVIM_APPNAME="nvim" && "$(brew --prefix)/bin/nvim"'
+  # alias vq='export NVIM_APPNAME="quarto-nvim-kickstarter" && "$(brew --prefix)/bin/nvim"'
+  # alias vk='export NVIM_APPNAME="kickstart.nvim" && "$(brew --prefix)/bin/nvim"'
+  # alias vl='export NVIM_APPNAME="lazyvim" && "$(brew --prefix)/bin/nvim"'
+
 
   # Open man pages with nvim
-  if command -v nvim &>/dev/null; then 
+  if command -v nvim &>/dev/null; then
     export MANPAGER='nvim +Man!'
     export MANWIDTH=999
   fi
@@ -316,7 +316,7 @@ if [ "$OS" = 'Mac' ]; then
     export FZF_COMPLETION_TRIGGER='::'
     # DISABLE_FZF_KEY_BINDINGS="true"
     # # DISABLE_FZF_AUTO_COMPLETION="false"
-    # # export FZF_BASE="/usr/local/bin/fzf"
+    # # export FZF_BASE="$(brew --prefix)/bin/fzf"
     # Eldritch Colorscheme / theme
     # https://github.com/eldritch-theme/fzf
     export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
@@ -335,7 +335,7 @@ if [ "$OS" = 'Mac' ]; then
   fi
   # ###########################################################################
 
-  
+
   # ###########################################################################
   # SECTION: Bat -> Cat with wings
   if command -v bat &>/dev/null; then
@@ -347,16 +347,6 @@ if [ "$OS" = 'Mac' ]; then
   fi
   # ###########################################################################
 
- 
-  # ###########################################################################
-  # SECTION: zsh-autosuggestions
-  # https://github.com/zsh-users/zsh-autosuggestions
-  # Right arrow to accept suggestion
-  if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  fi
-  # ###########################################################################
- 
 
   # ###########################################################################
   # SECTION: zsh-syntax-highlighting
@@ -366,8 +356,8 @@ if [ "$OS" = 'Mac' ]; then
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   fi
   # ###########################################################################
-  
- 
+
+
   # ###########################################################################
   # SECTION: z cd replacement
   # Useful commands
@@ -379,7 +369,7 @@ if [ "$OS" = 'Mac' ]; then
     alias cdd='z -'
   fi
   # ###########################################################################
-  
+
 
   # ###########################################################################
   # SECTION: MySQL
@@ -412,7 +402,7 @@ if [ "$OS" = 'Mac' ]; then
     source <(kubectl completion zsh)
   fi
   # ###########################################################################
-  
+
 
   # ###########################################################################
   # Check if chruby is installed
@@ -427,7 +417,7 @@ if [ "$OS" = 'Mac' ]; then
     # You can also put a conditional check here if you want
     chruby ruby-3.1.3
   fi
-  
+
   # ############################################################################
   # SECTION: Misc config
   ENABLE_CORRECTION="false"
@@ -444,36 +434,50 @@ if [ "$OS" = 'Mac' ]; then
   [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
   unset ZSH_AUTOSUGGEST_USE_ASYNC
   # ############################################################################
+
+
+  # ###########################################################################
+  # SECTION: zsh-autosuggestions
+  # https://github.com/zsh-users/zsh-autosuggestions
+  # Right arrow to accept suggestion
+  if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  fi
+  # ###########################################################################
+
+  
+  # ############################################################################
+  # SECTION: languages/tools configuration
+  # # flutter
+  # export PATH="$PATH:$HOME/development/flutter/bin"
+  #
+  # # postgreSQL
+  # export PATH="$(brew --prefix)/opt/postgresql@16/bin:$PATH"zshconfigzshconfig
+  # export PATH="$(brew --prefix)/opt/libpq/bin:$PATH"
+  #
+  # # python
+  # command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+  # export PYENV_ROOT="$HOME/.pyenv"
+  #
+  # # java
+  # export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+  # export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+  #
+  # # volta
+  # export VOLTA_HOME="$HOME/.volta"
+  # export PATH="$VOLTA_HOME/bin:$PATH"
+  #
+  # # golang
+  # export GOROOT=$(brew --prefix golang)/libexec
+  # export PATH=$PATH:$GOROOT/bin
+  
+  # # java
+  # export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+  # export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+  #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+  # export SDKMAN_DIR="$HOME/.sdkman"
+  # [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+  # ############################################################################
 fi
-
 # ############################################################################
-# SECTION: languages/tools configuration
-# # flutter
-# export PATH="$PATH:$HOME/development/flutter/bin"
-#
-# # postgreSQL
-# export PATH="/usr/local/opt/postgresql@16/bin:$PATH"zshconfigzshconfig
-# export PATH="/usr/local/opt/libpq/bin:$PATH"
-#
-# # python
-# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-# export PYENV_ROOT="$HOME/.pyenv"
-#
-# # java
-# export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-# export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
-#
-# # volta
-# export VOLTA_HOME="$HOME/.volta"
-# export PATH="$VOLTA_HOME/bin:$PATH"
-#
-# # golang
-# export GOROOT=$(brew --prefix golang)/libexec
-# export PATH=$PATH:$GOROOT/bin
 
-# # java
-# export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-# export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-# export SDKMAN_DIR="$HOME/.sdkman"
-# [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
