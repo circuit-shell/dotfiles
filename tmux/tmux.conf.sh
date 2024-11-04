@@ -34,6 +34,10 @@ bind-key C-a send-prefix
 bind -r N select-window -n
 bind -r P select-window -p
 
+# Navigate windows using Ctrl+Tab and Ctrl+Shift+Tab
+bind -n C-Tab select-window -n
+bind -n S-C-Tab select-window -p
+
 bind _ split-window -h 
 bind - split-window -v
 bind a kill-pane
@@ -42,7 +46,8 @@ bind -r k resize-pane -U 5
 bind -r l resize-pane -R 5
 bind -r h resize-pane -L 5
 bind  m resize-pane -Z
-bind r source-file ~/.tmux.confbindkey
+bind r source-file ~/.tmux.conf
+
 
 bind-key -T copy-mode-vi 'v' send -X begin-selection # start selecting text with "v"
 bind-key -T copy-mode-vi 'y' send -X copy-selection # copy text with "y"
