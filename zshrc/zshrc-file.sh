@@ -21,16 +21,9 @@
   
 
 # #############################################################################
-# SECTION: Imports
-source ~/github/dotfiles-latest/zshrc/helper/functions.sh
-source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
-source ~/github/dotfiles-latest/zshrc/helper/g-plugin.sh
-# #############################################################################
-
-
-# #############################################################################
 # SECTION: Autocompletion settings
 # These have to be on the top, I remember I had issues this if not
+unset ZSH_AUTOSUGGEST_USE_ASYNC
 zmodload zsh/complist
 autoload -U compinit
 compinit
@@ -58,6 +51,14 @@ zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
 # zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 # Colors for files and directory
 # zstyle ':completion:*:*:*:*:default' list-colors '${(s.:.)LS_COLORS}'
+# #############################################################################
+
+
+# #############################################################################
+# SECTION: Imports
+source ~/github/dotfiles-latest/zshrc/helper/functions.sh
+source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
+source ~/github/dotfiles-latest/zshrc/helper/g-plugin.sh
 # #############################################################################
 
 
@@ -438,13 +439,13 @@ if [ "$OS" = 'Mac' ]; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
     autoload -Uz compinit
     compinit
-    source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
   fi
+  source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+  unset ZSH_AUTOSUGGEST_USE_ASYNC
   # ############################################################################
-  
 fi
-
-
+# ############################################################################
 
 # plugins=(git history yarn copypath safe-pase golang vi-mode)
 
