@@ -191,7 +191,8 @@ if [ "$OS" = 'Mac' ]; then
   # Notice that both "v" and "nvim" start "neobean"
   # "vk" opens kickstart and "vl" opens lazyvim
   # alias nvim='export NVIM_APPNAME="nvim" && $(brew --prefix)/bin/nvim'
-  alias v='export NVIM_APPNAME="nvim" && "$(brew --prefix)/bin/nvim"'
+  alias vv='export NVIM_APPNAME="nvim" && "$(brew --prefix)/bin/nvim"'
+  alias v=vv
   # alias vq='export NVIM_APPNAME="quarto-nvim-kickstarter" && "$(brew --prefix)/bin/nvim"'
   # alias vk='export NVIM_APPNAME="kickstart.nvim" && "$(brew --prefix)/bin/nvim"'
   # alias vl='export NVIM_APPNAME="lazyvim" && "$(brew --prefix)/bin/nvim"'

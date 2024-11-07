@@ -22,6 +22,7 @@ brew "fd"
 brew "fontconfig"
 brew "bind"
 brew "helm"
+brew "go"
 # brew "kubernetes-cli"
 # brew "mysql-client"
 brew "pngpaste"  # Used by obsidian.nvim to paste images
