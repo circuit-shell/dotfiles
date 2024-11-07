@@ -180,22 +180,10 @@ if [ "$OS" = 'Mac' ]; then
   create_symlink ~/github/dotfiles-latest/neovim/lazyvim/ ~/.config/lazyvim
   create_symlink ~/github/dotfiles-latest/neovim/specvim/ ~/.config/nvim
   # You can use NVIM_APPNAME=nvim-NAME to maintain multiple configurations.
-  #
-  # NVIM_APPNAME is the name of the directory inside ~/.config
-  # For example, you can install the kickstart configuration
-  # in ~/.config/nvim-kickstart, the NVIM_APPNAME would be "nvim-kickstart"
-  #
-  # In my case, the neovim directories inside ~/.config/ are symlinks that point
-  # to their respective neovim directories stored in my $my_working_directory
-  #
-  # Notice that both "v" and "nvim" start "neobean"
-  # "vk" opens kickstart and "vl" opens lazyvim
-  # alias nvim='export NVIM_APPNAME="nvim" && $(brew --prefix)/bin/nvim'
-  alias vv='export NVIM_APPNAME="nvim" && "$(brew --prefix)/bin/nvim"'
-  alias v=vv
-  # alias vq='export NVIM_APPNAME="quarto-nvim-kickstarter" && "$(brew --prefix)/bin/nvim"'
-  # alias vk='export NVIM_APPNAME="kickstart.nvim" && "$(brew --prefix)/bin/nvim"'
-  # alias vl='export NVIM_APPNAME="lazyvim" && "$(brew --prefix)/bin/nvim"'
+  v() {
+    export NVIM_APPNAME="nvim"
+    $(brew --prefix)/bin/nvim
+  }
 
 
   # Open man pages with nvim
