@@ -4,12 +4,36 @@ return {
 		-- Enable relative and absolute line numbers
 		vim.opt.relativenumber = true
 		vim.opt.number = true
+
+		-- Add folding settings
+		vim.opt.foldmethod = "syntax"
+		vim.opt.foldlevel = 99 -- Start with all folds open
+		vim.opt.foldenable = true -- Enable folding
+		vim.opt.foldcolumn = "1" -- Show fold column
+
+		-- Set fillchars
+		vim.opt.fillchars = {
+			fold = "·", -- Show dots for folded lines
+			foldclose = "", -- Symbol for open folds
+			foldopen = "", -- Symbol for closed folds
+			foldsep = " ", -- Symbol for fold separator
+			diff = "╱", -- Used for diff
+			eob = " ", -- Empty lines at the end of buffer
+			horiz = "━", -- Horizontal split separator
+			horizup = "┻", -- Horizontal split separator with up
+			horizdown = "┳", -- Horizontal split separator with down
+			vert = "┃", -- Vertical split separator
+			vertleft = "┫", -- Vertical split separator with left
+			vertright = "┣", -- Vertical split separator with right
+			verthoriz = "╋", -- Vertical and horizontal split separator
+		}
+
 		local builtin = require("statuscol.builtin")
 
 		-- Configure statuscol
 		require("statuscol").setup({
 			relculright = true,
-			thousands = false, -- or line number thousands separator string ("." / ",")
+			thousands = false,
 			ft_ignore = { "NvimTree" },
 			segments = {
 				-- Diagnostic signs
@@ -17,19 +41,24 @@ return {
 					sign = { namespace = { "diagnostic/signs" }, maxwidth = 2, auto = true },
 					click = "v:lua.ScSa",
 				},
-				-- Git signs
+				-- Fold segment
 				{
-					sign = { namespace = { "gitsigns" }, maxwidth = 2, auto = true },
-					click = "v:lua.ScSa",
+					text = { builtin.foldfunc },
+					condition = { true },
+					click = "v:lua.ScFa",
 				},
 				-- Absolute line number
 				{ text = { "%l " }, click = "v:lua.ScFa", auto = true, minwidth = 3 },
 				-- Relative line number
-				{ text = { "%=%r │ " }, click = "v:lua.ScSa", auto = true, minwidth = 2 },
+				{ text = { "%=%r " }, click = "v:lua.ScFa", auto = true, minwidth = 2 },
+
+				{
+					sign = { namespace = { "gitsigns" }, maxwidth = 2, auto = true },
+					click = "v:lua.ScSa",
+				},
 			},
-			clickmod = "c", -- modifier used for certain actions in the builtin clickhandlers:
-			-- "a" for Alt, "c" for Ctrl and "m" for Meta.
-			clickhandlers = { -- builtin click handlers, keys are pattern matched
+			clickmod = "c",
+			clickhandlers = {
 				Lnum = builtin.lnum_click,
 				FoldClose = builtin.foldclose_click,
 				FoldOpen = builtin.foldopen_click,
