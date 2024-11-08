@@ -17,7 +17,7 @@ return {
 			---Whether the cursor should stay at its position
 			sticky = true,
 			---Lines to be ignored while (un)comment
-			ignore = nil,
+			ignore = "^$",
 			-- for commenting tsx, jsx, svelte, html files
 			toggler = {
 				---Line-comment toggle keymap
