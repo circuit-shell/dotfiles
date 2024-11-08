@@ -12,6 +12,11 @@ alias rest="timer 10m && terminal-notifier -message 'Pomodoro'\
 
 alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
 alias c="code ."
+alias ~="cd ~"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias cwd="pwd && echo 'Copied to clipboard' && copydir"
 alias die="rm -rf"
 alias gacmsg="gaa && gcmsg"

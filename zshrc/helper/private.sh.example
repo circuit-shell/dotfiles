@@ -1,0 +1,26 @@
+# Create a copy of the file and rename it private.sh, it will be sourced by the
+# main zshrc-file, Usefull for private or particular configurations
+
+# flutter
+export PATH="$PATH:$HOME/development/flutter/bin"
+
+# postgreSQL
+export PATH="/usr/local/opt/postgresql@16/bin:$PATH"zshconfigzshconfig
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+
+# python
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+
+# java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+# golang
+export GOROOT=$(brew --prefix golang)/libexec
+export PATH=$PATH:$GOROOT/bin
+

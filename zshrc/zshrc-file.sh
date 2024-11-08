@@ -79,34 +79,6 @@ create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
 # #############################################################################
 
 
-# #############################################################################
-# SECTION: history settings
-# Current number of entries Zsh is configured to store in memory (HISTSIZE)
-# How many commands Zsh is configured to save to the history file (SAVEHIST)
-# echo "HISTSIZE: $HISTSIZE"
-# echo "SAVEHIST: $SAVEHIST"
-# Store 10,000 entries in the command history
-HIST_STAMPS="yyyy-mm-dd"
-HISTFILE=~/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
-# Check if the history file exists, if not, create it
-if [[ ! -f $HISTFILE ]]; then
-  touch $HISTFILE
-  chmod 600 $HISTFILE
-fi
-
-setopt share_history
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_verify
-
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
-
-# #############################################################################
-
-
 ## #############################################################################
 # SECTION: Detect OS
 case "$(uname -s)" in
@@ -429,42 +401,35 @@ if [ "$OS" = 'Mac' ]; then
   fi
   # ###########################################################################
 
-  
-  # ############################################################################
-  # SECTION: languages/tools configuration
-  # # flutter
-  # export PATH="$PATH:$HOME/development/flutter/bin"
-  #
-  # # postgreSQL
-  # export PATH="$(brew --prefix)/opt/postgresql@16/bin:$PATH"zshconfigzshconfig
-  # export PATH="$(brew --prefix)/opt/libpq/bin:$PATH"
-  #
-  # # python
-  # command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-  # export PYENV_ROOT="$HOME/.pyenv"
-  #
-  # # java
-  # export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-  # export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
-  #
-  # # volta
-  # export VOLTA_HOME="$HOME/.volta"
-  # export PATH="$VOLTA_HOME/bin:$PATH"
-  #
-  # # golang
-  # export GOROOT=$(brew --prefix golang)/libexec
-  # export PATH=$PATH:$GOROOT/bin
-  
-  # # java
-  # export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-  # export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
-  #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-  # export SDKMAN_DIR="$HOME/.sdkman"
-  # [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-  # ############################################################################
-  #
 
-  ############################################################################
+  # #############################################################################
+  # SECTION: history settings
+  # Current number of entries Zsh is configured to store in memory (HISTSIZE)
+  # How many commands Zsh is configured to save to the history file (SAVEHIST)
+  # echo "HISTSIZE: $HISTSIZE"
+  # echo "SAVEHIST: $SAVEHIST"
+  # Store 10,000 entries in the command history
+  HIST_STAMPS="yyyy-mm-dd"
+  HISTFILE=~/.zsh_history
+  HISTSIZE=100000
+  SAVEHIST=100000
+  # Check if the history file exists, if not, create it
+  if [[ ! -f $HISTFILE ]]; then
+    touch $HISTFILE
+    chmod 600 $HISTFILE
+  fi
+  
+  setopt share_history
+  setopt hist_expire_dups_first
+  setopt hist_ignore_dups
+  setopt hist_verify
+  
+  bindkey '^[[a' history-search-backward
+  bindkey '^[[b' history-search-forward
+  # #############################################################################
+
+  
+   ############################################################################
   # SECTION: private config
   #
   # source ~/github/dotfiles-latest/zshrc/helper/private.sh
