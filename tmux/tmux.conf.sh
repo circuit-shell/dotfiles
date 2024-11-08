@@ -1,6 +1,6 @@
 # Custom options
 set-window-option -g mode-keys vi 
-set-option -g status-position bottom
+set-option -g status-position top
 set-option -g focus-events on
 set -ag terminal-overrides ",xterm-256color:RGB"
 set -g default-terminal "screen-256color"
@@ -30,19 +30,11 @@ unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode when dragging wi
 set -g prefix C-a
 bind-key C-a send-prefix
 
-# Navigate tmux windows
-bind -r N select-window -n
-bind -r P select-window -p
-
 # Navigate windows using Ctrl+Tab and Ctrl+Shift+Tab
 bind -n C-Tab select-window -n
-bind -n S-C-Tab select-window -p
+bind -n BTab select-window -p
 
-# clear the screen
 bind-key b send-keys -R \; clear-history
-
-
-
 
 bind c new-window -c "#{pane_current_path}"
 bind _ split-window -h -c "#{pane_current_path}"
@@ -75,9 +67,9 @@ set -g @scroll-speed-num-lines-per-scroll 1
 set -g @plugin 'o0th/tmux-nova'
 set -g @nova-nerdfonts true
 set -g @nova-segment-mode "#{?client_prefix,💀 ,👻 }"
-set -g @nova-segment-mode-colors "#59c2ff #242B38"
+set -g @nova-segment-mode-colors "#59C2FF #242B38"
 set -g @nova-segment-whoami "#(pwd)@#h"
-set -g @nova-segment-whoami-colors "#59c2ff #242B38"
+set -g @nova-segment-whoami-colors "#59C2FF #242B38"
 set -g @nova-pane "#I#{?pane_in_mode,  #{pane_mode},}  #W"
 set -g @nova-rows 0
 set -g @nova-segments-0-left "mode"
