@@ -424,12 +424,11 @@ if [ "$OS" = 'Mac' ]; then
   setopt hist_ignore_dups
   setopt hist_verify
   
-  bindkey '^[[a' history-search-backward
-  bindkey '^[[b' history-search-forward
+  bindkey '^[[A' history-search-backward
+  bindkey '^[[B' history-search-forward
   # #############################################################################
 
-  
-   ############################################################################
+  # #############################################################################
   # SECTION: private config
   #
   # source ~/github/dotfiles-latest/zshrc/helper/private.sh
