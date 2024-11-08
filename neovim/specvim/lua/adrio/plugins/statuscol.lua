@@ -6,7 +6,7 @@ return {
 		vim.opt.number = true
 
 		-- Add folding settings
-		vim.opt.foldmethod = "syntax"
+		vim.opt.foldmethod = "indent"
 		vim.opt.foldlevel = 99 -- Start with all folds open
 		vim.opt.foldenable = true -- Enable folding
 		vim.opt.foldcolumn = "1" -- Show fold column
@@ -17,15 +17,6 @@ return {
 			foldclose = "", -- Symbol for open folds
 			foldopen = "", -- Symbol for closed folds
 			foldsep = " ", -- Symbol for fold separator
-			diff = "╱", -- Used for diff
-			eob = " ", -- Empty lines at the end of buffer
-			horiz = "━", -- Horizontal split separator
-			horizup = "┻", -- Horizontal split separator with up
-			horizdown = "┳", -- Horizontal split separator with down
-			vert = "┃", -- Vertical split separator
-			vertleft = "┫", -- Vertical split separator with left
-			vertright = "┣", -- Vertical split separator with right
-			verthoriz = "╋", -- Vertical and horizontal split separator
 		}
 
 		local builtin = require("statuscol.builtin")
@@ -36,11 +27,6 @@ return {
 			thousands = false,
 			ft_ignore = { "NvimTree" },
 			segments = {
-				-- Diagnostic signs
-				{
-					sign = { namespace = { "diagnostic/signs" }, maxwidth = 2, auto = true },
-					click = "v:lua.ScSa",
-				},
 				-- Fold segment
 				{
 					text = { builtin.foldfunc },
@@ -51,9 +37,14 @@ return {
 				{ text = { "%l " }, click = "v:lua.ScFa", auto = true, minwidth = 3 },
 				-- Relative line number
 				{ text = { "%=%r " }, click = "v:lua.ScFa", auto = true, minwidth = 2 },
-
+				-- Git signs
 				{
-					sign = { namespace = { "gitsigns" }, maxwidth = 2, auto = true },
+					sign = { namespace = { "gitsigns" }, maxwidth = 1, auto = true },
+					click = "v:lua.ScSa",
+				},
+				-- Diagnostic signs
+				{
+					sign = { namespace = { "diagnostic/signs" }, maxwidth = 1, auto = true },
 					click = "v:lua.ScSa",
 				},
 			},
