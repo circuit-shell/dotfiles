@@ -144,8 +144,6 @@ if [ "$OS" = 'Mac' ]; then
   # ############################################################################
 
 
-
-
   # ############################################################################
   # SECTION: nvim
   create_symlink ~/github/dotfiles-latest/neovim/kickstart.nvim/ ~/.config/kickstart.nvim
@@ -156,8 +154,7 @@ if [ "$OS" = 'Mac' ]; then
     export NVIM_APPNAME="nvim"
     $(brew --prefix)/bin/nvim
   }
-
-
+  export EDITOR="$(brew --prefix nvim)/bin/nvim"
   # Open man pages with nvim
   if command -v nvim &>/dev/null; then
     export MANPAGER='nvim +Man!'
