@@ -30,3 +30,5 @@ keymap.set("n", "<leader>bx", "<cmd>close<CR>", { desc = "Close current split" }
 keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save current file" })
 keymap.set("v", "<C-s>", "<ESC>:w<CR>a", { desc = "Save current file" })
 keymap.set("i", "<C-s>", "<ESC>:w<CR>a", { desc = "Save current file" })
+
+vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })

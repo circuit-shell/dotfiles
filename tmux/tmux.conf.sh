@@ -94,30 +94,23 @@ set -g @nova-nerdfonts-first 
 set -g @nova-nerdfonts-last 
 set -g @nova-nerdfonts-right 
 set -g @nova-nerdfonts-left  \u00A0
-set -g @nova-pane-active-border-style "#44475a"
-set -g @nova-pane-border-style "#282a36"
+set -g @nova-pane-active-border-style "default"
+set -g @nova-pane-border-style "#F5F5F5"
 set -g @nova-status-style-bg "default"
-set -g @nova-status-style-fg "#d8dee9"
-set -g @nova-status-style-active-bg "#BBE67F"
-set -g @nova-status-style-active-fg "#2e3540"
+set -g @nova-status-style-fg "#F5F5F5"
+set -g @nova-status-style-active-bg "#4A87AF"
+set -g @nova-status-style-active-fg "#F5F5F5"
 set -g @nova-status-style-double-bg "default"
 set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W #I"
-set -g @nova-segment-mode "#[fg=#282a36]#{?client_prefix,💀 ,👻 }"
-set -g @nova-segment-mode-colors "#89c0d0 default"
-set -g @nova-segment-whoami "#[fg=#282a36]󰖟  #(ipconfig getifaddr $(route -n get default | grep interface | cut -d: -f2 | tr -d ' '))"
-set -g @nova-segment-whoami-colors "#78a2c1 default"
+set -g @nova-segment-whoami "#[fg=#F5F5F5]󰖟  #(ipconfig getifaddr $(route -n get default | grep interface | cut -d: -f2 | tr -d ' '))"
+set -g @nova-segment-whoami-colors "#2787AF default"
 set -g @nova-rows 1
+set -g @nova-segment-mode "#[fg=#F5F5F5]#{?client_prefix,   , 󰳗  }"
+set -g @nova-segment-mode-colors "#2787AF default"
 set -g @nova-segments-0-left "mode"
-set -g @nova-segment-mode-colors "#BBE67F #242B38"
 set -g @nova-segments-0-right "whoami"
-set -g @nova-segment-whoami-colors "#BBE67F #242B38"
+set -g @nova-segment-whoami-colors "#2787AF default"
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
-
-
-
-
-
-
 
