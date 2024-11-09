@@ -20,7 +20,7 @@ keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decremen
 -- buffer navigation
 keymap.set("n", "<leader>bv", "<C-w>v", { desc = "Split buffer vertically" }) -- split window vertically
 keymap.set("n", "<leader>bc", "<C-w>s", { desc = "Split buffer horizontally" }) -- split window horizontally
-keymap.set("n", "<leader>bx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+-- keymap.set("n", "<leader>bx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 -- keymap.set("n", "<leader>]", "<cmd>bn<CR>", { desc = "Navigate to next buffer" })
 -- keymap.set("n", "<leader>[", "<cmd>bp<CR>", { desc = "Navigate to previous buffer" })
 

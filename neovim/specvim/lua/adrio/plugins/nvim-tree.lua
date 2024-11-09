@@ -12,6 +12,10 @@ return {
 			view = {
 				width = 35,
 				relativenumber = true,
+				-- float = {
+				-- 	enable = false,
+				-- 	show_header = false,
+				-- },
 			},
 			-- change folder arrow icons
 			renderer = {
@@ -38,7 +42,7 @@ return {
 				},
 			},
 			filters = {
-				-- custom = { ".DS_Store", ".git" },
+				custom = { ".DS_Store" },
 			},
 			git = {
 				ignore = false,
@@ -48,10 +52,9 @@ return {
 		-- set keymaps
 		local keymap = vim.keymap -- for conciseness
 
-		keymap.set("n", "<leader>ee", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" }) -- toggle file explorer
 		keymap.set(
 			"n",
-			"<leader>ef",
+			"<leader>ee",
 			"<cmd>NvimTreeFindFileToggle<CR>",
 			{ desc = "Toggle file explorer on current file" }
 		) -- toggle file explorer on current file

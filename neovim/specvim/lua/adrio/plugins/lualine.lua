@@ -43,22 +43,6 @@ return {
 			seperator = "",
 			highlight = true,
 		})
-		local create_symbol_bar = function()
-			if not nvim_navic.is_available() then
-				return ""
-			end
-
-			local data = nvim_navic.get_data()
-			if not data then
-				return ""
-			end
-
-			local details = {}
-			for _, item in ipairs(data) do
-				table.insert(details, item.icon .. item.name:gsub("%s*->%s*", ""))
-			end
-			return table.concat(details, " > ")
-		end
 		local get_buf_filetype = function()
 			return vim.api.nvim_buf_get_option(0, "filetype")
 		end
@@ -72,15 +56,16 @@ return {
 		local branch_min_width = 10
 		lualine.setup({
 			options = {
-				theme = "ayu_mirage",
+				theme = "ayu_dark",
 				disabled_filetypes = {
 					winbar = excluded_filetypes_array,
 				},
 				globalstatus = true,
+				section_separators = { left = "", right = "" },
 			},
 			sections = {
 				lualine_a = {
-					"mode",
+					{ "mode", separator = { left = "" }, right_padding = 2 },
 					{
 						"branch",
 						fmt = function(output)
@@ -146,12 +131,11 @@ return {
 							return { fg = color }
 						end,
 					},
-					"encoding",
-					"progress",
 				},
 				lualine_z = {
-					"location",
+					{ "location", separator = { left = "", right = "" }, right_padding = 2 },
 					{
+						separator = { left = "" },
 						function()
 							local starts = vim.fn.line("v")
 							local ends = vim.fn.line(".")
@@ -162,48 +146,9 @@ return {
 							return vim.fn.mode():find("[Vv]") ~= nil
 						end,
 					},
+					{ "encoding", separator = { right = "" }, right_padding = 2 },
 				},
 			},
-			-- inactive_sections = {
-			-- 	lualine_a = {},
-			-- 	lualine_b = {},
-			-- 	lualine_c = {
-			-- 		{
-			-- 			"filetype",
-			-- 			icon_only = true,
-			-- 		},
-			-- 		{
-			-- 			"filename",
-			-- 			path = 1,
-			-- 			fmt = format_name,
-			-- 		},
-			-- 	},
-			-- 	lualine_x = {},
-			-- 	lualine_y = {},
-			-- 	lualine_z = {},
-			-- },
-			-- winbar = {
-			-- 	lualine_a = {
-			-- 		{ "filetype", icon_only = true, icon = { align = "left" } },
-			-- 		{ "filename", file_status = false, path = 0 },
-			-- 	},
-			-- 	lualine_b = {},
-			-- 	lualine_c = { create_symbol_bar },
-			-- 	lualine_x = {},
-			-- 	lualine_y = {},
-			-- 	lualine_z = {},
-			-- },
-			-- inactive_winbar = {
-			-- 	lualine_a = {
-			-- 		{ "filetype", icon_only = true, icon = { align = "left" } },
-			-- 		{ "filename", file_status = false, path = 0 },
-			-- 	},
-			-- 	lualine_b = {},
-			-- 	lualine_c = {},
-			-- 	lualine_x = {},
-			-- 	lualine_y = {},
-			-- 	lualine_z = {},
-			-- },
 		})
 	end,
 }
