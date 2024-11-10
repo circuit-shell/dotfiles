@@ -97,11 +97,11 @@ set -g @nova-nerdfonts-left  \u00A0
 set -g @nova-pane-active-border-style "default"
 set -g @nova-pane-border-style "#0E1419"
 set -g @nova-status-style-bg "default"
-set -g @nova-status-style-fg "#0E1419"
+set -g @nova-status-style-fg "#F0F0F0"
 set -g @nova-status-style-active-bg "#36A3D9"
 set -g @nova-status-style-active-fg "#0E1419"
 set -g @nova-status-style-double-bg "default"
-set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W #I"
+set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W  #I"
 set -g @nova-segment-whoami "#[fg=#0E1419]󰖟  #(ipconfig getifaddr $(route -n get default | grep interface | cut -d: -f2 | tr -d ' '))"
 set -g @nova-segment-whoami-colors "#36A3D9 default"
 set -g @nova-rows 1

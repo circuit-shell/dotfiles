@@ -5,7 +5,7 @@ return {
 		vim.cmd("highlight default link gitblame SpecialComment")
 		require("gitblame").setup({
 			enabled = true,
-			display_virtual_text = 0,
+			display_virtual_text = true,
 			message_template = "<author> at <date> on <sha>",
 			message_when_not_committed = "Not commited.",
 			date_format = "%a %b %d %Y",
