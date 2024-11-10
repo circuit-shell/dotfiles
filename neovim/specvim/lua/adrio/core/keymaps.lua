@@ -27,8 +27,25 @@ keymap.set("n", "<leader>bc", "<C-w>s", { desc = "Split buffer horizontally" }) 
 -- close current buffer
 
 -- Saving files
-keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save current file" })
-keymap.set("v", "<C-s>", "<ESC>:w<CR>a", { desc = "Save current file" })
-keymap.set("i", "<C-s>", "<ESC>:w<CR>a", { desc = "Save current file" })
+-- keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save current file" })
+keymap.set(
+	"n",
+	"<C-s>",
+	"<ESC>:w<CR><ESC>",
+	{ noremap = true, silent = true, desc = "Save file and switch back to insert mode" }
+)
+keymap.set(
+	"i",
+	"<C-s>",
+	"<ESC>:w<CR><ESC>",
+	{ noremap = true, silent = true, desc = "Save file and switch back to insert mode" }
+)
 
+keymap.set(
+	"v",
+	"<C-s>",
+	"<ESC>:w<CR><ESC>",
+	{ noremap = true, silent = true, desc = "Save file and switch back to insert mode" }
+)
+-- keymap.set("i", "<C-s>", "<ESC>:w<CR>
 vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })

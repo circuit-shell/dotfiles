@@ -1,24 +1,11 @@
 return {
 	{
-		"refractalize/oil-git-status.nvim",
+		"SPECTR3R/oil-git-status.nvim",
 		dependencies = {
 			"stevearc/oil.nvim",
 		},
 		config = function()
-			require("oil-git-status").setup({
-				-- Change these symbols if you want
-				symbols = {
-					added = "A",
-					deleted = "D",
-					modified = "M",
-					renamed = "R",
-					untracked = "?",
-					ignored = "I",
-					unstaged = "U",
-					staged = "S",
-					conflict = "C",
-				},
-			})
+			require("oil-git-status").setup({})
 		end,
 	},
 	{
@@ -26,7 +13,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("oil").setup({
-				-- default_file_explorer = "nvim-tree",
+				default_file_explorer = true,
 				columns = { "icon" },
 				cleanup_delay_ms = 2000,
 				lsp_file_methods = {
@@ -45,7 +32,37 @@ return {
 				win_options = {
 					signcolumn = "yes:1",
 				},
-
+				keymaps = {
+					["g?"] = "actions.show_help",
+					["<CR>"] = "actions.select",
+					["<C-sasdf>"] = {
+						"actions.select",
+						opts = { vertical = true },
+						desc = "Open the entry in a vertical split",
+					},
+					["<C-h>"] = {
+						"actions.select",
+						opts = { horizontal = true },
+						desc = "Open the entry in a horizontal split",
+					},
+					["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
+					["<C-p>"] = "actions.preview",
+					["<C-c>"] = "actions.close",
+					["<C-l>"] = "actions.refresh",
+					["-"] = "actions.parent",
+					["_"] = "actions.open_cwd",
+					["`"] = "actions.cd",
+					["~"] = {
+						"actions.cd",
+						opts = { scope = "tab" },
+						desc = ":tcd to the current oil directory",
+						mode = "n",
+					},
+					["gs"] = "actions.change_sort",
+					["gx"] = "actions.open_external",
+					["g."] = "actions.toggle_hidden",
+					["g\\"] = "actions.toggle_trash",
+				},
 				float = {
 					-- Padding around the floating window
 					padding = 2,
@@ -67,76 +84,10 @@ return {
 				},
 			})
 
-			-- vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory in current window" })
 			vim.keymap.set("n", "-", require("oil").toggle_float)
+			-- add a keymap to toggle the file explorer
+			-- vim.keymap.nnoremap("<leader>o", require("oil").toggle)
+			-- add a keymap to toggle
 		end,
 	},
-
-	-- {
-	-- 	"nvim-tree/nvim-tree.lua",
-	-- 	dependencies = "nvim-tree/nvim-web-devicons",
-	-- 	config = function()
-	-- 		local nvimtree = require("nvim-tree")
-
-	-- 		-- recommended settings from nvim-tree documentation
-	-- 		vim.g.loaded_netrw = 1
-	-- 		vim.g.loaded_netrwPlugin = 1
-
-	-- 		nvimtree.setup({
-	-- 			view = {
-	-- 				width = 35,
-	-- 				relativenumber = true,
-	-- 				-- float = {
-	-- 				-- 	enable = false,
-	-- 				-- 	show_header = false,
-	-- 				-- },
-	-- 			},
-	-- 			-- change folder arrow icons
-	-- 			renderer = {
-	-- 				indent_markers = {
-	-- 					enable = true,
-	-- 				},
-	-- 				icons = {
-	-- 					glyphs = {
-	-- 						folder = {
-	-- 							arrow_closed = "", -- arrow when folder is closed
-	-- 							arrow_open = "", -- arrow when folder is open
-	-- 						},
-	-- 					},
-	-- 				},
-	-- 			},
-	-- 			-- disable window_picker for
-	-- 			-- explorer to work well with
-	-- 			-- window splits
-	-- 			actions = {
-	-- 				open_file = {
-	-- 					window_picker = {
-	-- 						enable = false,
-	-- 					},
-	-- 				},
-	-- 			},
-	-- 			filters = {
-	-- 				custom = { ".DS_Store" },
-	-- 			},
-	-- 			git = {
-	-- 				ignore = false,
-	-- 			},
-	-- 		})
-
-	-- 		-- set keymaps
-	-- 		local keymap = vim.keymap -- for conciseness
-
-	-- 		keymap.set(
-	-- 			"n",
-	-- 			"<leader>ee",
-	-- 			"<cmd>NvimTreeFindFileToggle<CR>",
-	-- 			{ desc = "Toggle file explorer on current file" }
-	-- 		) -- toggle file explorer on current file
-	-- 		keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse file explorer" }) -- collapse file explorer
-	-- 		keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" }) -- refresh file explorer
-
-	-- 		-- Open NvimTree automatically on startup
-	-- 		-- vim.cmd([[autocmd VimEnter * NvimTreeOpen]])
-	-- 	end,
-	-- },
 }

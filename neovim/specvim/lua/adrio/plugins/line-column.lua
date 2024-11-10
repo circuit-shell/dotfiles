@@ -26,7 +26,8 @@ return {
 			require("statuscol").setup({
 				relculright = true,
 				thousands = false,
-				ft_ignore = { "NvimTree", "packer", "dashboard", "oil" },
+				ft_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
+				bt_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
 
 				segments = {
 					-- Fold segment
