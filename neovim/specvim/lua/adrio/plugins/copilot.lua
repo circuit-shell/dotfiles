@@ -6,7 +6,7 @@ return {
 		vim.g.copilot_no_tab_map = true
 
 		-- Set up Ctrl+h mapping to accept the suggestion
-		vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+		vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true, noremap = true })
 
 		-- Optional: Disable Copilot for certain filetypes
 		-- vim.g.copilot_filetypes = { xml = false, markdown = false }

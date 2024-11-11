@@ -40,7 +40,7 @@ return {
 		vim.opt.sidescrolloff = 36 -- Set a large value
 		--- Put your configuration here
 		vim.g.neominimap = {
-			-- auto_enable = true,
+			auto_enable = false,
 			-- layout = "float",
 			-- layout = "la",
 		}

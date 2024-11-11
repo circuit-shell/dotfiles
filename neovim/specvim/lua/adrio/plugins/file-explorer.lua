@@ -30,6 +30,7 @@ return {
 					show_hidden = true,
 				},
 				win_options = {
+					wrap = true,
 					signcolumn = "yes:1",
 				},
 				keymaps = {
