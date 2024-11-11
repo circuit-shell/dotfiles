@@ -17,35 +17,19 @@ keymap.set("n", "x", '"_x')
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
+-- set leader ba to select all buffer content
+keymap.set("n", "<leader>ba", "ggVG", { desc = "Select all buffer content" })
 -- buffer navigation
 keymap.set("n", "<leader>bv", "<C-w>v", { desc = "Split buffer vertically" }) -- split window vertically
 keymap.set("n", "<leader>bc", "<C-w>s", { desc = "Split buffer horizontally" }) -- split window horizontally
--- keymap.set("n", "<leader>bx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
--- keymap.set("n", "<leader>]", "<cmd>bn<CR>", { desc = "Navigate to next buffer" })
--- keymap.set("n", "<leader>[", "<cmd>bp<CR>", { desc = "Navigate to previous buffer" })
 
--- close current buffer
-
--- Saving files
+-- for normal mode save C-s
 -- keymap.set("n", "<C-s>", ":w<CR>", { desc = "Save current file" })
 keymap.set(
-	"n",
+	{ "i", "v", "n" },
 	"<C-s>",
-	"<ESC>:w<CR><ESC>",
-	{ noremap = true, silent = true, desc = "Save file and switch back to insert mode" }
-)
-keymap.set(
-	"i",
-	"<C-s>",
-	"<ESC>:w<CR><ESC>",
-	{ noremap = true, silent = true, desc = "Save file and switch back to insert mode" }
+	"<ESC>:w<CR><ESC><cmd>SessionSave<CR>",
+	{ noremap = true, silent = true, desc = "Save file and switch back to normal mode" }
 )
 
-keymap.set(
-	"v",
-	"<C-s>",
-	"<ESC>:w<CR><ESC>",
-	{ noremap = true, silent = true, desc = "Save file and switch back to insert mode" }
-)
--- keymap.set("i", "<C-s>", "<ESC>:w<CR>
-vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })
+-- vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })

@@ -62,7 +62,6 @@ return {
 				},
 				globalstatus = true,
 				section_separators = { left = "", right = "" },
-				-- // make background transparent
 			},
 			sections = {
 				lualine_a = {

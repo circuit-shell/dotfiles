@@ -6,18 +6,10 @@ return {
 			vim.opt.relativenumber = true
 			vim.opt.number = true
 
-			-- -- Add folding settings
-			-- vim.opt.foldmethod = "indent"
-			-- vim.opt.foldlevel = 99 -- Start with all folds open
-			-- vim.opt.foldenable = true -- Enable folding
-			-- vim.opt.foldcolumn = "1" -- Show fold column
-
-			-- Set fillchars
 			vim.opt.fillchars = {
-				fold = "·", -- Show dots for folded lines
 				foldclose = "", -- Symbol for open folds
 				foldopen = "", -- Symbol for closed folds
-				foldsep = " ", -- Symbol for fold separator
+				foldsep = "│", -- Symbol for fold separator
 			}
 
 			local builtin = require("statuscol.builtin")

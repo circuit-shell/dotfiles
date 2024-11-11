@@ -15,7 +15,7 @@ return {
 		-- setting the keybinding for LazyGit with 'keys' is recommended in
 		-- order to load the plugin when the command is run for the first time
 		keys = {
-			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "Open lazy git" },
+			{ "<leader>gl", "<cmd>LazyGit<cr>", desc = "Open lazy git" },
 		},
 	},
 	{
@@ -45,33 +45,19 @@ return {
 				end
 
 				-- Navigation
-				map("n", "]h", gs.next_hunk, "Next Hunk")
-				map("n", "[h", gs.prev_hunk, "Prev Hunk")
+				map("n", "<leader>gn", gs.next_hunk, "Next Hunk")
+				map("n", "<leader>gp", gs.prev_hunk, "Prev Hunk")
 
 				-- Actions
-				map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
-				map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
-				map("v", "<leader>hs", function()
-					gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end, "Stage hunk")
-				map("v", "<leader>hr", function()
-					gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end, "Reset hunk")
-
-				map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
-				map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-
-				map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
-
-				map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
-
-				map("n", "<leader>hb", function()
-					gs.blame_line({ full = true })
-				end, "Blame line")
-				map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
-
-				map("n", "<leader>hd", gs.diffthis, "Diff this")
-				map("n", "<leader>hD", function()
+				map("n", "<leader>gs", gs.stage_hunk, "Stage hunk")
+				map("n", "<leader>gr", gs.reset_hunk, "Reset hunk")
+				map("n", "<leader>gS", gs.stage_buffer, "Stage buffer")
+				map("n", "<leader>gR", gs.reset_buffer, "Reset buffer")
+				map("n", "<leader>gu", gs.undo_stage_hunk, "Undo stage hunk")
+				map("n", "<leader>gv", gs.preview_hunk, "View hunk")
+				map("n", "<leader>gB", gs.toggle_current_line_blame, "Toggle line blame")
+				map("n", "<leader>gd", gs.diffthis, "Diff this")
+				map("n", "<leader>gD", function()
 					gs.diffthis("~")
 				end, "Diff this ~")
 
@@ -86,9 +72,9 @@ return {
 		config = function()
 			vim.cmd("highlight default link gitblame SpecialComment")
 			require("gitblame").setup({
-				enabled = true,
+				enabled = false,
 				display_virtual_text = true,
-				message_template = "<author> at <date> on <sha>",
+				message_template = " <author> at <date> on <sha>",
 				message_when_not_committed = "Not commited.",
 				date_format = "%a %b %d %Y",
 				delay = 150,

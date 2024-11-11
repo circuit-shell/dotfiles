@@ -24,7 +24,7 @@ return {
 		-- { "<leader>ntc", "<cmd>Neominimap tabOff<cr>", desc = "Disable minimap for current tab" },
 		--
 		-- -- Buffer-Specific Minimap Controls
-		{ "<leader>mn", "<cmd>Neominimap bufToggle<cr>", desc = "Toggle minimap for current buffer" },
+		{ "<leader>nm", "<cmd>Neominimap bufToggle<cr>", desc = "Toggle minimap for current buffer" },
 		-- { "<leader>nbr", "<cmd>Neominimap bufRefresh<cr>", desc = "Refresh minimap for current buffer" },
 		-- { "<leader>nbo", "<cmd>Neominimap bufOn<cr>", desc = "Enable minimap for current buffer" },
 		-- { "<leader>nbc", "<cmd>Neominimap bufOff<cr>", desc = "Disable minimap for current buffer" },

@@ -33,9 +33,10 @@ return {
 					signcolumn = "yes:1",
 				},
 				keymaps = {
-					["g?"] = "actions.show_help",
+					["<leader>?"] = "actions.show_help",
 					["<CR>"] = "actions.select",
-					["<C-sasdf>"] = {
+					["<2-LeftMouse>"] = "actions.select",
+					["<C-v>"] = {
 						"actions.select",
 						opts = { vertical = true },
 						desc = "Open the entry in a vertical split",
@@ -44,6 +45,16 @@ return {
 						"actions.select",
 						opts = { horizontal = true },
 						desc = "Open the entry in a horizontal split",
+					},
+					-- ["<C-s>"] = {
+					-- 	desc = "Save the file",
+					-- 	action = function()
+					-- 		require("oil").save()
+					-- 	end,
+					-- },
+					["q"] = {
+						desc = "Quit Oil",
+						"actions.close",
 					},
 					["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
 					["<C-p>"] = "actions.preview",
@@ -63,6 +74,7 @@ return {
 					["g."] = "actions.toggle_hidden",
 					["g\\"] = "actions.toggle_trash",
 				},
+				use_default_keymaps = false,
 				float = {
 					-- Padding around the floating window
 					padding = 2,
