@@ -2,26 +2,35 @@ return {
 	{
 		"luukvbaal/statuscol.nvim",
 		config = function()
-			-- Enable relative and absolute line numbers
-			vim.opt.relativenumber = true
-			vim.opt.number = true
-
-			vim.opt.fillchars = {
-				foldclose = "", -- Symbol for open folds
-				foldopen = "", -- Symbol for closed folds
-				foldsep = "│", -- Symbol for fold separator
-			}
-
 			local builtin = require("statuscol.builtin")
-
 			-- Configure statuscol
 			require("statuscol").setup({
 				relculright = true,
 				thousands = false,
 				ft_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
 				bt_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
-
 				segments = {
+					-- Git signs
+					{
+						sign = {
+							namespace = {
+								"gitsigns",
+							},
+							maxwidth = 1,
+							auto = true,
+						},
+						click = "v:lua.ScSa",
+					},
+					-- Enable breakpoints
+					{
+						sign = {
+							name = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected" },
+							maxwidth = 1,
+							auto = true,
+						},
+						click = "v:lua.ScSa",
+					},
+
 					-- Fold segment
 					{
 						text = { builtin.foldfunc },
@@ -29,19 +38,15 @@ return {
 						click = "v:lua.ScFa",
 					},
 					-- Absolute line number
-					{ text = { "%l " }, click = "v:lua.ScFa", auto = true, minwidth = 3 },
+					{ text = { "%l " }, auto = true, minwidth = 1 },
 					-- Relative line number
-					{ text = { "%=%r " }, click = "v:lua.ScFa", auto = true, minwidth = 2 },
-					-- Git signs
-					{
-						sign = { namespace = { "gitsigns" }, maxwidth = 1, auto = true },
-						click = "v:lua.ScSa",
-					},
+					{ text = { "%=%r " }, auto = true, minwidth = 2 },
 					-- Diagnostic signs
 					{
-						sign = { namespace = { "diagnostic/signs" }, maxwidth = 1, auto = true },
+						sign = { namespace = { "diagnostic/signs" }, width = 2, auto = true, align = "right" },
 						click = "v:lua.ScSa",
 					},
+					{ text = { "│ " }, auto = true, minwidth = 2 },
 				},
 				clickmod = "c",
 				clickhandlers = {
@@ -65,11 +70,6 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 		config = function()
-			vim.o.foldcolumn = "1"
-			vim.o.foldlevel = 99
-			vim.o.foldlevelstart = 99
-			vim.o.foldenable = true
-
 			vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 			vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 			vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
@@ -120,4 +120,11 @@ return {
 			})
 		end,
 	},
+
+	-- dependencies = {
+	-- 	-- dap deps
+	-- 	"mfussenegger/nvim-dap",
+	-- 	"theHamsta/nvim-dap-virtual-text",
+	-- 	"rcarriga/nvim-dap-ui",
+	-- },
 }

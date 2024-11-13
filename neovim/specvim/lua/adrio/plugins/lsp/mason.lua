@@ -41,6 +41,7 @@ return {
 				"angularls",
 				"jsonls",
 				"gopls",
+				-- "delve",
 			},
 		})
 
@@ -52,6 +53,7 @@ return {
 				"black", -- python formatter
 				"pylint", -- python linter
 				"eslint_d", -- js linter
+				"delve", -- go debugger
 				"golangci-lint", -- go linter
 			},
 		})
