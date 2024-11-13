@@ -37,6 +37,9 @@ return {
 			excluded_filetypes_table[value] = 1
 		end
 
+		vim.cmd("highlight! link StatusLine Normal")
+		vim.cmd("highlight! link StatusLineNC Normal")
+
 		local lualine = require("lualine")
 		local nvim_navic = require("nvim-navic")
 		nvim_navic.setup({
@@ -54,6 +57,11 @@ return {
 		end
 		local branch_max_width = 40
 		local branch_min_width = 10
+
+		local custom_gruvbox = require("lualine.themes.ayu_dark")
+		-- Change the background of lualine_c section for normal mode
+		custom_gruvbox.normal.c.bg = "#112233"
+
 		lualine.setup({
 			options = {
 				theme = "ayu_dark",
