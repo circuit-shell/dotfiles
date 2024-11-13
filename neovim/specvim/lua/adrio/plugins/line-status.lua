@@ -97,22 +97,34 @@ return {
 				},
 				lualine_b = {
 					{
+						"diagnostics",
+						update_in_insert = true,
+						sources = { "nvim_lsp" },
+					},
+					{
 						"filename",
 						file_status = false,
 						path = 1,
 						fmt = format_name,
 					},
-					{
-						"diagnostics",
-						update_in_insert = true,
-					},
 				},
 				lualine_c = {},
 				lualine_x = {
-					"import",
+					{
+						function()
+							local start_line = vim.fn.line("v")
+							local end_line = vim.fn.line(".")
+							local count = math.abs(end_line - start_line) + 1
+							return "V(" .. tostring(count) .. ")"
+						end,
+						cond = function()
+							return vim.fn.mode():match("[Vv]") ~= nil
+						end,
+					},
 				},
-				-- Combine x and y
 				lualine_y = {
+					-- number of lines in V mode
+					-- lsp info
 					{
 						function()
 							local lsps = vim.lsp.get_clients({ bufnr = vim.fn.bufnr() })
@@ -142,18 +154,6 @@ return {
 				},
 				lualine_z = {
 					{ "location", separator = { left = "", right = "" }, right_padding = 2 },
-					{
-						separator = { left = "" },
-						function()
-							local starts = vim.fn.line("v")
-							local ends = vim.fn.line(".")
-							local count = starts <= ends and ends - starts + 1 or starts - ends + 1
-							return count .. "V"
-						end,
-						cond = function()
-							return vim.fn.mode():find("[Vv]") ~= nil
-						end,
-					},
 					{ "encoding", separator = { right = "" }, right_padding = 2 },
 				},
 			},
