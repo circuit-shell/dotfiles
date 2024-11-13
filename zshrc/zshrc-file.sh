@@ -351,9 +351,9 @@ if [ "$OS" = 'Mac' ]; then
   # ###########################################################################
   # Initialize kubernetes kubectl completion if kubectl is installed
   # https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/#enable-shell-autocompletion
-  if command -v kubectl &>/dev/null; then
-    source <(kubectl completion zsh)
-  fi
+  # if command -v kubectl &>/dev/null; then
+  #   source <(kubectl completion zsh)
+  # fi
   # ###########################################################################
 
 
