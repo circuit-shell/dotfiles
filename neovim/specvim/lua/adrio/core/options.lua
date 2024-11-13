@@ -3,6 +3,9 @@ local opt = vim.opt -- for conciseness
 -- Netrw settings
 vim.cmd("let g:netrw_liststyle = 3")
 
+-- Telescope settings
+vim.g.telescope_changed_files_base_branch = "main" -- can also use `:Telescope changed_files choose_base_branch`
+
 -- Indentation settings
 opt.expandtab = true -- expand tabs to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
