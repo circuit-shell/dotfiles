@@ -154,6 +154,13 @@ return {
 					},
 				},
 			},
+
+			pyright = {
+				-- capabilities = ...,
+				capabilities = capabilities,
+				on_attach = default_on_attach,
+			},
+
 			emmet_ls = {
 				filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 			},

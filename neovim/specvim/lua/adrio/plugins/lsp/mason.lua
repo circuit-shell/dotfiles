@@ -47,14 +47,21 @@ return {
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"prettier", -- prettier formatter
+				-- javascript
+				"prettier", -- formatter
+				"eslint_d", -- linter
+
+				-- lua
 				"stylua", -- lua formatter
-				"isort", -- python formatter
-				"black", -- python formatter
-				"pylint", -- python linter
-				"eslint_d", -- js linter
-				"delve", -- go debugger
-				"golangci-lint", -- go linter
+
+				-- python formatter and linter
+				"ruff", -- linter
+				"black", -- formatter
+				"isort", -- import formatter
+
+				-- go
+				"delve", -- debugger
+				"golangci-lint", -- linter
 			},
 		})
 	end,
