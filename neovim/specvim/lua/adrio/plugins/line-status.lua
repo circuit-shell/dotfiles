@@ -108,8 +108,21 @@ return {
 						fmt = format_name,
 					},
 				},
-				lualine_c = {},
+				lualine_c = {
+					-- macros status
+					{
+						function()
+							local reg = vim.fn.reg_recording()
+							if reg ~= "" then
+								return " REC @" .. reg
+							end
+							return ""
+						end,
+						color = { fg = "#86ABDC", gui = "bold" },
+					},
+				},
 				lualine_x = {
+					-- number of lines in V mode
 					{
 						function()
 							local start_line = vim.fn.line("v")
@@ -123,7 +136,6 @@ return {
 					},
 				},
 				lualine_y = {
-					-- number of lines in V mode
 					-- lsp info
 					{
 						function()

@@ -1,59 +1,39 @@
--- return {
--- 	"kylechui/nvim-surround",
--- 	event = { "BufReadPre", "BufNewFile" },
--- 	version = "*", -- Use for stability; omit to use `main` branch for the latest features
--- 	config = true,
--- }
--- -- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/mini-surround.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/mini-surround.lua
---
--- I'm just using lazyvim.org defaults here
--- This plugin comes installed by default, but it was removed one time, so just
--- leaving it here because I want to always have it installed
---
--- https://github.com/echasnovski/mini.surround
-
 return {
-	{
-		"echasnovski/mini.surround",
-		recommended = true,
-		keys = function(_, keys)
-			local opts = {
-				mappings = {
-					add = "gsa", -- Add surrounding in Normal and Visual modes
-					delete = "gsd", -- Delete surrounding
-					find = "gsf", -- Find surrounding (to the right)
-					find_left = "gsF", -- Find surrounding (to the left)
-					highlight = "gsh", -- Highlight surrounding
-					replace = "gsr", -- Replace surrounding
-					update_n_lines = "gsn", -- Update `n_lines`
-				},
-			}
+	"echasnovski/mini.surround",
+	version = "*",
+	config = function()
+		require("mini.surround").setup({
+			-- Add custom surroundings to be used on top of builtin ones
+			custom_surroundings = nil,
 
-			local mappings = {
-				{ opts.mappings.add, desc = "Add Surrounding", mode = { "n", "v" } },
-				{ opts.mappings.delete, desc = "Delete Surrounding" },
-				{ opts.mappings.find, desc = "Find Right Surrounding" },
-				{ opts.mappings.find_left, desc = "Find Left Surrounding" },
-				{ opts.mappings.highlight, desc = "Highlight Surrounding" },
-				{ opts.mappings.replace, desc = "Replace Surrounding" },
-				{ opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-			}
-			mappings = vim.tbl_filter(function(m)
-				return m[1] and #m[1] > 0
-			end, mappings)
-			return vim.list_extend(mappings, keys)
-		end,
-		opts = {
+			-- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
+			highlight_duration = 500,
+
+			-- Module mappings. Use `''` (empty string) to disable one.
 			mappings = {
-				add = "gsa", -- Add surrounding in Normal and Visual modes
-				delete = "gsd", -- Delete surrounding
-				find = "gsf", -- Find surrounding (to the right)
-				find_left = "gsF", -- Find surrounding (to the left)
-				highlight = "gsh", -- Highlight surrounding
-				replace = "gsr", -- Replace surrounding
-				update_n_lines = "gsn", -- Update `n_lines`
+				add = "sa", -- Add surrounding in Normal and Visual modes
+				delete = "sd", -- Delete surrounding
+				find = "sf", -- Find surrounding (to the right)
+				find_left = "sF", -- Find surrounding (to the left)
+				highlight = "sh", -- Highlight surrounding
+				replace = "sr", -- Replace surrounding
+				update_n_lines = "sn", -- Update `n_lines`
+
+				suffix_last = "l", -- Suffix to search with "prev" method
+				suffix_next = "n", -- Suffix to search with "next" method
 			},
-		},
-	},
+
+			-- Number of lines within which surrounding is searched
+			n_lines = 20,
+
+			-- Whether to respect selection type
+			respect_selection_type = false,
+
+			-- How to search for surrounding
+			search_method = "cover",
+
+			-- Whether to disable showing non-error feedback
+			silent = false,
+		})
+	end,
 }
