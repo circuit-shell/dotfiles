@@ -291,13 +291,13 @@ if [ "$OS" = 'Mac' ]; then
 
   # ###########################################################################
   # SECTION: Bat -> Cat with wings
-  if command -v bat &>/dev/null; then
-    # --style=plain - removes line numbers and git modifications
-    # --paging=never - doesnt pipe it through less
-    alias cat='bat --paging=never --style=plain'
-    alias catt='bat'
-    alias cata='bat --show-all --paging=never'
-  fi
+  # if command -v bat &>/dev/null; then
+  #   # --style=plain - removes line numbers and git modifications
+  #   # --paging=never - doesnt pipe it through less
+  #   alias cat='bat --paging=never --style=plain'
+  #   alias catt='bat'
+  #   alias cata='bat --show-all --paging=never'
+  # fi
   # ###########################################################################
 
 

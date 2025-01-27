@@ -31,7 +31,8 @@ unbind -T copy-mode-vi MouseDragEnd1Pane
 
 # Window Navigation
 bind -n C-Tab select-window -n
-bind -n BTab select-window -p
+bind -n C-BTab select-window -p
+# unbind BTab 
 
 # Pane Management
 bind c new-window -c "#{pane_current_path}"

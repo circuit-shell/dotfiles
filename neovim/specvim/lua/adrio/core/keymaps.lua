@@ -33,3 +33,11 @@ keymap.set(
 )
 
 -- vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })
+
+-- Indent with Tab (normal mode and visual mode)
+keymap.set("n", "<Tab>", ">>", { noremap = true, desc = "Indent line" })
+keymap.set("n", "<S-Tab>", "<<", { noremap = true, desc = "Unindent line" })
+
+-- Indent with Tab in visual mode and maintain selection
+keymap.set("v", "<Tab>", ">gv", { noremap = true, desc = "Indent and reselect" })
+keymap.set("v", "<S-Tab>", "<gv", { noremap = true, desc = "Unindent and reselect" })
