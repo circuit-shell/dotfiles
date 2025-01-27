@@ -84,12 +84,15 @@ create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
 case "$(uname -s)" in
 Darwin)
   OS='Mac'
+  echo "Mac OS detected"
   ;;
 Linux)
   OS='Linux'
+  echo "Linux OS detected"
   ;;
 *)
   OS='Other'
+  echo "Other OS detected"
   ;;
 esac
 # #############################################################################
@@ -98,22 +101,13 @@ esac
 # #############################################################################
 # Section: MacOS-specific configurations
 if [ "$OS" = 'Mac' ]; then
-
-
-  # #############################################################################
-  # SECTION: MacOS-specific configurations
-  # Stuff that I want to load, but not to have visible in my public dotfiles
-  # if [ -f "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local" ]; then
-    # source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/github/.zshrc_local"
+ 
+  # ############################################################################
+  # SECTION: Homebrew
+  # Add Homebrew to PATH using eval "$(/opt/homebrew/bin/brew shellenv)"
+  # if command -v brew &>/dev/null; then
+  #   eval "$(/opt/homebrew/bin/brew shellenv)"
   # fi
-  # Configuration below is local only, not in icloud
-  # if [ -f "$HOME/.zshrc_local/env-setup.sh" ]; then
-    # source "$HOME/.zshrc_local/env-setup.sh"
-  # fi
-  # Set JAVA_HOME to the OpenJDK installation managed by Homebrew
-  export JAVA_HOME="/opt/homebrew/opt/openjdk"
-  # Add JAVA_HOME/bin to the beginning of the PATH
-  export PATH="$JAVA_HOME/bin:$PATH"
 
   # ###########################################################################
   # SECTION: install xterm info
@@ -398,33 +392,6 @@ if [ "$OS" = 'Mac' ]; then
   fi
   # ###########################################################################
 
-
-  # #############################################################################
-  # SECTION: history settings
-  # Current number of entries Zsh is configured to store in memory (HISTSIZE)
-  # How many commands Zsh is configured to save to the history file (SAVEHIST)
-  # echo "HISTSIZE: $HISTSIZE"
-  # echo "SAVEHIST: $SAVEHIST"
-  # Store 10,000 entries in the command history
-  HIST_STAMPS="yyyy-mm-dd"
-  HISTFILE=~/.zsh_history
-  HISTSIZE=100000
-  SAVEHIST=100000
-  # Check if the history file exists, if not, create it
-  if [[ ! -f $HISTFILE ]]; then
-    touch $HISTFILE
-    chmod 600 $HISTFILE
-  fi
-  
-  setopt share_history
-  setopt hist_expire_dups_first
-  setopt hist_ignore_dups
-  setopt hist_verify
-  
-  bindkey '^[[A' history-search-backward
-  bindkey '^[[B' history-search-forward
-  # #############################################################################
-
   # #############################################################################
   # SECTION: private config
   #
@@ -435,4 +402,30 @@ if [ "$OS" = 'Mac' ]; then
 
 fi
 # ############################################################################
+
+# #############################################################################
+# SECTION: history settings
+# Current number of entries Zsh is configured to store in memory (HISTSIZE)
+# How many commands Zsh is configured to save to the history file (SAVEHIST)
+# echo "HISTSIZE: $HISTSIZE"
+# echo "SAVEHIST: $SAVEHIST"
+# Store 10,000 entries in the command history
+HIST_STAMPS="yyyy-mm-dd"
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+# Check if the history file exists, if not, create it
+if [[ ! -f $HISTFILE ]]; then
+  touch $HISTFILE
+  chmod 600 $HISTFILE
+fi
+
+setopt share_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
+
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+# #############################################################################
 

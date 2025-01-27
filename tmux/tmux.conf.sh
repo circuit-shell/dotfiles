@@ -58,8 +58,8 @@ bind-key -T copy-mode-vi 'y' send -X copy-selection
 # Mouse Bindings
 bind-key -T root MouseDown1StatusLeft confirm-before -p "Kill Kitty? (y/n)" "run-shell 'pkill kitty'"
 bind-key -T root DoubleClick1StatusRight run-shell 'pkill kitty'
-bind-key -T root MouseDown2Status kill-pane
-bind-key -T root MouseDown2StatusDefault new-window
+bind-key -T root MouseDown2Status kill-window
+bind-key -T root MouseDown2StatusDefault new-window -a -c "#{pane_current_path}"
 
 # =============================
 # Broadcast Commands
