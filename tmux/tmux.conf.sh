@@ -55,6 +55,12 @@ bind b send-keys -R \; clear-history
 bind-key -T copy-mode-vi 'v' send -X begin-selection
 bind-key -T copy-mode-vi 'y' send -X copy-selection
 
+# Mouse Bindings
+bind-key -T root MouseDown1StatusLeft confirm-before -p "Kill Kitty? (y/n)" "run-shell 'pkill kitty'"
+bind-key -T root DoubleClick1StatusRight run-shell 'pkill kitty'
+bind-key -T root MouseDown2Status kill-pane
+bind-key -T root MouseDown2StatusDefault new-window
+
 # =============================
 # Broadcast Commands
 # =============================
@@ -98,16 +104,17 @@ set -g @nova-nerdfonts-left  \u00A0
 set -g @nova-pane-active-border-style "default"
 set -g @nova-pane-border-style "#0E1419"
 set -g @nova-status-style-bg "default"
-set -g @nova-status-style-fg "#F0F0F0"
+set -g @nova-status-style-fg "#F3F0F0"
 set -g @nova-status-style-active-bg "#36A3D9"
 set -g @nova-status-style-active-fg "#0E1419"
 set -g @nova-status-style-double-bg "default"
 set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W  #I"
-set -g @nova-segment-whoami "#[fg=#0E1419]󰖟  #(ipconfig getifaddr $(route -n get default | grep interface | cut -d: -f2 | tr -d ' '))"
+set -g @nova-segment-whoami "#[fg=#0E1419]  󰄛"
 set -g @nova-segment-whoami-colors "#36A3D9 default"
 set -g @nova-rows 1
-set -g @nova-segment-mode "#[fg=#0E1419]#{?client_prefix,   , 󰳗  }"
-set -g @nova-segment-mode-colors "#36A3D9 default"
+set -g @nova-segment-mode "#[fg=#0E1419]#{?client_prefix, 󰳗  , 󰳗  }"
+
+set -g @nova-segment-mode-colors "#36A3D9 default" 
 set -g @nova-segments-0-left "mode"
 set -g @nova-segments-0-right "whoami"
 set -g @nova-segment-whoami-colors "#36A3D9 default"
