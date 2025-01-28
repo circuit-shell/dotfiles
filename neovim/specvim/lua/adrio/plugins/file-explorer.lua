@@ -1,12 +1,10 @@
 return {
 	{
-		"SPECTR3R/oil-git-status.nvim",
+		"refractalize/oil-git-status.nvim",
 		dependencies = {
 			"stevearc/oil.nvim",
 		},
-		config = function()
-			require("oil-git-status").setup({})
-		end,
+		config = true,
 	},
 	{
 		"stevearc/oil.nvim",
