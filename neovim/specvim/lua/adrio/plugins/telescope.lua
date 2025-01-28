@@ -46,6 +46,7 @@ return {
 						mirror = true,
 						height = { padding = 0.1 },
 						preview_height = 0.7,
+						scroll_speed = 0.1,
 					},
 				},
 				sorting_strategy = "ascending",
@@ -70,6 +71,24 @@ return {
 							["<C-k>"] = actions.move_selection_previous,
 							["<C-j>"] = actions.move_selection_next,
 							["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+							["<ScrollWheelUp>"] = function(bufnr)
+								require("telescope.state").get_status(bufnr).picker.layout_config.scroll_speed = 1
+								return require("telescope.actions").preview_scrolling_up(bufnr)
+							end,
+							["<ScrollWheelDown>"] = function(bufnr)
+								require("telescope.state").get_status(bufnr).picker.layout_config.scroll_speed = 1
+								return require("telescope.actions").preview_scrolling_down(bufnr)
+							end,
+						},
+						n = {
+							["<ScrollWheelUp>"] = function(bufnr)
+								require("telescope.state").get_status(bufnr).picker.layout_config.scroll_speed = 1
+								return require("telescope.actions").preview_scrolling_up(bufnr)
+							end,
+							["<ScrollWheelDown>"] = function(bufnr)
+								require("telescope.state").get_status(bufnr).picker.layout_config.scroll_speed = 1
+								return require("telescope.actions").preview_scrolling_down(bufnr)
+							end,
 						},
 					},
 					border = true,
