@@ -26,6 +26,7 @@ return {
 				case_insensitive = false,
 				view_options = {
 					show_hidden = true,
+					show_ignored = true,
 				},
 				win_options = {
 					wrap = true,
@@ -45,12 +46,6 @@ return {
 						opts = { horizontal = true },
 						desc = "Open the entry in a horizontal split",
 					},
-					-- ["<C-s>"] = {
-					-- 	desc = "Save the file",
-					-- 	action = function()
-					-- 		require("oil").save()
-					-- 	end,
-					-- },
 					["q"] = {
 						desc = "Quit Oil",
 						"actions.close",
