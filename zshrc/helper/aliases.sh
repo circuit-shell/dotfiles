@@ -60,8 +60,10 @@ alias kgpa='kubectl get pods --all-namespaces'
 alias kgpo='kubectl get pods -o wide'
 
 # golang aliases
-alias coverage='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
+alias gocov='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
 
-
-
+kp() {
+  local port="${1:-4200}"
+  kill -9 $(lsof -t -i:$port)
+}
 
