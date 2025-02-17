@@ -22,14 +22,14 @@ return {
 				go = { "goimports-reviser", "golines", "gofmt" },
 				python = { "isort", "black" },
 			},
-			format_on_save = {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			},
+			-- format_on_save = {
+			-- 	lsp_fallback = true,
+			-- 	async = false,
+			-- 	timeout_ms = 1000,
+			-- },
 		})
 
-		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+		vim.keymap.set("n", "<leader>lf", function()
 			conform.format({
 				lsp_fallback = true,
 				async = false,
