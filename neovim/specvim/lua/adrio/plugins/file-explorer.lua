@@ -27,6 +27,9 @@ return {
 				view_options = {
 					show_hidden = true,
 					show_ignored = true,
+					is_always_hidden = function(name, bufnr)
+						return vim.fn.match(name, [[\.DS_Store$]]) ~= -1
+					end,
 				},
 				win_options = {
 					wrap = true,

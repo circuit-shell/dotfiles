@@ -45,7 +45,7 @@ return {
 						width = { padding = 0.1 },
 						mirror = true,
 						height = { padding = 0 },
-						preview_height = 0.6,
+						preview_height = 0.75,
 						scroll_speed = 0.1,
 					},
 				},
@@ -65,7 +65,8 @@ return {
 					todo = theme_config,
 				},
 				defaults = {
-					path_display = { shorten = { len = 3, exclude = { 1, -1 } } },
+					-- path_display = { shorten = { len = 3, exclude = { 1, -1 } } },
+					path_display = { "truncate" },
 					mappings = {
 						i = {
 							["<C-k>"] = actions.move_selection_previous,
