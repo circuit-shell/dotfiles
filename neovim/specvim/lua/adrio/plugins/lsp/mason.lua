@@ -38,7 +38,7 @@ return {
 				"prismals",
 				"pyright",
 				"astro",
-				"angularls",
+				"angularls@18.2.0",
 				"jsonls",
 				"gopls",
 				-- "delve",
