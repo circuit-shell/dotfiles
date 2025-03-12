@@ -65,7 +65,7 @@ return {
 				"golangci-lint", -- linter
 
         -- yaml
-        "yamlfix", -- formatter
+        "yamlfmt", -- formatter
 			},
 		})
 	end,

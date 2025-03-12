@@ -14,7 +14,7 @@ return {
 				css = { "prettier" },
 				html = { "prettier" },
 				json = { "prettier" },
-				yaml = { "yamlfix" },
+				yaml = { "yamlfmt" },
 				markdown = { "prettier" },
 				graphql = { "prettier" },
 				liquid = { "prettier" },
