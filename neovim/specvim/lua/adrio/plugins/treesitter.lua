@@ -52,6 +52,7 @@ return {
 				"php",
 				"bash",
         "angular",
+        "http",
 			},
 			incremental_selection = {
 				enable = true,
