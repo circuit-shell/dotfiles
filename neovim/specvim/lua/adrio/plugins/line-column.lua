@@ -68,6 +68,7 @@ return {
 		dependencies = {
 			"kevinhwang91/promise-async",
 			"neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
 		},
 		config = function()
 			vim.keymap.set("n", "zR", require("ufo").openAllFolds)
