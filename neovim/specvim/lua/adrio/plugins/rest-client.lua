@@ -143,8 +143,7 @@ return {
 					require("kulala").replay()
 				end,
 				ft = { "http", "rest" }, -- sets mapping for specified file types
-			},
-			["Find request"] = false, -- set to false to disable
+			}
 		},
 		kulala_keymaps = true,
 	},
