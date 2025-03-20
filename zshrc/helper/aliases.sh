@@ -47,6 +47,7 @@ alias ll='ls -lh'
 alias lla='ls -alh'
 alias python='python3'
 alias history='history -30'
+alias icat="kitten icat"
 
 # kubernetes, if you need help, just run 'kgp --help' for example
 alias k='kubectl'
