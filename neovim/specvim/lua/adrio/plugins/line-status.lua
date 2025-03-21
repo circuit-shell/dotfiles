@@ -58,17 +58,19 @@ return {
 		local branch_max_width = 40
 		local branch_min_width = 10
 
-		local custom_gruvbox = require("lualine.themes.ayu_dark")
-		-- Change the background of lualine_c section for normal mode
-		custom_gruvbox.normal.c.bg = "#112233"
-
+		local custom_ayu_dark = require("lualine.themes.ayu_dark")
+		custom_ayu_dark.normal.c.bg = "NONE"
+		-- custom_ayu_dark.normal.a.bg = "NONE"
+		-- custom_ayu_dark.normal.a.bg = "NONE"
+    
 		lualine.setup({
 			options = {
-				theme = "ayu_dark",
+				theme = custom_ayu_dark,
 				disabled_filetypes = {
 					winbar = excluded_filetypes_array,
 				},
 				globalstatus = true,
+				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
 			},
 			sections = {

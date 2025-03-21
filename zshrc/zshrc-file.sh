@@ -1,18 +1,18 @@
-# #############################################################################
+# #####################################################################################
 # SECTION: Auto pull dotfiles
-# #############################################################################
+# #####################################################################################
  echo "Pulling latest changes, please wait..."
  (cd ~/github/dotfiles-latest && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
-# #############################################################################
+# #####################################################################################
 
-#  # ############################################################################
+# #####################################################################################
 # SECTION: Misc config
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
 export LANG=en_US.UTF-8
-# ############################################################################
+# #####################################################################################
 
-# ###########################################################################
+# #####################################################################################
 # SECTION: SSH key configuration
 # # Add SSH keys to the agent as these keys won't persist after the computer is restarted
 # # Check and add the personal GitHub key
@@ -23,9 +23,9 @@ export LANG=en_US.UTF-8
 # if [ -f ~/.ssh/id_rsa ]; then
 #   ssh-add ~/.ssh/id_rsa >/dev/null 2>&1
 # fi
-# ###########################################################################
+# #####################################################################################
 
-# #############################################################################
+# #####################################################################################
 # SECTION: Autocompletion settings
 # These have to be on the top, I remember I had issues this if not
 # https://github.com/zsh-users/zsh-autosuggestions
@@ -86,7 +86,7 @@ create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
 # create_symlink ~/github/dotfiles-latest/sketchybar/neutonfoo ~/.config/sketchybar
 # #############################################################################
 
-## #############################################################################
+# #############################################################################
 # SECTION: Detect OS
 case "$(uname -s)" in
 Darwin)
@@ -261,7 +261,6 @@ if [ "$OS" = 'Mac' ]; then
   # ###########################################################################
   # SECTION: zsh-syntax-highlighting
   # https://github.com/zsh-users/zsh-syntax-highlighting
-  # Right arrow to accept suggestion
   if [ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   fi
@@ -270,7 +269,7 @@ if [ "$OS" = 'Mac' ]; then
   # ###########################################################################
   # SECTION: z cd replacement
   # Useful commands
-  # z foo<SPACE><TAB>  # show interactive completions
+  # z foo<SPACE><TAB> show interactive completions
   if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
     # alias cd='z'
@@ -279,20 +278,11 @@ if [ "$OS" = 'Mac' ]; then
   fi
   # ###########################################################################
 
-  # ###########################################################################
-  # SECTION: MySQL
-  # Add MySQL client to PATH, if it exists
-  if [ -d "/opt/homebrew/opt/mysql-client/bin" ]; then
-    export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
-  fi
-  # ###########################################################################
- 
   # ############################################################################
   # SECTION: powerlevel10k
   source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
   [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
   # ############################################################################
-
 
   # #############################################################################
   # SECTION: private config
