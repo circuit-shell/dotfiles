@@ -26,9 +26,9 @@ return {
 			end, {})
 
 			-- Add leader+uc mapping to toggle Copilot
-			vim.api.nvim_set_keymap("n", "<leader>uc", ":ToggleCopilot<CR>", { silent = true, noremap = true })
+			vim.api.nvim_set_keymap("n", "<leader>tC", ":ToggleCopilot<CR>", { silent = true, noremap = true })
 			-- Add leader leader+lc mapping to toggle Copilot chat
-			vim.api.nvim_set_keymap("n", "<leader>lc", ":CopilotChatToggle<CR>", { silent = true, noremap = true })
+			vim.api.nvim_set_keymap("n", "<leader>tc", ":CopilotChatToggle<CR>", { silent = true, noremap = true })
 		end,
 	},
 	{
@@ -39,19 +39,18 @@ return {
 		},
 		build = "make tiktoken",
 		opts = {
+			selection = function(source)
+				local select = require("CopilotChat.select")
+				return select.visual(source) or ""
+			end,
 			model = "gpt-4o-2024-11-20",
+			context = nil,
 			mappings = {
-
-        reset = {
-          insert = "",
-          normal = "C-R"
-
-        }
-
-        ,
-
-
-      },
+				reset = {
+					insert = "",
+					normal = "R",
+				},
+			},
 		},
 	},
 }
