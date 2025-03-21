@@ -6,7 +6,7 @@ return {
 			-- Disable default Tab mapping
 			vim.g.copilot_no_tab_map = true
 
-			-- Set up Ctrl+h mapping to accept the suggestion
+			-- Set up Ctrl+l mapping to accept the suggestion
 			vim.api.nvim_set_keymap(
 				"i",
 				"<C-l>",
@@ -27,6 +27,8 @@ return {
 
 			-- Add leader+uc mapping to toggle Copilot
 			vim.api.nvim_set_keymap("n", "<leader>uc", ":ToggleCopilot<CR>", { silent = true, noremap = true })
+			-- Add leader leader+lc mapping to toggle Copilot chat
+			vim.api.nvim_set_keymap("n", "<leader>lc", ":CopilotChatToggle<CR>", { silent = true, noremap = true })
 		end,
 	},
 	{
@@ -37,7 +39,19 @@ return {
 		},
 		build = "make tiktoken",
 		opts = {
-			-- See Configuration section for options
+			model = "gpt-4o-2024-11-20",
+			mappings = {
+
+        reset = {
+          insert = "",
+          normal = "C-R"
+
+        }
+
+        ,
+
+
+      },
 		},
 	},
 }
