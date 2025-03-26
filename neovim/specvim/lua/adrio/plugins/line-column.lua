@@ -3,7 +3,6 @@ return {
 		"luukvbaal/statuscol.nvim",
 		config = function()
 			local builtin = require("statuscol.builtin")
-			-- Configure statuscol
 			require("statuscol").setup({
 				relculright = true,
 				thousands = false,
@@ -15,18 +14,14 @@ return {
 						sign = {
 							name = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected" },
 							width = 1,
-							auto = false,
 						},
 						click = "v:lua.ScSa",
 					},
-
 					-- Diagnostic signs
 					{
 						sign = {
 							namespace = { "diagnostic/signs" },
-							minwidth = 2,
-							width = 2,
-							-- auto = true,
+							width = 1,
 							align = "right",
 						},
 						click = "v:lua.ScSa",
@@ -38,7 +33,6 @@ return {
 								"gitsigns",
 							},
 							maxwidth = 1,
-							auto = true,
 						},
 						click = "v:lua.ScSa",
 					},

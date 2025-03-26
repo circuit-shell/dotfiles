@@ -94,7 +94,7 @@ return {
 				},
 				globalstatus = true,
 				section_separators = { left = "", right = "" },
-				component_separators = { right = " ", left = " " },
+				component_separators = { right = "│", left = "│" },
 			},
 			sections = {
 				lualine_a = {
