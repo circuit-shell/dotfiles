@@ -20,6 +20,8 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
+		signcolumn = true,
+		numhl = false,
 		event = { "BufReadPre", "BufNewFile" },
 		signs = {
 			add = { text = "▎" },
@@ -68,18 +70,18 @@ return {
 	},
 	{
 		"f-person/git-blame.nvim",
-		event = "BufRead",
+		event = "VeryLazy",
 		config = function()
 			vim.cmd("highlight default link gitblame SpecialComment")
 			require("gitblame").setup({
-				enabled = false,
+				enabled = true,
 				display_virtual_text = true,
-				message_template = " <author> at <date> on <sha>",
-				message_when_not_committed = "Not commited.",
+				message_template = "    <author> at <date> on <sha>    ",
+				message_when_not_committed = "    Not commited    ",
 				date_format = "%a %b %d %Y",
 				delay = 150,
 			})
-			vim.keymap.set("n", "<leader>gb", ":GitBlameToggle<CR>", {})
+			vim.keymap.set("n", "<leader>tb", ":GitBlameToggle<CR>", {})
 		end,
 	},
 }

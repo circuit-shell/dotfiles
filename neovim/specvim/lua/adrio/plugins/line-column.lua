@@ -10,6 +10,27 @@ return {
 				ft_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
 				bt_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
 				segments = {
+					-- Enable breakpoints
+					{
+						sign = {
+							name = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected" },
+							width = 1,
+							auto = false,
+						},
+						click = "v:lua.ScSa",
+					},
+
+					-- Diagnostic signs
+					{
+						sign = {
+							namespace = { "diagnostic/signs" },
+							minwidth = 2,
+							width = 2,
+							-- auto = true,
+							align = "right",
+						},
+						click = "v:lua.ScSa",
+					},
 					-- Git signs
 					{
 						sign = {
@@ -21,16 +42,6 @@ return {
 						},
 						click = "v:lua.ScSa",
 					},
-					-- Enable breakpoints
-					{
-						sign = {
-							name = { "DapBreakpoint", "DapBreakpointCondition", "DapBreakpointRejected" },
-							maxwidth = 1,
-							auto = true,
-						},
-						click = "v:lua.ScSa",
-					},
-
 					-- Fold segment
 					{
 						text = { builtin.foldfunc },
@@ -38,14 +49,10 @@ return {
 						click = "v:lua.ScFa",
 					},
 					-- Absolute line number
-					{ text = { "%l " }, auto = true, minwidth = 1 },
+					{ text = { "%l " }, auto = false, minwidth = 3 },
 					-- Relative line number
-					{ text = { "%=%r " }, auto = true, minwidth = 2 },
-					-- Diagnostic signs
-					{
-						sign = { namespace = { "diagnostic/signs" }, width = 2, auto = true, align = "right" },
-						click = "v:lua.ScSa",
-					},
+					{ text = { "%=%r " }, auto = false, minwidth = 3 },
+
 					{ text = { "│ " }, auto = true, minwidth = 2 },
 				},
 				clickmod = "c",
@@ -68,7 +75,7 @@ return {
 		dependencies = {
 			"kevinhwang91/promise-async",
 			"neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
+			"nvim-treesitter/nvim-treesitter",
 		},
 		config = function()
 			vim.keymap.set("n", "zR", require("ufo").openAllFolds)

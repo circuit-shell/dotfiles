@@ -1,4 +1,7 @@
+-- local colors = require("dracula").colors()
+
 return {
+
 	"akinsho/bufferline.nvim",
 	event = "VeryLazy",
 	keys = {
@@ -26,7 +29,10 @@ return {
 				local icon = level:match("error") and "" or ""
 				return " " .. icon .. count
 			end,
-			always_show_bufferline = false,
+			colorscheme = "catppuccin", -- Replace "dracula" with your colorscheme name
+
+			always_show_bufferline = true,
+
 			offsets = {
 				{
 					filetype = "NvimTree",

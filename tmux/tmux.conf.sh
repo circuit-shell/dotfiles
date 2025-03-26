@@ -105,19 +105,19 @@ set -g @nova-pane-active-border-style "default"
 set -g @nova-pane-border-style "#0E1419"
 set -g @nova-status-style-bg "default"
 set -g @nova-status-style-fg "#F3F0F0"
-set -g @nova-status-style-active-bg "#36A3D9"
+set -g @nova-status-style-active-bg "#FF79C6"
 set -g @nova-status-style-active-fg "#0E1419"
 set -g @nova-status-style-double-bg "default"
 set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W  #I"
 set -g @nova-segment-whoami "#[fg=#0E1419]  󰄛"
-set -g @nova-segment-whoami-colors "#36A3D9 default"
+set -g @nova-segment-whoami-colors "#FF79C6 default"
 set -g @nova-rows 1
 set -g @nova-segment-mode "#[fg=#0E1419]#{?client_prefix, 󰳗  , 󰳗  }"
 
-set -g @nova-segment-mode-colors "#36A3D9 default" 
+set -g @nova-segment-mode-colors "#FF79C6 default" 
 set -g @nova-segments-0-left "mode"
 set -g @nova-segments-0-right "whoami"
-set -g @nova-segment-whoami-colors "#36A3D9 default"
+set -g @nova-segment-whoami-colors "#FF79C6 default"
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'

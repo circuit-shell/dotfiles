@@ -1,7 +1,7 @@
 return {
 	{
 		"github/copilot.vim",
-		lazy = false,
+		lazy = true,
 		config = function()
 			-- Disable default Tab mapping
 			vim.g.copilot_no_tab_map = true
@@ -33,6 +33,7 @@ return {
 	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
+		lazy = true,
 		dependencies = {
 			{ "github/copilot.vim" },
 			{ "nvim-lua/plenary.nvim", branch = "master" },

@@ -1,7 +1,35 @@
+local colors = {
+	blue = "#FFB86C",
+	cyan = "#8BE9FD",
+	black = "#191A21",
+	white = "#F8F8F2",
+	red = "#FF5555",
+	violet = "#FF79C6",
+	grey = "#414458",
+}
+
+local line_theme = {
+	normal = {
+		a = { fg = colors.black, bg = colors.violet },
+		b = { fg = colors.white, bg = colors.grey },
+		c = { fg = colors.white },
+	},
+
+	insert = { a = { fg = colors.black, bg = colors.blue } },
+	visual = { a = { fg = colors.black, bg = colors.cyan } },
+	replace = { a = { fg = colors.black, bg = colors.red } },
+
+	inactive = {
+		a = { fg = colors.white, bg = colors.black },
+		b = { fg = colors.white, bg = colors.black },
+		c = { fg = colors.white },
+	},
+}
+
 return {
-	"nvim-lualine/lualine.nvim", -- Neovim status line
+	"nvim-lualine/lualine.nvim",
 	dependencies = {
-		"kyazdani42/nvim-web-devicons",
+		"nvim-tree/nvim-web-devicons",
 		"SmiteshP/nvim-navic",
 		"onsails/lspkind-nvim",
 	},
@@ -58,20 +86,15 @@ return {
 		local branch_max_width = 40
 		local branch_min_width = 10
 
-		local custom_ayu_dark = require("lualine.themes.ayu_dark")
-		custom_ayu_dark.normal.c.bg = "NONE"
-		-- custom_ayu_dark.normal.a.bg = "NONE"
-		-- custom_ayu_dark.normal.a.bg = "NONE"
-    
 		lualine.setup({
 			options = {
-				theme = custom_ayu_dark,
+				theme = line_theme,
 				disabled_filetypes = {
 					winbar = excluded_filetypes_array,
 				},
 				globalstatus = true,
-				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
+				component_separators = { right = " ", left = " " },
 			},
 			sections = {
 				lualine_a = {
@@ -79,6 +102,7 @@ return {
 					{
 						"branch",
 						fmt = function(output)
+							local n = ""
 							local win_width = vim.o.columns
 							local max = branch_max_width
 							if win_width * 0.25 < max then
@@ -165,10 +189,10 @@ return {
 							return { fg = color }
 						end,
 					},
+					{ "encoding", right_padding = 2 },
 				},
 				lualine_z = {
 					{ "location", separator = { left = "", right = "" }, right_padding = 2 },
-					{ "encoding", separator = { right = "" }, right_padding = 2 },
 				},
 			},
 		})
