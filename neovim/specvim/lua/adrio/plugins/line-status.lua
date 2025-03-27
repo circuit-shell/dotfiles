@@ -1,21 +1,21 @@
 local colors = {
-	blue = "#FFB86C",
-	cyan = "#8BE9FD",
+	peach = "#FFB86C",
+	cyan = "#33AFFF",
 	black = "#191A21",
 	white = "#F8F8F2",
 	red = "#FF5555",
-	violet = "#FF79C6",
-	grey = "#414458",
+	flamingo = "#FF79C6",
+	grey = "#21222C",
 }
 
 local line_theme = {
 	normal = {
-		a = { fg = colors.black, bg = colors.violet },
+		a = { fg = colors.black, bg = colors.flamingo },
 		b = { fg = colors.white, bg = colors.grey },
 		c = { fg = colors.white },
 	},
 
-	insert = { a = { fg = colors.black, bg = colors.blue } },
+	insert = { a = { fg = colors.black, bg = colors.peach } },
 	visual = { a = { fg = colors.black, bg = colors.cyan } },
 	replace = { a = { fg = colors.black, bg = colors.red } },
 
@@ -59,6 +59,7 @@ return {
 			"ImportManager",
 			"aerial",
 			"oil",
+      "alpha"
 		}
 		local excluded_filetypes_table = {}
 		for _, value in ipairs(excluded_filetypes_array) do
@@ -123,13 +124,9 @@ return {
 				},
 				lualine_b = {
 					{
-						"diagnostics",
-						update_in_insert = true,
-						sources = { "nvim_lsp" },
-					},
-					{
 						"filename",
-						file_status = false,
+						file_status = true,
+						color = { fg = "#33afff" },
 						path = 1,
 						fmt = format_name,
 					},
@@ -144,7 +141,7 @@ return {
 							end
 							return ""
 						end,
-						color = { fg = "#86ABDC", gui = "bold" },
+						color = { fg = "#F8F8F2", gui = "bold" },
 					},
 				},
 				lualine_x = {
@@ -161,7 +158,13 @@ return {
 						end,
 					},
 				},
-				lualine_y = {
+				lualine_y = { -- diagnostics
+					{
+						"diagnostics",
+						update_in_insert = true,
+						sources = { "nvim_lsp" },
+					},
+
 					-- lsp info
 					{
 						function()
@@ -182,14 +185,8 @@ return {
 						on_click = function()
 							vim.api.nvim_command("LspInfo")
 						end,
-						color = function()
-							local _, color = require("nvim-web-devicons").get_icon_cterm_color_by_filetype(
-								vim.api.nvim_buf_get_option(0, "filetype")
-							)
-							return { fg = color }
-						end,
+						color = { fg = "#33afff" },
 					},
-					{ "encoding", right_padding = 2 },
 				},
 				lualine_z = {
 					{ "location", separator = { left = "", right = "" }, right_padding = 2 },

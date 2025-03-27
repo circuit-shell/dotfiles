@@ -1,16 +1,17 @@
 -- how can change the theme of telescope in my settings file:
 return {
 	{ "axkirillov/telescope-changed-files" },
+	{ "debugloop/telescope-undo.nvim" },
 	{
 		"stevearc/dressing.nvim",
 		event = "VeryLazy",
 	},
-	{
-		"exosyphon/telescope-color-picker.nvim",
-		config = function()
-			vim.keymap.set("n", "<leader>uC", "<cmd>Telescope colors<CR>", { desc = "Telescope Color Picker" })
-		end,
-	},
+	-- {
+	-- 	"exosyphon/telescope-color-picker.nvim",
+	-- 	config = function()
+	-- 		vim.keymap.set("n", "<leader>uC", "<cmd>Telescope colors<CR>", { desc = "Telescope Color Picker" })
+	-- 	end,
+	-- },
 	{
 		"aaronhallaert/advanced-git-search.nvim",
 		dependencies = {
@@ -18,10 +19,6 @@ return {
 			"tpope/vim-fugitive",
 			"tpope/vim-rhubarb",
 		},
-	},
-
-	{
-		"debugloop/telescope-undo.nvim",
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -42,7 +39,7 @@ return {
 				layout_config = {
 					vertical = {
 						prompt_position = "top",
-						width = { padding = 0.1 },
+						width = { padding = 0.05 },
 						mirror = true,
 						height = { padding = 0 },
 						preview_height = 0.75,
@@ -65,8 +62,7 @@ return {
 					todo = theme_config,
 				},
 				defaults = {
-					-- path_display = { shorten = { len = 3, exclude = { 1, -1 } } },
-					path_display = { "truncate" },
+					path_display = { "absolute" },
 					mappings = {
 						i = {
 							["<C-k>"] = actions.move_selection_previous,
@@ -116,7 +112,7 @@ return {
 			require("telescope").load_extension("undo")
 			require("telescope").load_extension("changed_files")
 			require("telescope").load_extension("advanced_git_search")
-			require("telescope").load_extension("colors")
+			-- require("telescope").load_extension("colors")
 			require("telescope").load_extension("noice")
 			require("telescope").load_extension("harpoon")
 		end,
