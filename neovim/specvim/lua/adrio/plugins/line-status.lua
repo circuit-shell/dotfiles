@@ -103,7 +103,6 @@ return {
 					{
 						"branch",
 						fmt = function(output)
-							local n = ""
 							local win_width = vim.o.columns
 							local max = branch_max_width
 							if win_width * 0.25 < max then
