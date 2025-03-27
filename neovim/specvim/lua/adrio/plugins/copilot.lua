@@ -2,7 +2,7 @@ local lazy_copilot = true
 return {
 	{
 		"github/copilot.vim",
-		lazy = lazy_copilot ,
+		lazy = lazy_copilot,
 		config = function()
 			-- Disable default Tab mapping, this helps to be able to use suggestion in copilot chat
 			vim.g.copilot_no_tab_map = true
