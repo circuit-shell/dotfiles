@@ -1,9 +1,10 @@
+local lazy_copilot = true
 return {
 	{
 		"github/copilot.vim",
-		lazy = true,
+		lazy = lazy_copilot ,
 		config = function()
-			-- Disable default Tab mapping
+			-- Disable default Tab mapping, this helps to be able to use suggestion in copilot chat
 			vim.g.copilot_no_tab_map = true
 
 			-- Set up Ctrl+l mapping to accept the suggestion
@@ -33,7 +34,7 @@ return {
 	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		lazy = true,
+		lazy = lazy_copilot,
 		dependencies = {
 			{ "github/copilot.vim" },
 			{ "nvim-lua/plenary.nvim", branch = "master" },

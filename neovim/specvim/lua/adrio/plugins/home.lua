@@ -29,7 +29,7 @@ return {
 			"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
 		}
 
-		vim.api.nvim_command("highlight DashboardHeader guifg=#36A3D9")
+		vim.api.nvim_command("highlight DashboardHeader guifg=#FF79C6")
 
 		-- Set header with custom highlight
 		dashboard.section.header.val = header
@@ -42,9 +42,7 @@ return {
 			dashboard.button("SPC wr", "󰁯  > Restore Session For Current Directory", "<cmd>SessionRestore<CR>"),
 			dashboard.button("SPC ff", "󰱼  > Find File", "<cmd>Telescope find_files<CR>"),
 			dashboard.button("SPC fs", "  > Find Word", "<cmd>Telescope live_grep<CR>"),
-			-- dashboard.button("-", "  > Toggle File Explorer", "<CMD>Oil<CR>"),
 			dashboard.button("e", "  > New File", "<cmd>ene<CR>"),
-			-- dashboard.button("q", "  > Quit", "<cmd>qa<CR>"),
 		}
 
 		-- Send config to alpha
