@@ -66,6 +66,7 @@ return {
 			custom_highlights = {
 				["@punctuation.delimiter"] = { fg = "#F8F8F2" },
 				["Delimiter"] = { fg = "#F8F8F2" },
+				["DiagnosticUnnecessary"] = { fg = "#FF5555" },
 			},
 			integrations = {
 				cmp = true,

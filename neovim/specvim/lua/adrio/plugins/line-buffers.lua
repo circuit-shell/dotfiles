@@ -1,7 +1,4 @@
--- local colors = require("dracula").colors()
-
 return {
-
 	"akinsho/bufferline.nvim",
 	event = "VeryLazy",
 	keys = {
