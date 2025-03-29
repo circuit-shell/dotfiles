@@ -26,7 +26,7 @@ return {
 				local icon = level:match("error") and "" or ""
 				return " " .. icon .. count
 			end,
-			colorscheme = "catppuccin", -- Replace "dracula" with your colorscheme name
+			colorscheme = "catppuccin",
 
 			always_show_bufferline = true,
 
@@ -41,7 +41,6 @@ return {
 	},
 	config = function(_, opts)
 		require("bufferline").setup(opts)
-		-- Fix bufferline when restoring a session
 		vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
 			callback = function()
 				vim.schedule(function()

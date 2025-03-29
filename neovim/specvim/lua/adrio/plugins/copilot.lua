@@ -1,4 +1,4 @@
-local lazy_copilot = false
+local lazy_copilot = true
 return {
 	{
 		"github/copilot.vim",
