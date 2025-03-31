@@ -67,7 +67,15 @@ return {
 				["@punctuation.delimiter"] = { fg = "#F8F8F2" },
 				["Delimiter"] = { fg = "#F8F8F2" },
 				["DiagnosticUnnecessary"] = { fg = "#FF5555" },
+
+				["DapBreakpoint"] = { fg = "#FF5555" },
+				["DapStopped"] = { fg = "#FFB86C" },
+				["DapStoppedLine"] = { bg = "#493B30" },
+				["DapBreakpointRejected"] = { fg = "#848484" },
+				["DapLogPoint"] = { fg = "#33AFFF" },
+				["DapBreakpointCondition"] = { fg = "#E51400" },
 			},
+
 			integrations = {
 				cmp = true,
 				gitsigns = true,

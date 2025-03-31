@@ -1,46 +1,60 @@
 return {
+	{ "stevearc/dressing.nvim", event = "VeryLazy" },
 	{
-		"AckslD/messages.nvim",
-		config = function()
-			-- Setup messages.nvim
-			require("messages").setup({
-				command_name = "Messages",
-				prepare_buffer = function(opts)
-					local buf = vim.api.nvim_create_buf(false, true)
-					-- Set buffer options to enable 'q' and '<Esc>' to close
-					vim.api.nvim_buf_set_keymap(buf, "n", "q", ":q<CR>", { noremap = true, silent = true })
-					vim.api.nvim_buf_set_keymap(buf, "n", "<Esc>", ":q<CR>", { noremap = true, silent = true })
-					return vim.api.nvim_open_win(buf, true, opts)
+		"rcarriga/nvim-notify",
+		priority = 900,
+		keys = {
+			{
+				"<leader>nn",
+				function()
+					require("notify").dismiss({ silent = true, pending = true })
 				end,
-				buffer_opts = function()
-					local gheight = vim.api.nvim_list_uis()[1].height
-					local gwidth = vim.api.nvim_list_uis()[1].width
-					-- Calculate dimensions for a larger, centered window
-					local width = math.floor(gwidth * 0.8) -- 80% of screen width
-					local height = math.floor(gheight * 0.6) -- 80% of screen height
-					-- Calculate position for center placement
-					local row = math.floor((gheight - height) / 2)
-					local col = math.floor((gwidth - width) / 2)
-					return {
-						relative = "editor",
-						width = width,
-						height = height, -- Remove the math.min to show all messages
-						anchor = "NW", -- Changed to NorthWest for easier center positioning
-						row = row,
-						col = col,
-						style = "minimal",
-						border = "rounded",
-						zindex = 1,
-					}
-				end,
-			})
-			-- Add keybinding
-			vim.keymap.set("n", "<leader>tm", ":Messages<CR>", {
-				noremap = true,
-				silent = true,
-				desc = "Open messages history",
-			})
-		end,
+				desc = "Dismiss Current Notification",
+			},
+		},
+		opts = {
+			background_colour = "#000000",
+			timeout = 3000,
+			max_height = function()
+				return math.floor(vim.o.lines * 0.75)
+			end,
+			max_width = function()
+				return math.floor(vim.o.columns * 0.75)
+			end,
+		},
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			lsp = {
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true,
+				},
+				signature = {
+					enabled = true,
+					auto_open = {
+						enabled = false,
+						trigger = true,
+						luasnip = true,
+						throttle = 50,
+					},
+				},
+			},
+			presets = {
+				bottom_search = true,
+				command_palette = true,
+				long_message_to_split = true,
+				inc_rename = false,
+				lsp_doc_border = false,
+			},
+		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
 	},
 	{
 		"folke/snacks.nvim",
@@ -48,7 +62,13 @@ return {
 		lazy = false,
 		opts = {
 			animate = { enabled = true },
-      input =  { enabled = true },
+			bigfile = { enabled = true },
+			explorer = { enabled = true },
+			-- notifier = { enabled = false, timeout = 3000 },
+			quickfile = { enabled = true },
+			image = { enabled = true },
+			words = { enabled = true },
+			input = { enabled = true },
 			dashboard = {
 				width = 60,
 				row = nil, -- dashboard position. nil for center
@@ -90,32 +110,29 @@ return {
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 					},
 					header = [[
-  circuit-shell's nvim⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣾⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⢹⣿⣿⣿⡏⢹⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⣾⣿⣿⣿⣷⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⣿⣿⣿⣿⣦⡀⠀⠀ ⣋⣩⣭⣭⣭⣭⣉⣃⠀⠀⢀⣴⣾⣿⣿⣿⣿⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⡿⠟⣩⣴⠆⠸⠛⠋⣩⡉⣤⠉⣩⡉⠛⠟⠠⢶⣍⡛⠿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⠟⠁⣴⡿⠋⣁⠀⣾⣽⢀⣍⠀⣿⠀⢉⡅⢾⣷⠀⣀⡙⢿⣦⡈⠙⣿⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⡟⢀⣾⡟⢁⣈⣉⣰⣷⠀⣈⡉⠀⣿⠀⢈⣉⠀⢼⣧⣈⣉⡀⠹⣿⡄⠸⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⠉⠉⠀⣼⠏⠠⠟⠉⠉⣥⡀⠀⢳⠟⠀⣿⠀⠘⣾⠃⠀⣠⡉⠉⠙⠆⠘⣿⠀⠈⠉⢻⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⠟⠃⠀⠀⢀⡈⠀⡖⠀⢠⡞⠉⠀⠀⡼⣤⠀⢿⠀⣠⢿⡀⠀⠉⠳⣄⠀⠸⡆⠈⣀⠀⠀⠈⠻⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠃⠀⠀⠀⠀⣿⡏⠰⢾⠆⢸⠀⣞⡶⠛⠓⠚⠀⣀⡀⠙⠞⠛⢶⣳⠆⣿⠐⠿⠦⠸⣿⡄⠀⠀⠀⠈⢿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡏⠀⠀⠀⠀⠀⣿⡇⠰⠶⠶⠞⢀⣼⠇⢠⡶⠒⠺⣍⡷⠒⠲⣦⠀⣿⡀⠻⠶⠶⠶⠀⣿⡇⠀⠀⠀⠀⠸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡿⠁⠀⠀⠀⠀⠀⣿⡇⢰⡶⠶⠶⠟⢁⡴⢿⡵⢀⣠⣤⣤⡀⢾⡽⢦⡌⠛⠶⠶⢶⣶⢀⣿⡇⠀⠀⠀⠀⠀⢻⡟⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⢿⡧⠸⡇⠰⠿⠒⠺⡷⢀⣴⠟⢁⣤⡀⠙⢦⡀⢾⠷⠒⠾⠗⢸⡇⠸⣿⠁⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣶⡀⢴⡄⢸⠀⠀⢰⠟⠁⣠⠞⠦⠟⢦⡀⠙⣦⠀⠀⣿⠀⣶⠀⣴⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣷⠀⣴⠟⠀⠀⣸⠄⠀⡇⢀⡴⡄⢸⡇⠀⣿⠀⠀⠙⢦⠀⣸⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢃⠀⣶⠄⣾⠋⠀⠀⣇⠀⣿⠁⢸⡇⠀⠈⢳⡄⣶⠄⣀⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣷⡀⢀⣿⡀⣠⠞⠁⠀⢿⡀⠈⠻⣦⠀⣸⡅⠀⣴⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⠹⣿⣄⠐⠃⣿⠀⣾⣳⠀⢽⣳⠀⣿⠈⠓⢡⣾⠟⢠⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣦⠈⠁⣴⣄⠹⠀⣿⠀⣶⠀⢸⠀⠟⢀⣴⡌⠉⣠⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣷⡄⠈⠻⣷⣤⡙⠀⣿⠀⠘⣠⣾⡿⠋⢀⣴⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⠃⠀⠀⠈⠙⢿⣶⣤⣴⡿⠟⠁⠀⠀⠀⢿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠿⠉⠀⠀⠀⠀⠀⠀⠀⠈⠙⠉⠀⠀⠀⠀⠀⠀⠀⠉⠻⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀]],
+   circuit-shell's nvim⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⢺⣿⣿⡗⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⣾⣿⣿⣷⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⣶⣶⣤⡀⠀⠀⠿⣛⣛⣛⣛⠻⠀⠀⢀⣤⣶⣶⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⠿⣛⣵⠄⠛⠛⣭⢩⡍⣭⠛⠛⠰⣬⣛⠿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⡟⢡⣾⠋⣤⢠⡿⠣⡄⢸⡇⢤⠜⢿⡀⣤⠙⣷⡌⢻⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⠿⠟⢁⡿⢡⠶⠶⠛⠃⢴⡆⢸⡇⢴⡦⠘⠓⠶⠶⡌⢿⡈⠻⢿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⠟⠀⠀⣈⠁⡆⢀⡴⠛⠀⣸⣄⢸⡇⣸⣇⠀⠛⢦⠀⢰⠈⣁⠀⠀⠻⣿⣿⣇⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⠐⠻⢸⡇⢿⠞⢙⣋⣠⣄⣙⡋⠻⡿⢸⡀⠟⠂⣿⡄⠀⠀⠘⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣿⡏⠀⠀⠀⢸⣿⢈⣭⣭⣤⠟⣰⣯⠉⠑⠊⠉⣽⣄⠳⣤⣭⣭⡁⣿⡇⠀⠀⠀⢹⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠘⣿⠸⡇⢴⠦⢼⡇⣩⠞⢉⡉⠳⣍⢸⡧⠴⡦⢸⠃⣿⠃⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢴⡆⠶⢐⡇⠀⡾⠁⡴⠳⠞⢦⠈⣷⠀⢸⡀⠦⢰⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠄⢋⡀⣠⠇⠀⡇⢺⡇⢸⠀⠻⣄⢀⡙⢠⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢶⡌⠁⣇⢀⡴⠃⢸⡇⠘⢦⠀⣸⠈⣡⡶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣌⢻⣦⠙⢸⡇⣶⠆⢹⣶⢸⡇⠋⣴⠟⣡⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣦⠁⢶⣌⡁⣿⢸⡇⣿⢘⣥⡷⠈⣴⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⡇⠀⠙⠻⣦⣜⣣⣴⠟⠋⠀⢸⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠟⠉⠀⠀⠀⠀⠈⠙⠋⠁⠀⠀⠀⠀⠉⠻⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+]],
 				},
 				-- item field formatters
 				formats = {
@@ -144,34 +161,20 @@ return {
 					end,
 				},
 			},
-			bigfile = { enabled = true },
-			explorer = { enabled = true },
-			notifier = {
-				enabled = true,
-				timeout = 3000,
-			},
-			quickfile = { enabled = true },
-			image = { enabled = true },
-			words = { enabled = true },
 			gitbrowse = {
+				notify = true,
+				-- what = "permalink",
 				-- config = function(opts)
 				-- 	table.insert(opts.remote_patterns, { "my", "custom pattern" })
 				-- end,
 			},
-			styles = {
-				notification = {
-					wo = { wrap = true }, -- Wrap notifications
-				},
-			},
+			-- styles = {
+			-- 	notification = {
+			-- 		wo = { wrap = true }, -- Wrap notifications
+			-- 	},
+			-- },
 		},
 		keys = {
-			{
-				"<leader>nn",
-				function()
-					Snacks.notifier.hide()
-				end,
-				desc = "Dismiss All Notifications",
-			},
 			{
 				"<leader>q",
 				function()
@@ -193,13 +196,13 @@ return {
 			-- 	end,
 			-- 	desc = "Lazygit Current File History",
 			-- },
-			-- {
-			-- 	"<leader>gl",
-			-- 	function()
-			-- 		Snacks.lazygit.log()
-			-- 	end,
-			-- 	desc = "Lazygit Log (cwd)",
-			-- },
+			{
+				"<leader>gl",
+				function()
+					Snacks.lazygit.log()
+				end,
+				desc = "Lazygit Log (cwd)",
+			},
 			{
 				"<leader>rf",
 				function()
