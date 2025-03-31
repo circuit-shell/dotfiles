@@ -51,14 +51,15 @@ return {
 				-- javascript
 				"prettier", -- formatter
 				"eslint_d", -- linter
+        "js-debug-adapter", -- debbuger
 
 				-- lua
-				"stylua", -- lua formatter
+				"stylua", -- formatter
 
-				-- python formatter and linter
+				-- python 
 				"ruff", -- linter
 				"black", -- formatter
-				"isort", -- import formatter
+				"isort", -- formatter
 
 				-- go
 				"delve", -- debugger

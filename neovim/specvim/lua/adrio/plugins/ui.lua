@@ -28,6 +28,15 @@ return {
 					["vim.lsp.util.stylize_markdown"] = true,
 					["cmp.entry.get_documentation"] = true,
 				},
+
+				keys = {
+					{
+						"<leader><leader>",
+						":",
+						desc = "Command Line",
+						mode = "n",
+					},
+				},
 				signature = {
 					enabled = true,
 					auto_open = {
@@ -185,6 +194,11 @@ return {
 		},
 		keys = {
 			{
+				"<leader><leader>",
+				":",
+				desc = "Command Line",
+			},
+			{
 				"<leader>q",
 				function()
 					Snacks.bufdelete()
@@ -192,19 +206,19 @@ return {
 				desc = "Delete Buffer",
 			},
 			{
-				"<leader>gG",
+				"<leader>gg",
 				function()
 					Snacks.gitbrowse()
 				end,
 				desc = "Git Browse Remote",
 			},
-			-- {
-			-- 	"<leader>gf",
-			-- 	function()
-			-- 		Snacks.lazygit.log_file()
-			-- 	end,
-			-- 	desc = "Lazygit Current File History",
-			-- },
+			{
+				"<leader>gf",
+				function()
+					Snacks.lazygit.log_file()
+				end,
+				desc = "Lazygit Current File History",
+			},
 			{
 				"<leader>gl",
 				function()
