@@ -13,14 +13,9 @@ return {
 			},
 		},
 		opts = {
-			background_colour = "#000000",
+			background_colour = "#000012",
 			timeout = 3000,
-			max_height = function()
-				return math.floor(vim.o.lines * 0.75)
-			end,
-			max_width = function()
-				return math.floor(vim.o.columns * 0.75)
-			end,
+			render = "wrapped-default",
 		},
 	},
 	{
@@ -64,7 +59,7 @@ return {
 			animate = { enabled = true },
 			bigfile = { enabled = true },
 			explorer = { enabled = true },
-			-- notifier = { enabled = false, timeout = 3000 },
+			notifier = { enabled = false, timeout = 3000 },
 			quickfile = { enabled = true },
 			image = { enabled = true },
 			words = { enabled = true },
@@ -170,7 +165,7 @@ return {
 			},
 			-- styles = {
 			-- 	notification = {
-			-- 		wo = { wrap = true }, -- Wrap notifications
+			-- 		wo = { wrap = true, width = 50 }, -- Wrap notifications
 			-- 	},
 			-- },
 		},
