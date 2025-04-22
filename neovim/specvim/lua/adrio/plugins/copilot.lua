@@ -1,4 +1,4 @@
-local lazy_copilot = true
+local lazy_copilot = false
 return {
 	{
 		"github/copilot.vim",
@@ -45,7 +45,7 @@ return {
 				local select = require("CopilotChat.select")
 				return select.visual(source) or ""
 			end,
-			model = "gpt-4o-2024-11-20",
+			model = "gpt-4o",
 			context = nil,
 			mappings = {
 				reset = {
