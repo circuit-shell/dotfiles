@@ -20,7 +20,7 @@ return {
 					-- Diagnostic signs
 					{
 						sign = {
-							namespace = { "diagnostic/signs" },
+							namespace = { "diagnostic" },
 							width = 1,
 							align = "right",
 						},
@@ -42,11 +42,9 @@ return {
 						condition = { true },
 						click = "v:lua.ScFa",
 					},
-					-- Absolute line number
-					{ text = { "%l " }, auto = false, minwidth = 3 },
-					-- Relative line number
-					{ text = { "%=%r " }, auto = false, minwidth = 3 },
 
+					{ text = { "%l " }, auto = false, minwidth = 3 },
+					{ text = { "%=%r " }, auto = false, minwidth = 3 },
 					{ text = { "│ " }, auto = true, minwidth = 2 },
 				},
 				clickmod = "c",
@@ -58,7 +56,7 @@ return {
 					DapBreakpointRejected = builtin.toggle_breakpoint,
 					DapBreakpoint = builtin.toggle_breakpoint,
 					DapBreakpointCondition = builtin.toggle_breakpoint,
-					["diagnostic/signs"] = builtin.diagnostic_click,
+					["diagnostic"] = builtin.diagnostic_click,
 					gitsigns = builtin.gitsigns_click,
 				},
 			})
