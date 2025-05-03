@@ -1,4 +1,23 @@
-local lazy_copilot = false
+-- Get the current username using the whoami command
+local handle = io.popen("whoami")
+local current_user = ""
+if handle then
+	current_user = handle:read("*a"):gsub("%s+", "") -- Read output and trim whitespace
+	handle:close()
+end
+
+local lazy_copilot = current_user == "spectr3r-system"
+
+-- Print the username as a message (for debugging)
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		vim.schedule(function()
+			vim.notify("Copilot enabled: " .. tostring(lazy_copilot), vim.log.levels.INFO)
+		end)
+	end,
+})
+
+
 return {
 	{
 		"github/copilot.vim",
