@@ -5,7 +5,7 @@ if handle then
 	handle:close()
 end
 
-local lazy_copilot = current_user == "spectr3r-system"
+local lazy_copilot = current_user ~= "spectr3r-system"
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
