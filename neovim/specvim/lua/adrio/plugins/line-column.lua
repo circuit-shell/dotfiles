@@ -3,6 +3,29 @@ return {
 		"luukvbaal/statuscol.nvim",
 		config = function()
 			local builtin = require("statuscol.builtin")
+
+			-- Function to handle the custom line number formatting
+			local function custom_lnum()
+				local lnum = vim.v.lnum
+				local relnum = vim.v.relnum
+				
+				-- For the current line, use CursorLineNr highlight
+				if relnum == 0 then
+					local result = "%#CursorLineNr#" .. lnum
+					if vim.wo.relativenumber then
+						result = result .. "%=%#CursorLineNr# " .. relnum
+					end
+					return result
+				else
+					-- For other lines, use NonText highlight
+					local result = "%#NonText#" .. lnum
+					if vim.wo.relativenumber then
+						result = result .. "%=%#NonText# " .. relnum
+					end
+					return result
+				end
+			end
+
 			require("statuscol").setup({
 				relculright = true,
 				thousands = false,
@@ -42,9 +65,10 @@ return {
 						condition = { true },
 						click = "v:lua.ScFa",
 					},
-
-					{ text = { "%l " }, auto = false, minwidth = 3 },
-					{ text = { "%=%r " }, auto = false, minwidth = 3 },
+					{
+						text = { custom_lnum },
+						click = "v:lua.ScLa",
+					},
 					{ text = { "│ " }, auto = true, minwidth = 2 },
 				},
 				clickmod = "c",
