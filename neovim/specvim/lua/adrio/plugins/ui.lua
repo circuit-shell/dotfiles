@@ -28,6 +28,15 @@ return {
 					["vim.lsp.util.stylize_markdown"] = true,
 					["cmp.entry.get_documentation"] = true,
 				},
+
+				keys = {
+					{
+						"<leader><leader>",
+						":",
+						desc = "Command Line",
+						mode = "n",
+					},
+				},
 				signature = {
 					enabled = true,
 					auto_open = {
@@ -158,18 +167,37 @@ return {
 			},
 			gitbrowse = {
 				notify = true,
-				-- what = "permalink",
-				-- config = function(opts)
-				-- 	table.insert(opts.remote_patterns, { "my", "custom pattern" })
-				-- end,
+				config = function(opts)
+					-- Ensure url_patterns exists
+					opts.url_patterns = opts.url_patterns or {}
+
+					-- Define GitHub domains to add
+					local github_domains = {
+						"github%.cloud%.com",
+						"github%.cloud%.capitalone%.com",
+					}
+
+					-- Define GitHub pattern structure
+					local github_pattern = {
+						branch = "/tree/{branch}",
+						file = "/blob/{branch}/{file}#L{line_start}-L{line_end}",
+						permalink = "/blob/{commit}/{file}#L{line_start}-L{line_end}",
+						commit = "/commit/{commit}",
+					}
+
+					-- Add patterns for all GitHub Enterprise domains
+					for _, domain in ipairs(github_domains) do
+						opts.url_patterns[domain] = github_pattern
+					end
+				end,
 			},
-			-- styles = {
-			-- 	notification = {
-			-- 		wo = { wrap = true, width = 50 }, -- Wrap notifications
-			-- 	},
-			-- },
 		},
 		keys = {
+			{
+				"<leader><leader>",
+				":",
+				desc = "Command Line",
+			},
 			{
 				"<leader>q",
 				function()
@@ -178,19 +206,19 @@ return {
 				desc = "Delete Buffer",
 			},
 			{
-				"<leader>gG",
+				"<leader>gg",
 				function()
 					Snacks.gitbrowse()
 				end,
 				desc = "Git Browse Remote",
 			},
-			-- {
-			-- 	"<leader>gf",
-			-- 	function()
-			-- 		Snacks.lazygit.log_file()
-			-- 	end,
-			-- 	desc = "Lazygit Current File History",
-			-- },
+			{
+				"<leader>gf",
+				function()
+					Snacks.lazygit.log_file()
+				end,
+				desc = "Lazygit Current File History",
+			},
 			{
 				"<leader>gl",
 				function()

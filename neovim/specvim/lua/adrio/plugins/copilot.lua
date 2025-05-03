@@ -1,4 +1,20 @@
-local lazy_copilot = true
+local handle = io.popen("whoami")
+local current_user = ""
+if handle then
+	current_user = handle:read("*a"):gsub("%s+", "")
+	handle:close()
+end
+
+local lazy_copilot = current_user == "spectr3r-system"
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		vim.schedule(function()
+			vim.notify("Copilot enabled: " .. tostring(lazy_copilot), vim.log.levels.INFO)
+		end)
+	end,
+})
+
 return {
 	{
 		"github/copilot.vim",
@@ -45,7 +61,7 @@ return {
 				local select = require("CopilotChat.select")
 				return select.visual(source) or ""
 			end,
-			model = "gpt-4o-2024-11-20",
+			model = "gpt-4o",
 			context = nil,
 			mappings = {
 				reset = {

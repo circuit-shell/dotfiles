@@ -103,8 +103,8 @@ return {
 			)
 
 			-- Global keymaps (available in all buffers)
-			vim.keymap.set("n", "<space>db", dap.toggle_breakpoint)
-			vim.keymap.set("n", "<space>dus", function()
+			vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
+			vim.keymap.set("n", "<leader>dus", function()
 				local widgets = require("dap.ui.widgets")
 				local sidebar = widgets.sidebar(widgets.scopes)
 				sidebar.open()
@@ -115,7 +115,7 @@ return {
 				local bufnr = vim.api.nvim_get_current_buf()
 
 				-- Debug keymaps only for Go files
-				vim.keymap.set("n", "<space>dgl", function()
+				vim.keymap.set("n", "<leader>dgl", function()
 					require("dap-go").debug_test()
 				end, { buffer = bufnr, desc = "run go test under cursor" })
 
