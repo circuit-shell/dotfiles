@@ -5,12 +5,12 @@ if handle then
 	handle:close()
 end
 
-local lazy_copilot = current_user ~= "spectr3r-system"
+local lazy_copilot = current_user == "spectr3r-system"
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		vim.schedule(function()
-			vim.notify("Copilot enabled: " .. tostring(lazy_copilot), vim.log.levels.INFO)
+			vim.notify("Copilot enabled: " .. tostring(not lazy_copilot), vim.log.levels.INFO)
 		end)
 	end,
 })
@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 return {
 	{
 		"github/copilot.vim",
-		lazy = lazy_copilot,
+		lazy = not lazy_copilot,
 		config = function()
 			-- Disable default Tab mapping, this helps to be able to use suggestion in copilot chat
 			vim.g.copilot_no_tab_map = true
