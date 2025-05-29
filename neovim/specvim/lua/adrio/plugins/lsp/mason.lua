@@ -1,9 +1,11 @@
 return {
-	"williamboman/mason.nvim",
+	"mason-org/mason.nvim",
+	version = "^1.0.0",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
+		{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
+
 	config = function()
 		-- import mason
 		local mason = require("mason")
@@ -25,7 +27,7 @@ return {
 		})
 
 		mason_lspconfig.setup({
-      automatic_installation = true,
+			automatic_installation = true,
 			-- list of servers for mason to install
 			ensure_installed = {
 				"ts_ls",
@@ -51,12 +53,12 @@ return {
 				-- javascript
 				"prettier", -- formatter
 				"eslint_d", -- linter
-        "js-debug-adapter", -- debbuger
+				"js-debug-adapter", -- debbuger
 
 				-- lua
 				"stylua", -- formatter
 
-				-- python 
+				-- python
 				"ruff", -- linter
 				"black", -- formatter
 				"isort", -- formatter
@@ -65,8 +67,8 @@ return {
 				"delve", -- debugger
 				"golangci-lint", -- linter
 
-        -- yaml
-        "yamlfmt", -- formatter
+				-- yaml
+				"yamlfmt", -- formatter
 			},
 		})
 	end,
