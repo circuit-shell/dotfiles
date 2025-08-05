@@ -1,5 +1,5 @@
-# Filename: ~/github/dotfiles-latest/.prettierrc.yaml
-# ~/github/dotfiles-latest/.prettierrc.yaml
+# Filename: ~/github.com/dotfiles/.prettierrc.yaml
+# ~/github.com/dotfiles/.prettierrc.yaml
 
 # This will autoformat existing lines over 80 characters and also long lines
 # that you paste that exceed the 80 characters
@@ -17,7 +17,7 @@
 #
 # I added the file in my home directory directly ~/.prettierrc.yaml, and it
 # and it was being picked up by all the files inside, for exmaple files
-# in the ~/github/dotfiles-latest directory
+# in the ~/github.com/dotfiles directory
 #
 # So my .zshrc file automatically creates a symlink in my home directory that
 # points to this file. That way everthing inside my home directory can be

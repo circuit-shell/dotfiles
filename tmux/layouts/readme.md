@@ -11,23 +11,23 @@
 LAYOUT_NAME="new-lay"
 LAYOUT_KEYBIND="L"
 
-mkdir -p ~/github/dotfiles-latest/tmux/layouts/$LAYOUT_NAME
+mkdir -p ~/github.com/dotfiles/tmux/layouts/$LAYOUT_NAME
 
 # Save the window layout to a file
-tmux display-message -p '#{window_layout}' > ~/github/dotfiles-latest/tmux/layouts/$LAYOUT_NAME/layout.txt
+tmux display-message -p '#{window_layout}' > ~/github.com/dotfiles/tmux/layouts/$LAYOUT_NAME/layout.txt
 
 # Create apply_layout.sh
-cat <<EOF > ~/github/dotfiles-latest/tmux/layouts/$LAYOUT_NAME/apply_layout.sh
+cat <<EOF > ~/github.com/dotfiles/tmux/layouts/$LAYOUT_NAME/apply_layout.sh
 #!/bin/bash
 
-LAYOUT=\$(cat ~/github/dotfiles-latest/tmux/layouts/$LAYOUT_NAME/layout.txt)
+LAYOUT=\$(cat ~/github.com/dotfiles/tmux/layouts/$LAYOUT_NAME/layout.txt)
 tmux select-layout "\$LAYOUT"
 EOF
 
 # Make the script executable
-chmod +x ~/github/dotfiles-latest/tmux/layouts/$LAYOUT_NAME/apply_layout.sh
+chmod +x ~/github.com/dotfiles/tmux/layouts/$LAYOUT_NAME/apply_layout.sh
 
 echo
 echo "Tmux config command for this layout:"
-echo "bind $LAYOUT_KEYBIND run-shell ~/github/dotfiles-latest/tmux/layouts/$LAYOUT_NAME/apply_layout.sh"
+echo "bind $LAYOUT_KEYBIND run-shell ~/github.com/dotfiles/tmux/layouts/$LAYOUT_NAME/apply_layout.sh"
 ```

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/colorscheme/list/catppuccin-macchiato.sh
-# ~/github/dotfiles-latest/colorscheme/list/catppuccin-macchiato.sh
+# Filename: ~/github.com/dotfiles/colorscheme/list/catppuccin-macchiato.sh
+# ~/github.com/dotfiles/colorscheme/list/catppuccin-macchiato.sh
 
 # Maroon
 linkarzu_color01="#ee99a0"

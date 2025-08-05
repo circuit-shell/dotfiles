@@ -1,7 +1,7 @@
-# Filename: ~/github/dotfiles-latest/tmux/tmux.conf.sh
-# ~/github/dotfiles-latest/tmux/tmux.conf.sh
+# Filename: ~/github.com/dotfiles/tmux/tmux.conf.sh
+# ~/github.com/dotfiles/tmux/tmux.conf.sh
 
-source "$HOME/github/dotfiles-latest/colorscheme/active/active-colorscheme.sh"
+source "$HOME/github.com/dotfiles/colorscheme/active/active-colorscheme.sh"
 
 # #############################################################################
 # Do not delete the `UNIQUE_ID` line below, I use it to backup original files
@@ -172,10 +172,10 @@ unbind C-l
 bind J select-layout even-horizontal
 bind K select-layout even-vertical
 # bind L select-layout tiled
-bind L run-shell ~/github/dotfiles-latest/tmux/layouts/7030/apply_layout.sh
+bind L run-shell ~/github.com/dotfiles/tmux/layouts/7030/apply_layout.sh
 bind C-j select-layout main-horizontal
 bind C-k select-layout main-vertical
-bind C-l run-shell ~/github/dotfiles-latest/tmux/layouts/2x3/apply_layout.sh
+bind C-l run-shell ~/github.com/dotfiles/tmux/layouts/2x3/apply_layout.sh
 
 ###############################################################################
 # ThePrimeagen's tmux-sessionizer script, got 'em
@@ -186,25 +186,25 @@ bind C-l run-shell ~/github/dotfiles-latest/tmux/layouts/2x3/apply_layout.sh
 # sense whatsoever, because it's not ergonomic, but I call them from
 # bettertouchtool, and BTT is called from karabiner-elements
 
-tmux_sessionizer="~/github/dotfiles-latest/tmux/tools/prime/tmux-sessionizer.sh"
-tmux_sshonizer_agen="~/github/dotfiles-latest/tmux/tools/linkarzu/tmux-sshonizer-agen.sh"
-ssh_select="~/github/dotfiles-latest/tmux/tools/linkarzu/ssh-select.sh"
+tmux_sessionizer="~/github.com/dotfiles/tmux/tools/prime/tmux-sessionizer.sh"
+tmux_sshonizer_agen="~/github.com/dotfiles/tmux/tools/linkarzu/tmux-sshonizer-agen.sh"
+ssh_select="~/github.com/dotfiles/tmux/tools/linkarzu/ssh-select.sh"
 # Script below goes through you `~/.ssh/config` file and shows the hosts in an fzf menu
-ssh_config_select="~/github/dotfiles-latest/tmux/tools/linkarzu/ssh_config_select.sh"
-daily_note="~/github/dotfiles-latest/scripts/macos/mac/300-dailyNote.sh"
+ssh_config_select="~/github.com/dotfiles/tmux/tools/linkarzu/ssh_config_select.sh"
+daily_note="~/github.com/dotfiles/scripts/macos/mac/300-dailyNote.sh"
 
 # I tend to forget my karabiner mappings, so this opens the file in a new tmux
 # session
 karabiner_rules="~/github/scripts/macos/mac/301-openKarabinerRules.sh"
 
-colorscheme_selector="~/github/dotfiles-latest/colorscheme/colorscheme-selector.sh"
+colorscheme_selector="~/github.com/dotfiles/colorscheme/colorscheme-selector.sh"
 
 # Don't use C-r because it's used by tmux-resurrect
 # Don't use C-e because I'm already using it for sending command to all panes/windows in current session
 # Don't use C-s because Its used to save the session
 # Don't use C-z, not sure what its for
 unbind C-u
-bind-key -r C-u run-shell "$tmux_sessionizer ~/github/dotfiles-latest"
+bind-key -r C-u run-shell "$tmux_sessionizer ~/github.com/dotfiles"
 unbind C-i
 bind-key -r C-i run-shell "$tmux_sessionizer ~/github/watusy"
 unbind C-o
@@ -416,7 +416,7 @@ set -g @plugin 'catppuccin/tmux#v0.3.0'
 # or frappe, macchiato, mocha
 set -g @catppuccin_flavor 'mocha'
 
-run-shell "~/github/dotfiles-latest/tmux/tools/linkarzu/set_tmux_colors.sh"
+run-shell "~/github.com/dotfiles/tmux/tools/linkarzu/set_tmux_colors.sh"
 
 set -g @catppuccin_window_left_separator ""
 set -g @catppuccin_window_right_separator " "
@@ -432,7 +432,7 @@ set -g @catppuccin_status_modules_left "session"
 
 # As 'man tmux' specifies:
 # Execute the first command if shell-command (run with /bin/sh) returns success or the second command otherwise
-if-shell 'test -f ~/github/dotfiles-latest/youtube-banner.txt' {
+if-shell 'test -f ~/github.com/dotfiles/youtube-banner.txt' {
     set -g @catppuccin_status_modules_right "directory"
     set -g @catppuccin_directory_text " linkarzu   like the video   and subscribe   "
     set -g @catppuccin_directory_icon "null"

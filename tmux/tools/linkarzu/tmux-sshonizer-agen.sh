@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/tmux/tools/linkarzu/tmux-sshonizer-agen.sh
+# Filename: ~/github.com/dotfiles/tmux/tools/linkarzu/tmux-sshonizer-agen.sh
 
 # https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
@@ -14,7 +14,7 @@ if [[ $# -eq 1 ]]; then
 elif [[ $# -eq 0 ]]; then
 	# Explicitly specified 0 in case someone decides to pass more than 1 argument
 	# Call the ssh-select script which will open fzf to select a host
-	~/github/dotfiles-latest/tmux/tools/linkarzu/ssh-select.sh
+	~/github.com/dotfiles/tmux/tools/linkarzu/ssh-select.sh
 	# Debugging, uncomment below if you need to see what's being selected
 	# tmux display-message -d 10000 "Directory selected via fzf: $ssh_name"
 else
@@ -44,7 +44,7 @@ selected_after_tr=$(basename "$ssh_name" | tr '.-' '__')
 # going to be shown on the fzf menu
 # If you delete the `karabiner-mappings.sh` file, only the `ssh_config_select.sh` script
 # will work
-mappings_file="$HOME/github/dotfiles-latest/tmux/tools/linkarzu/karabiner-mappings.sh"
+mappings_file="$HOME/github.com/dotfiles/tmux/tools/linkarzu/karabiner-mappings.sh"
 if [ -f "$mappings_file" ]; then
 	source "$mappings_file"
 	# Get the value of the variable whose name matches $base_selected

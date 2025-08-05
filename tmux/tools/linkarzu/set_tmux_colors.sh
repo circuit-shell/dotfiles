@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/tmux/tools/linkarzu/set_tmux_colors.sh
-# ~/github/dotfiles-latest/tmux/tools/linkarzu/set_tmux_colors.sh
+# Filename: ~/github.com/dotfiles/tmux/tools/linkarzu/set_tmux_colors.sh
+# ~/github.com/dotfiles/tmux/tools/linkarzu/set_tmux_colors.sh
 
 # Source the colorscheme file
-source "$HOME/github/dotfiles-latest/colorscheme/active/active-colorscheme.sh"
+source "$HOME/github.com/dotfiles/colorscheme/active/active-colorscheme.sh"
 
 # Output tmux set commands
 # I use this for my custom tmux banner on the right side

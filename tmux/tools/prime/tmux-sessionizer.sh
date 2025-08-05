@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/tmux/tools/prime/tmux-sessionizer.sh
+# Filename: ~/github.com/dotfiles/tmux/tools/prime/tmux-sessionizer.sh
 
 # https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
@@ -55,7 +55,7 @@ selected_after_tr=$(basename "$selected" | tr '.-' '__')
 # NOTE: If you don't want to use the 'karabiner-mappings.sh' file, just rename
 # that 'karabiner-mappings.sh' file to something else (or delete it)
 # This file adds a letter at the end of my session to remind me of the karabiner shortcut
-mappings_file="$HOME/github/dotfiles-latest/tmux/tools/prime/karabiner-mappings.sh"
+mappings_file="$HOME/github.com/dotfiles/tmux/tools/prime/karabiner-mappings.sh"
 if [ -f "$mappings_file" ]; then
   source "$mappings_file"
   base_selected=$(basename "$selected_after_tr")

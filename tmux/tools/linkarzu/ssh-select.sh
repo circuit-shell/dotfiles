@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/tmux/tools/linkarzu/ssh-select.sh
+# Filename: ~/github.com/dotfiles/tmux/tools/linkarzu/ssh-select.sh
 
 # NOTE:
 # Remember to make this file executable
 
 # Define the path to your file containing SSH host aliases and their keys
-karabiner_mappings="$HOME/github/dotfiles-latest/tmux/tools/linkarzu/karabiner-mappings.sh"
+karabiner_mappings="$HOME/github.com/dotfiles/tmux/tools/linkarzu/karabiner-mappings.sh"
 
 # Ensure the karabiner_mappings exists
 if [ ! -f "$karabiner_mappings" ]; then

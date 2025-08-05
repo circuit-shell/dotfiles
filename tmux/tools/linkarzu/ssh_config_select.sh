@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/tmux/tools/linkarzu/ssh-config-select.sh
+# Filename: ~/github.com/dotfiles/tmux/tools/linkarzu/ssh-config-select.sh
 
 # NOTE:
 # Remember to make this file executable
@@ -13,7 +13,7 @@
 
 # Define the path to your SSH config and hosts mapping file
 ssh_config="$HOME/.ssh/config"
-karabiner_mappings="$HOME/github/dotfiles-latest/tmux/tools/linkarzu/karabiner-mappings.sh"
+karabiner_mappings="$HOME/github.com/dotfiles/tmux/tools/linkarzu/karabiner-mappings.sh"
 
 # Ensure the ssh_config exists
 if [ ! -f "$ssh_config" ]; then

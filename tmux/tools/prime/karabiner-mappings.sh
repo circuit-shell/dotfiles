@@ -1,4 +1,4 @@
-# Filename: ~/github/dotfiles-latest/tmux/tools/prime/karabiner-mappings.sh
+# Filename: ~/github.com/dotfiles/tmux/tools/prime/karabiner-mappings.sh
 
 # NOTE:
 # This is not actually a script, just gave it .sh name for syntax highlighting
