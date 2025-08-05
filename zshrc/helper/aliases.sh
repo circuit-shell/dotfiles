@@ -41,7 +41,6 @@ alias zshconfig="nvim ~/.zshrc"
 alias zshsrc="source ~/.zshrc"
 alias reload="source ~/.zshrc"
 alias nconfig="cd ~/.config/nvim/ && nvim"
-alias advmake="z adv && open -a orbstack && git pull && rm -f firmware/*.uf2 && make && open ."
 alias e='exit'
 alias ll='ls -lh'
 alias lla='ls -alh'
@@ -65,5 +64,60 @@ alias gocov='go test -coverprofile=coverage.out && go tool cover -html=coverage.
 kp() {
   local port="${1:-4200}"
   kill -9 $(lsof -t -i:$port)
+}
+
+# alias advmake="z adv && open -a orbstack && git pull && rm -f firmware/*.uf2 && make && open ."
+
+advmake() {
+  # Try to navigate to adv directory
+  z_output=$(z adv 2>&1)
+  z_status=$?
+  
+  if [ $z_status -ne 0 ]; then
+    # Check if the error is that we're already in the only match
+    if [[ "$z_output" == *"zoxide: you are already in the only match"* ]]; then
+      echo "Already in adv directory, continuing"
+    else
+      # It's a different error, show it and exit
+      echo "Error: Failed to navigate to adv directory: $z_output" >&2
+      return 1
+    fi
+  else
+    z adv
+    echo "Successfully navigated to adv directory"
+  fi
+  
+  # Open OrbStack in the background
+  if ! open -g -a orbstack; then
+    echo "Warning: Failed to open OrbStack, continuing anyway" >&2
+  fi
+  
+  # Pull latest changes
+  if ! git pull; then
+    echo "Warning: Git pull failed, continuing anyway" >&2
+  fi
+  
+  # Clean firmware files if the directory exists
+  if [ -d firmware ]; then
+    if ! rm -f firmware/*.uf2; then
+      echo "Warning: Failed to remove .uf2 files, continuing anyway" >&2
+    fi
+  else
+    echo "Warning: firmware directory not found, skipping file cleanup" >&2
+  fi
+  
+  # Build the project (critical step)
+  if ! make; then
+    echo "Error: Make failed" >&2
+    return 1
+  fi
+  
+  # Open the directory
+  if ! open .; then
+    echo "Warning: Failed to open directory in Finder" >&2
+  fi
+  
+  echo "advmake completed successfully"
+  return 0
 }
 

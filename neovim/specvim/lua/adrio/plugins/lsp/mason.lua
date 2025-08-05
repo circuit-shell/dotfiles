@@ -39,7 +39,7 @@ return {
 				-- "graphql",
 				"emmet_ls",
 				"prismals",
-				"pyright",
+				-- "pyright",
 				"astro",
 				"angularls@18.2.0",
 				"jsonls",
@@ -60,8 +60,8 @@ return {
 
 				-- python
 				"ruff", -- linter
-				"black", -- formatter
-				"isort", -- formatter
+				-- "black", -- formatter
+				-- "isort", -- formatter
 
 				-- go
 				"delve", -- debugger
