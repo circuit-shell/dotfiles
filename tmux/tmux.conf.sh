@@ -32,7 +32,7 @@ unbind -T copy-mode-vi MouseDragEnd1Pane
 # Window Navigation
 bind -n C-Tab select-window -n
 bind -n C-BTab select-window -p
-# unbind BTab 
+# unbind BTab
 
 # Pane Management
 bind c new-window -c "#{pane_current_path}"
@@ -95,7 +95,7 @@ set -g @continuum-restore 'on'
 set -g @continuum-save-interval '5'
 
 # Status Line
-set -g @plugin 'o1th/tmux-nova'
+set -g @plugin 'o0th/tmux-nova'
 set -g @nova-nerdfonts true
 set -g @nova-nerdfonts-first 
 set -g @nova-nerdfonts-last 
@@ -114,7 +114,7 @@ set -g @nova-segment-whoami-colors "#FF79C6 default"
 set -g @nova-rows 1
 set -g @nova-segment-mode "#[fg=#0E1419]#{?client_prefix, 󰳗  , 󰳗  }"
 
-set -g @nova-segment-mode-colors "#FF79C6 default" 
+set -g @nova-segment-mode-colors "#FF79C6 default"
 set -g @nova-segments-0-left "mode"
 set -g @nova-segments-0-right "whoami"
 set -g @nova-segment-whoami-colors "#FF79C6 default"
