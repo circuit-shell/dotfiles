@@ -1,4 +1,4 @@
-# Filename: ~/github.com/dotfiles/bashrc/bashrc-file.sh
+# Filename: ~/github.com/circuit-shell/dotfiles/bashrc/bashrc-file.sh
 
 # #############################################################################
 # Do not delete the `UNIQUE_ID` line below, I use it to backup original files
@@ -87,7 +87,7 @@ if [ "$OS" = 'Mac' ]; then
   # Starship
   # https://starship.rs/config/#prompt
   if command -v starship &>/dev/null; then
-    export STARSHIP_CONFIG=$HOME/github.com/dotfiles/starship-config/starship.toml
+    export STARSHIP_CONFIG=$HOME/github.com/circuit-shell/dotfiles/starship-config/starship.toml
     eval "$(starship init bash)" >/dev/null 2>&1
   fi
 

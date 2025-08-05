@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github.com/dotfiles/colorscheme/colorscheme-selector.sh
+# Filename: ~/github.com/circuit-shell/dotfiles/colorscheme/colorscheme-selector.sh
 
 # Path to the directory containing color scheme scripts
-COLORSCHEME_DIR=~/github.com/dotfiles/colorscheme/list
+COLORSCHEME_DIR=~/github.com/circuit-shell/dotfiles/colorscheme/list
 
 # Path to the colorscheme-set.sh script
-COLORSCHEME_SET_SCRIPT=~/github.com/dotfiles/zshrc/colorscheme-set.sh
+COLORSCHEME_SET_SCRIPT=~/github.com/circuit-shell/dotfiles/zshrc/colorscheme-set.sh
 
 # Ensure fzf is installed
 if ! command -v fzf &>/dev/null; then

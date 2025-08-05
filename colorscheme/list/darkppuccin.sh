@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github.com/dotfiles/colorscheme/list/darkppuccin.sh
-# ~/github.com/dotfiles/colorscheme/list/darkppuccin.sh
+# Filename: ~/github.com/circuit-shell/dotfiles/colorscheme/list/darkppuccin.sh
+# ~/github.com/circuit-shell/dotfiles/colorscheme/list/darkppuccin.sh
 
 # Maroon
 linkarzu_color01="#eba0ac"

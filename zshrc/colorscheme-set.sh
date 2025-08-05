@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github.com/dotfiles/zshrc/colorscheme-set.sh
-# ~/github.com/dotfiles/zshrc/colorscheme-set.sh
+# Filename: ~/github.com/circuit-shell/dotfiles/zshrc/colorscheme-set.sh
+# ~/github.com/circuit-shell/dotfiles/zshrc/colorscheme-set.sh
 
 # Exit immediately if a command exits with a non-zero status
 set -e
@@ -20,8 +20,8 @@ fi
 colorscheme_profile="$1"
 
 # Define paths
-colorscheme_file="$HOME/github.com/dotfiles/colorscheme/list/$colorscheme_profile"
-active_file="$HOME/github.com/dotfiles/colorscheme/active/active-colorscheme.sh"
+colorscheme_file="$HOME/github.com/circuit-shell/dotfiles/colorscheme/list/$colorscheme_profile"
+active_file="$HOME/github.com/circuit-shell/dotfiles/colorscheme/active/active-colorscheme.sh"
 
 # Check if the colorscheme file exists
 if [ ! -f "$colorscheme_file" ]; then
@@ -43,7 +43,7 @@ else
 fi
 
 generate_kitty_config() {
-  kitty_conf_file="$HOME/github.com/dotfiles/kitty/active-theme.conf"
+  kitty_conf_file="$HOME/github.com/circuit-shell/dotfiles/kitty/active-theme.conf"
 
   cat >"$kitty_conf_file" <<EOF
 foreground            $linkarzu_color14
@@ -96,7 +96,7 @@ EOF
 
 generate_starship_config() {
   # Define the path to the active-config.toml
-  starship_conf_file="$HOME/github.com/dotfiles/starship-config/active-config.toml"
+  starship_conf_file="$HOME/github.com/circuit-shell/dotfiles/starship-config/active-config.toml"
 
   # Generate the Starship configuration file
   cat >"$starship_conf_file" <<EOF
@@ -177,7 +177,7 @@ if [ "$UPDATED" = true ]; then
   generate_kitty_config
 
   # Set the tmux colors
-  $HOME/github.com/dotfiles/tmux/tools/linkarzu/set_tmux_colors.sh
+  $HOME/github.com/circuit-shell/dotfiles/tmux/tools/linkarzu/set_tmux_colors.sh
   tmux source-file ~/.tmux.conf
   echo "Tmux colors set and tmux configuration reloaded."
 
