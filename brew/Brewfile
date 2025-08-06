@@ -27,7 +27,6 @@ brew "node"
 brew "pngpaste"  # Used by obsidian.nvim to paste images
 brew "trash" # CLI tool that moves files or folder to the trash, used by neo-tree.nvim
 brew "htop"
-brew "neofetch"
 brew "neovim"
 brew "gnu-sed"
 brew "ripgrep"
