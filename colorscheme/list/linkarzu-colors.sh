@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/colorscheme/list/linkarzu-colors.sh
-# ~/github/dotfiles-latest/colorscheme/list/linkarzu-colors.sh
+# Filename: ~/github.com/circuit-shell/dotfiles/colorscheme/list/linkarzu-colors.sh
+# ~/github.com/circuit-shell/dotfiles/colorscheme/list/linkarzu-colors.sh
 
 linkarzu_color01="#949ae5"
 linkarzu_color02="#37f499"

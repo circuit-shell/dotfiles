@@ -2,7 +2,7 @@
 # SECTION: Auto pull dotfiles
 # #####################################################################################
  echo "Pulling latest changes, please wait..."
- (cd ~/github/dotfiles-latest && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
+ (cd ~/github.com/circuit-shell/dotfiles && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
 # #####################################################################################
 
 # #####################################################################################
@@ -65,9 +65,9 @@ zstyle ':completion:*:*:*:*:default' list-colors '${(s.:.)LS_COLORS}'
 
 # #############################################################################
 # SECTION: Imports
-source ~/github/dotfiles-latest/zshrc/helper/functions.sh
-source ~/github/dotfiles-latest/zshrc/helper/aliases.sh
-source ~/github/dotfiles-latest/zshrc/helper/git-plugin.sh
+source ~/github.com/circuit-shell/dotfiles/zshrc/helper/functions.sh
+source ~/github.com/circuit-shell/dotfiles/zshrc/helper/aliases.sh
+source ~/github.com/circuit-shell/dotfiles/zshrc/helper/git-plugin.sh
 # #############################################################################
 
 # #############################################################################
@@ -75,15 +75,15 @@ source ~/github/dotfiles-latest/zshrc/helper/git-plugin.sh
 mkdir -p ~/.config
 mkdir -p ~/.config/kitty/
 mkdir -p ~/github/obsidian_main
-create_symlink ~/github/dotfiles-latest/vimrc/vimrc-file ~/.vimrc
-create_symlink ~/github/dotfiles-latest/vimrc/vimrc-file ~/github/obsidian_main/.obsidian.vimrc
-create_symlink ~/github/dotfiles-latest/zshrc/zshrc-file.sh ~/.zshrc
-create_symlink ~/github/dotfiles-latest/tmux/tmux.conf.sh ~/.tmux.conf
-create_symlink ~/github/dotfiles-latest/kitty/kitty.conf ~/.config/kitty/kitty.conf
-create_symlink ~/github/dotfiles-latest/.prettierrc.yaml ~/.prettierrc.yaml
-# create_symlink ~/github/dotfiles-latest/sketchybar/felixkratz ~/.config/sketchybar
-# create_symlink ~/github/dotfiles-latest/sketchybar/default ~/.config/sketchybar
-# create_symlink ~/github/dotfiles-latest/sketchybar/neutonfoo ~/.config/sketchybar
+create_symlink ~/github.com/circuit-shell/dotfiles/vimrc/vimrc-file ~/.vimrc
+create_symlink ~/github.com/circuit-shell/dotfiles/vimrc/vimrc-file ~/github/obsidian_main/.obsidian.vimrc
+create_symlink ~/github.com/circuit-shell/dotfiles/zshrc/zshrc-file.sh ~/.zshrc
+create_symlink ~/github.com/circuit-shell/dotfiles/tmux/tmux.conf.sh ~/.tmux.conf
+create_symlink ~/github.com/circuit-shell/dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
+create_symlink ~/github.com/circuit-shell/dotfiles/.prettierrc.yaml ~/.prettierrc.yaml
+# create_symlink ~/github.com/circuit-shell/dotfiles/sketchybar/felixkratz ~/.config/sketchybar
+# create_symlink ~/github.com/circuit-shell/dotfiles/sketchybar/default ~/.config/sketchybar
+# create_symlink ~/github.com/circuit-shell/dotfiles/sketchybar/neutonfoo ~/.config/sketchybar
 # #############################################################################
 
 # #############################################################################
@@ -107,7 +107,7 @@ esac
 # #############################################################################
 # Section: MacOS-specific configurations
 if [ "$OS" = 'Mac' ]; then
- 
+
   # ############################################################################
   # SECTION: Homebrew
   # Add Homebrew to PATH using eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -151,7 +151,7 @@ if [ "$OS" = 'Mac' ]; then
 
   # ############################################################################
   # SECTION: nvim
-  create_symlink ~/github/dotfiles-latest/neovim/specvim/ ~/.config/nvim
+  create_symlink ~/github.com/circuit-shell/dotfiles/neovim/specvim/ ~/.config/nvim
   v() {
     $(brew --prefix)/bin/nvim
   }
@@ -286,12 +286,12 @@ if [ "$OS" = 'Mac' ]; then
 
   # #############################################################################
   # SECTION: private config
-  if [ -f ~/github/dotfiles-latest/zshrc/helper/private.sh ]; then
-    source ~/github/dotfiles-latest/zshrc/helper/private.sh
+  if [ -f ~/github.com/circuit-shell/dotfiles/zshrc/helper/private.sh ]; then
+    source ~/github.com/circuit-shell/dotfiles/zshrc/helper/private.sh
   fi
   # #############################################################################
-  
+
 fi
 # ############################################################################
 
-source ~/github/dotfiles-latest/zshrc/helper/history-settings.sh
+source ~/github.com/circuit-shell/dotfiles/zshrc/helper/history-settings.sh

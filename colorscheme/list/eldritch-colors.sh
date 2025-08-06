@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Filename: ~/github/dotfiles-latest/colorscheme/list/eldritch-colors.sh
-# ~/github/dotfiles-latest/colorscheme/list/eldritch-colors.sh
+# Filename: ~/github.com/circuit-shell/dotfiles/colorscheme/list/eldritch-colors.sh
+# ~/github.com/circuit-shell/dotfiles/colorscheme/list/eldritch-colors.sh
 
 linkarzu_color01="#f265b5"
 linkarzu_color02="#37f499"
