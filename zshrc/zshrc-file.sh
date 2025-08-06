@@ -116,6 +116,7 @@ if [ "$OS" = 'Mac' ]; then
   # fi
   export HOMEBREW_NO_AUTO_UPDATE="1"
   export PATH="$(brew --prefix)/bin:$PATH"
+  export PATH="$(brew --prefix)/sbin:$PATH"
   if command -v brew &>/dev/null; then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
   fi
