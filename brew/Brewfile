@@ -1,6 +1,6 @@
 # Tap into homebrew services
-tap "homebrew/bundle" 
-tap "homebrew/services"  
+# tap "homebrew/bundle" 
+# tap "homebrew/services"  
 
 # Brew Installations
 brew "pyenv"
@@ -27,7 +27,8 @@ brew "luarocks"
 brew "ghostscript"
 brew "imagemagick"
 brew "tectonic"
-brew "gcc"
+brew "node"
+# brew "gcc"
 # brew "kubernetes-cli"
 # brew "mysql-client"
 brew "pngpaste"  # Used by obsidian.nvim to paste images
@@ -37,13 +38,13 @@ brew "neofetch"
 brew "neovim"
 brew "gnu-sed"
 brew "ripgrep"
-brew "jesseduffield/lazygit/lazygit"
+brew "lazygit"
 
 # Cask Installations
-cask "font-meslo-lg-nerd-font"
-cask "font-jetbrains-mono-nerd-font"
+# cask "font-meslo-lg-nerd-font"
+# cask "font-jetbrains-mono-nerd-font"
 cask "font-fira-code-nerd-font"
-cask "cursorcerer"  
+# cask "cursorcerer"  
 cask "hot"  # Not essentials, but added them here, as I install them all the time ;)
 cask "sf-symbols"
 
