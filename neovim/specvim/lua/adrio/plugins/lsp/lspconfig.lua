@@ -125,7 +125,6 @@ return {
 					if client.supports_method("textDocument/formatting") then
 						-- //the following line will be adding a debug print statement
 						vim.api.nvim_create_autocmd("BufWritePre", {
-
 							group = vim.api.nvim_create_augroup("LspFormatting", {}),
 							buffer = bufnr,
 							callback = function()
@@ -211,7 +210,7 @@ return {
 			},
 		}
 
-		-- Set up servers
+		-- Set up servers using new Neovim 0.11+ API
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				local config = server_configs[server_name] or {}
@@ -223,7 +222,9 @@ return {
 					config.setup = nil
 				end
 
-				lspconfig[server_name].setup(config)
+				-- Use the new API
+				vim.lsp.config(server_name, config)
+				vim.lsp.enable(server_name)
 			end,
 		})
 	end,
