@@ -91,7 +91,7 @@ return {
 							icon = " ",
 							key = "s",
 							desc = "Restore Session",
-							action = "<cmd>SessionRestore<CR>",
+							action = "<cmd>AutoSession restore<CR>",
 						},
 						{
 							icon = " ",
