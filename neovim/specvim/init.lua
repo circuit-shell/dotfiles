@@ -1,3 +1,3 @@
-require("adrio.core")
-require("adrio.lazy")
-require("adrio.lsp")
+require("circuitshell.core")
+require("circuitshell.lazy")
+require("circuitshell.lsp")
