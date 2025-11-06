@@ -152,7 +152,7 @@ if [ "$OS" = 'Mac' ]; then
 
   # ############################################################################
   # SECTION: nvim
-  create_symlink ~/github.com/circuit-shell/dotfiles/neovim/specvim/ ~/.config/nvim
+  create_symlink ~/github.com/circuit-shell/dotfiles/neovim/csvim/ ~/.config/nvim
 
   # Function to determine which nvim to use
   get_nvim_path() {
