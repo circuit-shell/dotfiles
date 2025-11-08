@@ -15,20 +15,15 @@ return {
 		config = function()
 			local treesitter = require("nvim-treesitter.configs")
 			treesitter.setup({
-				highlight = {
-					enable = true,
-				},
+				highlight = { enable = true },
 				indent = { enable = true },
-				-- enable autotagging (w/ nvim-ts-autotag plugin)
-				autotag = {
-					enable = true,
-				},
-				-- These are here to make the the linter happy
+				autotag = { enable = true },
 				modules = {},
 				ignore_install = {},
 				auto_install = false,
 				sync_install = false,
 				-- ensure these language parsers are installed
+				folds = { enable = true },
 				ensure_installed = {
 					"latex",
 					"json",

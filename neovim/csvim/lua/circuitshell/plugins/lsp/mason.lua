@@ -19,6 +19,7 @@ return {
 				"angularls@18.2.0",
 				"jsonls",
 				"gopls",
+				"marksman",
 			},
 		},
 		dependencies = {

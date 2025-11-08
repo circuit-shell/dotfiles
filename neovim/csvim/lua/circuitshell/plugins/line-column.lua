@@ -4,11 +4,15 @@ return {
 		config = function()
 			local builtin = require("statuscol.builtin")
 
-			-- Function to handle the custom line number formatting
 			local function custom_lnum()
+				-- Don't show line number for wrapped lines
+				if vim.v.virtnum ~= 0 then
+					return ""
+				end
+
 				local lnum = vim.v.lnum
 				local relnum = vim.v.relnum
-				
+
 				-- For the current line, use CursorLineNr highlight
 				if relnum == 0 then
 					local result = "%#CursorLineNr#" .. lnum
