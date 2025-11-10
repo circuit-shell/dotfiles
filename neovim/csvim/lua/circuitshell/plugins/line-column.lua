@@ -109,13 +109,23 @@ return {
 				end
 			end, { desc = "Peek Fold/Show Hover" })
 
+			-- Set folding options (required for nvim-ufo)
+			vim.o.foldcolumn = "1"
+			vim.o.foldlevel = 99
+			vim.o.foldlevelstart = 99
+			vim.o.foldenable = true
+
 			require("ufo").setup({
 				close_fold_kinds_for_ft = {
 					["lua"] = { "comment" },
 				},
 				enable_get_fold_virt_text = true,
 				open_fold_hl_timeout = 1000,
-				provider_selector = function()
+				provider_selector = function(bufnr, filetype, buftype)
+					-- Use treesitter for markdown files to fold headings
+					if filetype == "markdown" then
+						return { "treesitter", "indent" }
+					end
 					return { "lsp", "indent" }
 				end,
 				preview = {
