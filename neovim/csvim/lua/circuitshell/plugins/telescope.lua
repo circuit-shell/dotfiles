@@ -17,12 +17,13 @@ return {
 			local theme_config = {
 				theme = "cursor",
 				layout_strategy = "vertical",
+				borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
 				layout_config = {
 					vertical = {
 						prompt_position = "top",
 						width = { padding = 0.05 },
 						mirror = true,
-						height = { padding = 0 },
+						height = { padding = 0.05 },
 						preview_height = 0.75,
 						scroll_speed = 0.1,
 					},

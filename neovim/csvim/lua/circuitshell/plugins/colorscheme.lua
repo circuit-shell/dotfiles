@@ -58,9 +58,9 @@ return {
 					surface2 = "#414458",
 					surface1 = "#343746",
 					surface0 = "#282A36",
-					base = "#282A36",
-					mantle = "#21222C",
-					crust = "#191A21",
+					base = "#1C1E26", -- darker (was #282A36)
+					mantle = "#111110", -- darker (was #21222C)
+					crust = "#0F1014", -- darker (was #191A21)
 				},
 			},
 			custom_highlights = {
