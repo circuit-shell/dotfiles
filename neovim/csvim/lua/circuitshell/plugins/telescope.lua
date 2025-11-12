@@ -105,14 +105,13 @@ return {
 			keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Fuzzy find help tags" })
 			keymap.set("n", "<leader>fg", "<cmd>Telescope changed_files<cr>", { desc = "Fuzzy find git files" })
 			keymap.set("n", "<leader>ft", "<cmd>TodoTelescope <cr>", { desc = "Find todos" })
-			keymap.set("n", "<leader>tm", "<cmd>Telescope noice<cr>", { desc = "Fuzzy find messages" })
+			-- keymap.set("n", "<leader>tm", "<cmd>Telescope noice<cr>", { desc = "Fuzzy find messages" })
 
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("undo")
 			require("telescope").load_extension("changed_files")
 			require("telescope").load_extension("advanced_git_search")
-			require("telescope").load_extension("noice")
-			require("telescope").load_extension("harpoon")
+			-- require("telescope").load_extension("noice")
 		end,
 	},
 }

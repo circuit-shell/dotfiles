@@ -136,7 +136,7 @@ vim.filetype.add({
 -- ============================================================================
 
 -- Source change in nvim config
-keymap.set("n", "<leader>om", ":update<CR> :source<CR>")
+keymap.set("n", "<leader>os", ":update<CR> :source<CR>")
 -- Paste without yanking selection in visual mode (currently disabled)
 -- vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })
 

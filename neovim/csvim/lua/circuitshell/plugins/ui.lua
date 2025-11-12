@@ -1,63 +1,23 @@
 return {
-	{ "stevearc/dressing.nvim", event = "VeryLazy" },
 	{
-		"rcarriga/nvim-notify",
-		priority = 900,
-		keys = {
-			{
-				"<leader>nn",
-				function()
-					require("notify").dismiss({ silent = true, pending = true })
-				end,
-				desc = "Dismiss Current Notification",
-			},
-		},
+		"NvChad/nvim-colorizer.lua",
+		event = "BufReadPre",
 		opts = {
-			background_colour = "#000012",
-			timeout = 3000,
-			render = "wrapped-default",
+			user_default_options = {
+				names = false, -- disable named colors
+			},
 		},
 	},
 	{
-		"folke/noice.nvim",
+		"folke/which-key.nvim",
 		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 500
+		end,
 		opts = {
-			lsp = {
-				override = {
-					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-					["vim.lsp.util.stylize_markdown"] = true,
-					["cmp.entry.get_documentation"] = true,
-				},
-
-				keys = {
-					{
-						"<leader><leader>",
-						":",
-						desc = "Command Line",
-						mode = "n",
-					},
-				},
-				signature = {
-					enabled = true,
-					auto_open = {
-						enabled = false,
-						trigger = true,
-						luasnip = true,
-						throttle = 50,
-					},
-				},
-			},
-			presets = {
-				bottom_search = true,
-				command_palette = true,
-				long_message_to_split = true,
-				inc_rename = false,
-				lsp_doc_border = false,
-			},
-		},
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
+			preset = "modern",
+			 win = { border = "single" },
 		},
 	},
 	{
@@ -68,19 +28,18 @@ return {
 			animate = { enabled = true },
 			bigfile = { enabled = true },
 			explorer = { enabled = true },
-			notifier = { enabled = false, timeout = 3000 },
 			quickfile = { enabled = true },
 			image = { enabled = true },
 			words = { enabled = true },
 			input = { enabled = true },
+			notifier = { enabled = true },
 			dashboard = {
 				width = 60,
-				row = nil, -- dashboard position. nil for center
-				col = nil, -- dashboard position. nil for center
-				pane_gap = 4, -- empty columns between vertical panes
-				autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
+				row = nil,
+				col = nil,
+				pane_gap = 4,
+				autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
 				preset = {
-					pick = nil,
 					sections = {
 						{ section = "header" },
 						{ section = "keys", gap = 1, padding = 1 },
@@ -137,32 +96,6 @@ return {
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠟⠉⠀⠀⠀⠀⠈⠙⠋⠁⠀⠀⠀⠀⠉⠻⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
 ]],
-				},
-				-- item field formatters
-				formats = {
-					icon = function(item)
-						if item.file and item.icon == "file" or item.icon == "directory" then
-							return M.icon(item.file, item.icon)
-						end
-						return { item.icon, width = 2, hl = "icon" }
-					end,
-					footer = { "%s", align = "center" },
-					header = { "%s", align = "center" },
-					file = function(item, ctx)
-						local fname = vim.fn.fnamemodify(item.file, ":~")
-						fname = ctx.width and #fname > ctx.width and vim.fn.pathshorten(fname) or fname
-						if #fname > ctx.width then
-							local dir = vim.fn.fnamemodify(fname, ":h")
-							local file = vim.fn.fnamemodify(fname, ":t")
-							if dir and file then
-								file = file:sub(-(ctx.width - #dir - 2))
-								fname = dir .. "/…" .. file
-							end
-						end
-						local dir, file = fname:match("^(.*)/(.+)$")
-						return dir and { { dir .. "/", hl = "dir" }, { file, hl = "file" } }
-							or { { fname, hl = "file" } }
-					end,
 				},
 			},
 			gitbrowse = {
@@ -260,7 +193,6 @@ return {
 						Snacks.debug.backtrace()
 					end
 					vim.print = _G.dd -- Override print to use snacks for `:=` command
-
 					Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
 					Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>tw")
 					Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>tL")

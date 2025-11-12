@@ -57,3 +57,5 @@ opt.splitbelow = true -- split horizontal windows below
 
 -- File handling
 opt.swapfile = false -- disable swap file creation
+
+opt.winborder = "single"
