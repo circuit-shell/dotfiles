@@ -59,3 +59,4 @@ opt.splitbelow = true -- split horizontal windows below
 opt.swapfile = false -- disable swap file creation
 
 opt.winborder = "single"
+opt.fillchars:append { eob = ' ' }

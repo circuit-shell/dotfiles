@@ -1,3 +1,5 @@
+local excluded_filetypes = { "NvimTree", "packer", "dashboard", "oil", "alpha", "snacks_dashboard" }
+
 return {
 	{
 		"luukvbaal/statuscol.nvim",
@@ -33,8 +35,8 @@ return {
 			require("statuscol").setup({
 				relculright = true,
 				thousands = false,
-				ft_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
-				bt_ignore = { "NvimTree", "packer", "dashboard", "oil", "alpha" },
+				ft_ignore = excluded_filetypes,
+				bt_ignore = excluded_filetypes,
 				segments = {
 					-- Enable breakpoints
 					{
@@ -126,6 +128,11 @@ return {
 					if filetype == "markdown" then
 						return { "treesitter", "indent" }
 					end
+
+					if vim.tbl_contains(excluded_filetypes, filetype) then
+						return ""
+					end
+
 					return { "lsp", "indent" }
 				end,
 				preview = {

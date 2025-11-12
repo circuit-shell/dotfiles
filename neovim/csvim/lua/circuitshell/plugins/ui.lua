@@ -17,7 +17,7 @@ return {
 		end,
 		opts = {
 			preset = "modern",
-			 win = { border = "single" },
+			win = { border = "single" },
 		},
 	},
 	{
