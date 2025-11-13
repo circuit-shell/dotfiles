@@ -270,7 +270,7 @@ return {
 	},
 
 	-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	-- COLOR SCHEME - CATPPUCCIN (CUSTOM DRACULA COLORS)
+	-- COLOR SCHEME - CATPPUCCIN
 	-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 	{
@@ -287,7 +287,6 @@ return {
 
 				-- Visual settings
 				transparent_background = true, -- Transparent background
-				show_end_of_buffer = false, -- Hide ~ characters at end of buffer
 				term_colors = false, -- Don't set terminal colors
 
 				-- Inactive window styling
@@ -321,20 +320,20 @@ return {
 				-- Custom Dracula-inspired color palette
 				color_overrides = {
 					all = {
-						rosewater = "#FFB86C",
-						flamingo = "#FF79C6",
-						pink = "#FF79C6",
-						mauve = "#BD93F9",
-						red = "#FF5555",
-						maroon = "#FF5555",
-						peach = "#FFB86C",
-						yellow = "#F1FA8C",
-						green = "#81fba0",
-						teal = "#33AFFF",
-						sky = "#33AFFF",
-						sapphire = "#33AFFF",
-						blue = "#BD93F9",
-						lavender = "#FF79C6",
+						rosewater = "#C3E88D", -- Light green
+						flamingo = "#FF69B4", -- Pastel pink
+						pink = "#FF69B4", -- Pastel pink
+						mauve = "#C9C3E8", -- Pastel purple
+						red = "#FF3737", -- Dark red
+						maroon = "#FF3737", -- Dark red
+						peach = "#FFD7BE", -- Light orange
+						yellow = "#F7DC6F", -- Light yellow
+						green = "#34C759", -- Green
+						teal = "#00BFFF", -- Teal
+						sky = "#00BFFF", -- Teal
+						sapphire = "#00BFFF", -- Teal
+						blue = "#6495ED", -- Light blue
+						lavender = "#C9C3E8", -- Pastel purple
 						text = "#F8F8F2",
 						subtext1 = "#F8F8F2",
 						subtext0 = "#BFBFBF",
@@ -352,14 +351,9 @@ return {
 
 				-- Custom highlight overrides
 				custom_highlights = {
-					-- Punctuation and delimiters
 					["@punctuation.delimiter"] = { fg = "#F8F8F2" },
 					["Delimiter"] = { fg = "#F8F8F2" },
-
-					-- Diagnostics
 					["DiagnosticUnnecessary"] = { fg = "#FF5555" },
-
-					-- DAP (Debug Adapter Protocol) highlights
 					["DapBreakpoint"] = { fg = "#FF5555" }, -- Red breakpoint
 					["DapStopped"] = { fg = "#FFB86C" }, -- Orange stopped line
 					["DapStoppedLine"] = { bg = "#493B30" }, -- Highlight stopped line bg

@@ -144,24 +144,44 @@ vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without yanking selection" })
 -- Folding section
 -- ============================================================================
 
--- Use <CR> to fold when in normal mode
--- To see help about folds use `:help fold`
 vim.keymap.set("n", "<CR>", function()
-	-- Don't override <CR> in command-line window (q:, q/, q?)
-	local cmdwin_type = vim.fn.getcmdwintype()
-	if cmdwin_type ~= "" then
+	-- Only override <CR> for these filetypes
+	local allowed_filetypes = {
+		-- General programming
+		"lua", "python", "rust", "go", "c", "cpp", "java", "vim",
+		-- Web - JavaScript/TypeScript
+		"javascript", "typescript", "javascriptreact", "typescriptreact",
+		"jsx", "tsx",
+		-- Web - HTML/CSS
+		"html", "htm", "css", "scss", "sass", "less", "stylus",
+		-- Web - Frameworks & Templates
+		"vue", "svelte", "astro", "ejs", "handlebars", "pug",
+		"jinja", "twig", "liquid", "php", "eruby",
+		-- Web - Backend
+		"ruby", "elixir", "elm", "graphql",
+		-- Mobile - Native
+		"swift", "kotlin", "dart", "objc", "objcpp",
+		-- Mobile/Web - Markup & Config
+		"xml", "json", "yaml", "yml", "toml", "env", "dotenv",
+		-- Documentation & Data
+		"markdown", "md", "rst", "asciidoc", "org", "sql",
+		-- DevOps & Scripts
+		"dockerfile", "sh", "bash", "zsh", "fish", "make",
+		-- Other common formats
+		"proto", "prisma", "tf", "hcl", "nginx", "apache",
+	}
+	-- Check if we should use default <CR> behavior
+	if vim.fn.getcmdwintype() ~= "" or
+	   not vim.tbl_contains(allowed_filetypes, vim.bo.filetype) then
 		return vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
 	end
-	
-	-- Get the current line number
+	-- Toggle fold logic
 	local line = vim.fn.line(".")
-	-- Get the fold level of the current line
 	local foldlevel = vim.fn.foldlevel(line)
 	if foldlevel == 0 then
 		vim.notify("No fold found", vim.log.levels.INFO)
 	else
 		vim.cmd("normal! za")
-		vim.cmd("normal! zz") -- center the cursor line on screen
+		vim.cmd("normal! zz")
 	end
 end, { desc = "[P]Toggle fold" })
-
