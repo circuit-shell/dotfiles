@@ -108,11 +108,11 @@ set -g @nova-status-style-fg "#F3F0F0"
 set -g @nova-status-style-active-bg "#FF79C6"
 set -g @nova-status-style-active-fg "#0E1419"
 set -g @nova-status-style-double-bg "default"
-set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W  #I"
+set -g @nova-pane "#{?pane_in_mode,#{pane_mode},} #W  #I"
 set -g @nova-segment-whoami "\uec03#[fg=#0E1419]  \uec03"
 set -g @nova-segment-whoami-colors "#FF79C6 default"
 set -g @nova-rows 1
-set -g @nova-segment-mode "#[fg=#0E1419]#{?client_prefix, 󰳗  , 󰳗  }"
+set -g @nova-segment-mode " \uec03#[fg=#0E1419]#{?client_prefix, 󰳗  , 󰳗  }"
 
 set -g @nova-segment-mode-colors "#FF79C6 default"
 set -g @nova-segments-0-left "mode"

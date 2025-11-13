@@ -76,7 +76,7 @@ return {
 			highlight = true,
 		})
 		local get_buf_filetype = function()
-			return vim.api.nvim_buf_get_option(0, "filetype")
+			return vim.bo[0].filetype
 		end
 		local format_name = function(output)
 			if excluded_filetypes_table[get_buf_filetype()] then
@@ -94,12 +94,12 @@ return {
 					winbar = excluded_filetypes_array,
 				},
 				globalstatus = true,
-				section_separators = { left = "", right = "" },
-				component_separators = { right = "│", left = "│" },
+				section_separators = { left = "", right = "" },
+				component_separators = { right = "", left = "" },
 			},
 			sections = {
 				lualine_a = {
-					{ "mode", separator = { left = "" }, right_padding = 2 },
+					{ "mode", separator = { left = "" }, right_padding = 2 },
 					{
 						"branch",
 						fmt = function(output)
@@ -168,9 +168,7 @@ return {
 					{
 						function()
 							local lsps = vim.lsp.get_clients({ bufnr = vim.fn.bufnr() })
-							local icon = require("nvim-web-devicons").get_icon_by_filetype(
-								vim.api.nvim_buf_get_option(0, "filetype")
-							)
+							local icon = require("nvim-web-devicons").get_icon_by_filetype(vim.bo[0].filetype)
 							if lsps and #lsps > 0 then
 								local names = {}
 								for _, lsp in ipairs(lsps) do
@@ -188,7 +186,7 @@ return {
 					},
 				},
 				lualine_z = {
-					{ "location", separator = { left = "", right = "" }, right_padding = 2 },
+					{ "location", separator = { left = "", right = "" }, right_padding = 2 },
 				},
 			},
 		})
