@@ -151,20 +151,36 @@ return {
 			})
 		end,
 	},
-	{
-		"karb94/neoscroll.nvim",
-		event = "WinScrolled",
-		config = function()
-			require("neoscroll").setup({
-				mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
-				hide_cursor = true,
-				stop_eof = false,
-				use_local_scrolloff = false,
-				respect_scrolloff = false,
-				cursor_scrolls_alone = true,
-			})
-		end,
-	},
+{
+	"gelguy/wilder.nvim",
+	event = "CmdlineEnter",
+	config = function()
+		local wilder = require("wilder")
+
+		wilder.setup({ modes = { ":", "/" } })
+
+		wilder.set_option(
+			"renderer",
+			wilder.popupmenu_renderer(wilder.popupmenu_palette_theme({
+				min_width = "50%",
+				max_width = "50%",
+				min_height = "20%",
+				max_height = "30%",
+				pumblend = 20,
+				reverse = 0,
+				prompt_position = "top",
+				-- Position the entire popup at top of screen
+				winblend = 20,
+				highlights = {
+					border = "FloatBorder",
+					accent = wilder.make_hl("WilderAccent", "Pmenu", { { a = 1 }, { a = 1 }, { foreground = "#7aa2f7" } }),
+					selected = wilder.make_hl("WilderSelected", "Pmenu", { { a = 1 }, { a = 1 }, { background = "#3b4261" } }),
+				},
+				highlighter = wilder.basic_highlighter(),
+			}))
+		)
+	end,
+},
 
 	-- dependencies = {
 	-- 	-- dap deps

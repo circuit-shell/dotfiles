@@ -1,3 +1,5 @@
+local lspconfig = require("lspconfig")
+
 return {
 	cmd = { "astro-ls", "--stdio" },
 	filetypes = { "astro" },

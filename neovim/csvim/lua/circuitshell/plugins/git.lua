@@ -24,19 +24,20 @@ return {
 		numhl = false,
 		event = { "BufReadPre", "BufNewFile" },
 		signs = {
-			add = { text = "▎" },
-			change = { text = "▎" },
-			delete = { text = "" },
-			topdelete = { text = "" },
-			changedelete = { text = "▎" },
-			untracked = { text = "▎" },
+			add = { text = "➕" }, -- Unicode plus sign
+			change = { text = "✏️" }, -- Pencil emoji
+			delete = { text = "➖" }, -- Unicode minus sign
+			topdelete = { text = "⏴" }, -- Left-pointing triangle
+			changedelete = { text = "⏵" }, -- Right-pointing triangle
+			untracked = { text = "❓" }, -- Question mark emoji
 		},
 		signs_staged = {
-			add = { text = "▎" },
-			change = { text = "▎" },
-			delete = { text = "" },
-			topdelete = { text = "" },
-			changedelete = { text = "▎" },
+			add = { text = "➕" }, -- Unicode plus sign
+			change = { text = "✏️" }, -- Pencil emoji
+			delete = { text = "➖" }, -- Unicode minus sign
+			topdelete = { text = "⏴" }, -- Left-pointing triangle
+			changedelete = { text = "⏵" }, -- Right-pointing triangle
+			untracked = { text = "❓" }, -- Question mark emoji
 		},
 		opts = {
 			on_attach = function(bufnr)

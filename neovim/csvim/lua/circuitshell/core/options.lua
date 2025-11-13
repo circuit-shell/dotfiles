@@ -3,6 +3,9 @@ local opt = vim.opt -- for conciseness
 -- Netrw settings
 vim.cmd("let g:netrw_liststyle = 3")
 
+-- Command line height
+vim.opt.cmdheight = 0
+
 -- Telescope settings
 vim.g.telescope_changed_files_base_branch = "main" -- can also use `:Telescope changed_files choose_base_branch`
 

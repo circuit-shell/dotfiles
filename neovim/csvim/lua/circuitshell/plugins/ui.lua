@@ -236,6 +236,15 @@ return {
 				end,
 				desc = "Prev Reference",
 			},
+
+			-- File explorer
+			{
+				"<leader>e",
+				function()
+					Snacks.explorer()
+				end,
+				desc = "File Explorer",
+			},
 		},
 
 		-- ─────────────────────────────────────────────────────────────────
@@ -264,6 +273,14 @@ return {
 					Snacks.toggle.line_number():map("<leader>tl")
 					Snacks.toggle.treesitter():map("<leader>tT")
 					Snacks.toggle.inlay_hints():map("<leader>th")
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				pattern = "*",
+				callback = function()
+					vim.api.nvim_set_hl(0, "SnacksPicker", { bg = "none", nocombine = true })
+					vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = "#316c71", bg = "none", nocombine = true })
 				end,
 			})
 		end,
@@ -378,6 +395,26 @@ return {
 
 			-- Apply the colorscheme
 			vim.cmd.colorscheme("catppuccin")
+		end,
+	},
+	{
+		"gelguy/wilder.nvim",
+		event = "CmdlineEnter",
+		config = function()
+			local wilder = require("wilder")
+
+			wilder.setup({ modes = { ":" } })
+
+			wilder.set_option(
+				"renderer",
+				wilder.popupmenu_renderer(wilder.popupmenu_palette_theme({
+					border = "single",
+					max_height = "20%",
+					min_height = 0,
+					prompt_position = "top",
+					reverse = 0,
+				}))
+			)
 		end,
 	},
 }
