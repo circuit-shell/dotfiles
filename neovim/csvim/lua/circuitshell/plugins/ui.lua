@@ -386,10 +386,10 @@ return {
 					nvimtree = true, -- File tree
 					treesitter = true, -- Syntax highlighting
 					notify = true, -- Notification plugin
-					mini = {
-						enabled = true,
-						indentscope_color = "", -- Use default color for indent scope
-					},
+					-- mini = {
+					-- 	enabled = true,
+					-- 	indentscope_color = "", -- Use default color for indent scope
+					-- },
 				},
 			})
 
@@ -411,8 +411,6 @@ return {
 					border = "single",
 					max_height = "20%",
 					min_height = 0,
-					prompt_position = "top",
-					reverse = 0,
 				}))
 			)
 		end,

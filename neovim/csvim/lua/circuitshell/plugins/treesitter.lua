@@ -1,11 +1,5 @@
 return {
 	{
-		"nvim-neorg/neorg",
-		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
-		version = "*", -- Pin Neorg to the latest stable release
-		config = true,
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPre", "BufNewFile" },
 		build = ":TSUpdate",
@@ -53,7 +47,6 @@ return {
 					"bash",
 					"angular",
 					"http",
-					"norg",
 					"latex",
 					"scss",
 					"svelte",

@@ -1,7 +1,9 @@
 return {
-	"szw/vim-maximizer",
-	keys = {
-		{ "<leader>bb", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
+	{
+		"szw/vim-maximizer",
+		keys = {
+			{ "<leader>bb", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
+		},
 	},
 	{
 		"akinsho/bufferline.nvim",
