@@ -1,6 +1,8 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "master", -- Use old stable version
+
 		event = { "BufReadPre", "BufNewFile" },
 		build = ":TSUpdate",
 		dependencies = {
@@ -19,7 +21,6 @@ return {
 				-- ensure these language parsers are installed
 				folds = { enable = true },
 				ensure_installed = {
-					"latex",
 					"json",
 					"javascript",
 					"typescript",
@@ -47,7 +48,7 @@ return {
 					"bash",
 					"angular",
 					"http",
-					"latex",
+					-- "latex",
 					"scss",
 					"svelte",
 					"typst",
