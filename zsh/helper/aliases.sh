@@ -1,123 +1,220 @@
+# ===== Directory Navigation =====
 
-# Pomo timer
-# Requires https://github.com/caarlos0/timer to be installed
-alias work="timer 60m && terminal-notifier -message 'Pomodoro'\
-        -title 'Work Timer is up! Take a Break 😊'\
-        -appIcon '~/Pictures/gopher.png'\
-        -sound Crystal"
-alias rest="timer 10m && terminal-notifier -message 'Pomodoro'\
-        -title 'Break is over! Get back to work 😬'\
-        -appIcon '~/Pictures/gopher.png'\
-        -sound Crystal"
+# Zoxide (smarter cd)
+eval "$(zoxide init zsh)"
 
-alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
-alias c="code ."
+# Quick directory navigation
 alias ~="cd ~"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
+alias -- -='cd -'  # Previous directory
+
+# Directory shortcuts
+alias home='cd ~'
+alias gh='cd ~/github.com'
+alias dt='cd ~/Desktop'
+alias dl='cd ~/Downloads'
+
+# Directory operations
 alias md="mkdir -p"
+alias mkcd='mkcd'  # Function defined below
+alias cwd="pwd && echo 'Copied to clipboard' && pwd | wl-copy"  # Linux clipboard
+
+# Directory listing
+alias l='eza -F --icons'
+alias ll='eza -lF --icons'
+alias lla='eza -laF --icons'
+alias la='eza -aF --icons'
+alias lt='eza -T --icons --level=1'  # Tree view level 1
+function lt+() { eza -T --icons --level="$1"; }  # Tree with custom level
+alias llt='eza -lT --icons'
+
+# Directory stack
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd -${index}"; unset index
+
+# ===== File Operations =====
+
+# Create
 alias t="touch"
-alias cwd="pwd && echo 'Copied to clipboard' && copydir"
+alias md="mkdir -p"
+
+# Delete
 alias die="rm -rf"
-alias gacmsg="gaa && gcmsg"
+
+# Open
+alias o="open ./"
+alias c="code ."
+
+# ===== Git Aliases =====
+
+# Basic
+alias g='git'
+alias gs='git status'
+alias gst='git status'
+
+# Add
+alias ga='git add'
+alias gaa='git add --all'
+alias gap='git add --patch'
+
+# Commit
+alias gc='git commit -v'
+alias gc!='git commit -v --amend'
+alias gca='git commit -v -a'
+alias gca!='git commit -v -a --amend'
+alias gcm='git commit -m'
+alias gcmsg='git commit -m'
+alias gcam='git commit -a -m'
+alias gacmsg="gaa && gcmsg"  # Add all and commit with message
+
+# Branch
+alias gb='git branch'
+alias gba='git branch -a'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
+
+# Checkout
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gcm='git checkout main'
+alias gcd='git checkout develop'
+
+# Diff
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdt='git diff-tree --no-commit-id --name-only -r'
+
+# Fetch/Pull/Push
+alias gf='git fetch'
+alias gfa='git fetch --all --prune'
+alias gl='git pull'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
 alias gpn="git push --no-verify"
+alias gpu='git push -u origin $(git branch --show-current)'
+
+# Log
+alias glg='git log --stat'
+alias glgg='git log --graph'
+alias glgga='git log --graph --decorate --all'
+alias glo='git log --oneline --decorate'
+alias glol='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'''
+alias glols='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'' --stat'
+
+# Stash
+alias gsta='git stash'
+alias gstp='git stash pop'
+alias gstl='git stash list'
+alias gstd='git stash drop'
+
+# Remote
+alias gr='git remote'
+alias gra='git remote add'
+alias grv='git remote -v'
+
+# Reset
+alias grh='git reset'
+alias grhh='git reset --hard'
+alias grhs='git reset --soft'
+
+# Rebase
+alias grb='git rebase'
+alias grbi='git rebase -i'
+alias grbc='git rebase --continue'
+alias grba='git rebase --abort'
+
+# Merge
+alias gm='git merge'
+alias gma='git merge --abort'
+
+# Clean
+alias gclean='git clean -fd'
+alias gpristine='git reset --hard && git clean -dffx'
+
+# Show
+alias gsh='git show'
+alias gshs='git show --stat'
+
+# Worktree
+alias gwt='git worktree'
+alias gwta='git worktree add'
+alias gwtls='git worktree list'
+alias gwtrm='git worktree remove'
+
+# LazyGit
 alias lg="lazygit"
-alias lt+="tree -aL"
-alias lt="tree -aL 1"
-alias nota="npm run test-watch"
+
+# ===== NPM/Node/JavaScript =====
+
+# NPM shortcuts
 alias nr="npm run"
 alias nrd="npm run dev"
 alias nrda="npm run dev:android"
 alias nrdi="npm run dev:ios"
-alias nx="npx nx"
-alias o="open ./"
-alias ohmycolor="spectrum_ls"
-alias ohmyzsh="code ~/.oh-my-zsh"
-alias t="touch"
+alias nota="npm run test-watch"
+
+# Yarn
 alias ysd="yarn serve:dev"
-alias zshconfig="nvim ~/.zshrc"
-alias zshsrc="source ~/.zshrc"
-alias reload="source ~/.zshrc"
+
+# NX
+alias nx="npx nx"
+
+# ===== Development Tools =====
+
+# Editors
+alias vim='nvim'
+alias vi='nvim'
 alias nconfig="cd ~/.config/nvim/ && nvim"
-alias e='exit'
-alias ll='ls -lh'
-alias lla='ls -alh'
-alias python='python3'
-alias history='history -30'
-alias icat="kitten icat"
 
-# kubernetes, if you need help, just run 'kgp --help' for example
-alias k='kubectl'
-alias kx='kubectx'
-# alias ks='kubeswap'
-alias ks='kubens'
-alias kga='kubectl get all'
-alias kgp='kubectl get pods'
-alias kgpa='kubectl get pods --all-namespaces'
-alias kgpo='kubectl get pods -o wide'
+# VS Code
+alias code="code"
+alias c="code ."
 
-# golang aliases
+# Config files
+alias zshconfig="nvim ~/.zshrc"
+alias nconfig="cd ~/.config/nvim/ && nvim"
+
+# ===== Golang =====
+
+# Go coverage
 alias gocov='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
 
-kp() {
-  local port="${1:-4200}"
-  kill -9 $(lsof -t -i:$port)
-}
+# ===== System/Shell =====
 
-# alias advmake="z adv && open -a orbstack && git pull && rm -f firmware/*.uf2 && make && open ."
+# Reload shell
+alias reload="source ~/.zshrc"
+alias zshsrc="source ~/.zshrc"
 
-advmake() {
-  # Try to navigate to adv directory
-  z_output=$(z adv 2>&1)
-  z_status=$?
-  
-  if [ $z_status -ne 0 ]; then
-    # Check if the error is that we're already in the only match
-    if [[ "$z_output" == *"zoxide: you are already in the only match"* ]]; then
-      echo "Already in adv directory, continuing"
-    else
-      # It's a different error, show it and exit
-      echo "Error: Failed to navigate to adv directory: $z_output" >&2
-      return 1
-    fi
-  else
-    z adv
-    echo "Successfully navigated to adv directory"
-  fi
-  
-  # Open OrbStack in the background
-  if ! open -g -a orbstack; then
-    echo "Warning: Failed to open OrbStack, continuing anyway" >&2
-  fi
-  
-  # Pull latest changes
-  if ! git pull; then
-    echo "Warning: Git pull failed, continuing anyway" >&2
-  fi
-  
-  # Clean firmware files if the directory exists
-  if [ -d firmware ]; then
-    if ! rm -f firmware/*.uf2; then
-      echo "Warning: Failed to remove .uf2 files, continuing anyway" >&2
-    fi
-  else
-    echo "Warning: firmware directory not found, skipping file cleanup" >&2
-  fi
-  
-  # Build the project (critical step)
-  if ! make; then
-    echo "Error: Make failed" >&2
-    return 1
-  fi
-  
-  # Open the directory
-  if ! open .; then
-    echo "Warning: Failed to open directory in Finder" >&2
-  fi
-  
-  echo "advmake completed successfully"
-  return 0
-}
+# Exit
+alias e='exit'
+
+# History
+alias h='history'
+alias hgrep='history | grep'
+alias history='history -200'
+
+# Better defaults
+alias cat='bat'
+alias grep='grep --color=auto'
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+
+# Process management
+alias ps='ps auxf'
+alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
+
+# System info
+alias myip='curl ifconfig.me'
+alias ports='netstat -tulanp'
+
+# ===== Kitty Terminal =====
+
+# Kitty specific
+alias icat="kitten icat"
+alias kssh="kitten ssh"
+
 
