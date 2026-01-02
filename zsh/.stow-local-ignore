@@ -1,0 +1,5 @@
+.stow-local-ignore
+colorscheme-set.sh
+helper
+readme.md
+zshrc-file.sh
