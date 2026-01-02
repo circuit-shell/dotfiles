@@ -1,68 +1,70 @@
-# #############################################################################
-# Do not delete the `UNIQUE_ID` line below, I use it to backup original files
-# so they're not lost when my symlinks are applied
-# UNIQUE_ID=do_not_delete_this_line
-# #############################################################################
-
-boldGreen="\033[1;32m"
-boldYellow="\033[1;33m"
-boldRed="\033[1;31m"
-boldPurple="\033[1;35m"
-boldBlue="\033[1;34m"
-noColor="\033[0m"
-
-
-# Create the symlinks
-# ~/.config dir holds nvim, neofetch, alacritty configs
-# If the dir/file that the symlink points to doesnt exist, it will error out, so I direct them to dev null
-# This will update the symlink even if its pointing to another file
-# If the file exists, it will create a backup in the same dir
-# echo "1"
-function create_symlink() {
-  local source_path=$1
-  local target_path=$2
-  local backup_needed=true
-
-  # echo
-
-  # Check if the target is a file and contains the unique identifier
-  if [ -f "$target_path" ] && grep -q "UNIQUE_ID=do_not_delete_this_line" "$target_path"; then
-    # echo "$target_path is a FILE and contains UNIQUE_ID"
-    backup_needed=false
-  fi
-
-  # Check if the target is a directory and contains the UNIQUE_ID.sh file with the unique identifier
-  if [ -d "$target_path" ] && [ -f "$target_path/UNIQUE_ID.sh" ]; then
-    if grep -q "UNIQUE_ID=do_not_delete_this_line" "$target_path/UNIQUE_ID.sh"; then
-      # echo "$target_path is a DIRECTORY and contains UNIQUE_ID"
-      backup_needed=false
-    fi
-  fi
-  # Check if symlink already exists and points to the correct source
-  if [ -L "$target_path" ]; then
-    if [ "$(readlink "$target_path")" = "$source_path" ]; then
-      # echo "$target_path exists and is correct, no action needed"
-      return 0
-    else
-      echo -e "${boldYellow}'$target_path' is a symlink"
-      echo -e "but it points to a different source, updating it${noColor}"
-    fi
-  fi
-
-  # Backup the target if it's not a symlink and backup is needed
-  if [ -e "$target_path" ] && [ ! -L "$target_path" ] && [ "$backup_needed" = true ]; then
-    local backup_path="${target_path}_backup_$(date +%Y%m%d%H%M%S)"
-    echo -e "${boldYellow}Backing up your existing file '$target_path' to '$backup_path'${noColor}"
-    mv "$target_path" "$backup_path"
-  fi
-
-  # Create the symlink and print message
-  ln -snf "$source_path" "$target_path"
-  echo -e "${boldPurple}Created or updated symlink"
-  echo -e "${boldGreen}FROM: '$source_path'"
-  echo -e "  TO: '$target_path'${noColor}"
+# mkdir and cd into it
+mkcd() {
+  mkdir -p "$1" && cd "$1"
 }
 
+# cd with auto-ls (for small directories)
+cd() {
+  builtin cd "$@"
+  local ret=$?
+  if [ $ret -eq 0 ]; then
+    local count=$(ls -1A 2>/dev/null | wc -l)
+    if [ $count -lt 50 ]; then
+      eza -F --icons --group-directories-first 2>/dev/null || ls -F --color=auto
+    else
+      echo "📁 $(pwd) ($count items)"
+    fi
+  fi
+  return $ret
+}
+
+# fzf directory search and cd
+fcd() {
+  local dir
+  dir=$(find ${1:-.} -type d 2>/dev/null | fzf +m) && cd "$dir"
+}
+
+# Extract archives
+extract() {
+  if [ -f $1 ]; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1     ;;
+      *.tar.gz)    tar xzf $1     ;;
+      *.bz2)       bunzip2 $1     ;;
+      *.rar)       unrar e $1     ;;
+      *.gz)        gunzip $1      ;;
+      *.tar)       tar xf $1      ;;
+      *.tbz2)      tar xjf $1     ;;
+      *.tgz)       tar xzf $1     ;;
+      *.zip)       unzip $1       ;;
+      *.Z)         uncompress $1  ;;
+      *.7z)        7z x $1        ;;
+      *)           echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Find file by name
+ff() {
+  find . -type f -iname "*$1*"
+}
+
+# Find directory by name
+fd() {
+  find . -type d -iname "*$1*"
+}
+
+# Create backup of file
+backup() {
+  cp "$1"{,.bak}
+}
+
+# Weather
+weather() {
+  curl "wttr.in/${1:-}"
+}
 
 # AWS
 function awsu() {
@@ -74,6 +76,64 @@ function cls() {
   clear && printf '\e[3J'
 }
 
+# Kill a port
+kp() {
+  local port="${1:-4200}"
+  kill -9 $(lsof -t -i:$port)
+}
 
-export create_symlink
+# Build Kinesis Advantage Pro Keyboard Config
+advmake() {
+  # Try to navigate to adv directory
+  z_output=$(z adv 2>&1)
+  z_status=$?
+  
+  if [ $z_status -ne 0 ]; then
+    # Check if the error is that we're already in the only match
+    if [[ "$z_output" == *"zoxide: you are already in the only match"* ]]; then
+      echo "Already in adv directory, continuing"
+    else
+      # It's a different error, show it and exit
+      echo "Error: Failed to navigate to adv directory: $z_output" >&2
+      return 1
+    fi
+  else
+    z adv
+    echo "Successfully navigated to adv directory"
+  fi
+  
+  # Open OrbStack in the background
+  if ! open -g -a orbstack; then
+    echo "Warning: Failed to open OrbStack, continuing anyway" >&2
+  fi
+  
+  # Pull latest changes
+  if ! git pull; then
+    echo "Warning: Git pull failed, continuing anyway" >&2
+  fi
+  
+  # Clean firmware files if the directory exists
+  if [ -d firmware ]; then
+    if ! rm -f firmware/*.uf2; then
+      echo "Warning: Failed to remove .uf2 files, continuing anyway" >&2
+    fi
+  else
+    echo "Warning: firmware directory not found, skipping file cleanup" >&2
+  fi
+  
+  # Build the project (critical step)
+  if ! make; then
+    echo "Error: Make failed" >&2
+    return 1
+  fi
+  
+  # Open the directory
+  if ! open .; then
+    echo "Warning: Failed to open directory in Finder" >&2
+  fi
+  
+  echo "advmake completed successfully"
+  return 0
+}
+
 

@@ -94,19 +94,6 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 # #####################################################################################
 
 # #####################################################################################
-# SECTION: Load Helper Files (if they exist)
-# #####################################################################################
-[[ -f ~/github.com/circuit-shell/dotfiles/zshrc/helper/functions.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zshrc/helper/functions.sh
-
-[[ -f ~/github.com/circuit-shell/dotfiles/zshrc/helper/aliases.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zshrc/helper/aliases.sh
-
-[[ -f ~/github.com/circuit-shell/dotfiles/zshrc/helper/git-plugin.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zshrc/helper/git-plugin.sh
-# #####################################################################################
-
-# #####################################################################################
 # SECTION: OS-Specific Configurations
 # #####################################################################################
 if [ "$OS" = 'Mac' ]; then
@@ -318,10 +305,19 @@ fi
 # #####################################################################################
 
 # #####################################################################################
-# SECTION: Private Config (if exists)
+# SECTION: Load Helper Files (MUST BE LAST - after all plugins loaded)
 # #####################################################################################
-[[ -f ~/github.com/circuit-shell/dotfiles/zshrc/helper/private.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zshrc/helper/private.sh
+[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/functions.sh ]] && \
+  source ~/github.com/circuit-shell/dotfiles/zsh/helper/functions.sh
+
+[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/aliases.sh ]] && \
+  source ~/github.com/circuit-shell/dotfiles/zsh/helper/aliases.sh
+
+[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/git-plugin.sh ]] && \
+  source ~/github.com/circuit-shell/dotfiles/zsh/helper/git-plugin.sh
+
+[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/private.sh ]] && \
+  source ~/github.com/circuit-shell/dotfiles/zsh/helper/private.sh
 # #####################################################################################
 
 # Unset autosuggestions async (from your config)
