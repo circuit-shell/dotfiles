@@ -1,8 +1,5 @@
 # ===== Directory Navigation =====
 
-# Zoxide (smarter cd)
-eval "$(zoxide init zsh)"
-
 # Quick directory navigation
 alias ~="cd ~"
 alias ..="cd .."
@@ -19,7 +16,6 @@ alias dl='cd ~/Downloads'
 
 # Directory operations
 alias md="mkdir -p"
-alias mkcd='mkcd'  # Function defined below
 alias cwd="pwd && echo 'Copied to clipboard' && pwd | wl-copy"  # Linux clipboard
 
 # Directory listing
