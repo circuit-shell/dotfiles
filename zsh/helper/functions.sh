@@ -1,23 +1,5 @@
-# # mkdir and cd into it
-# mkcd() {
-#   mkdir -p "$1" && cd "$1"
-# }
-
-
-# cd with auto-ls (for small directories)
-cd() {
-  builtin cd "$@"
-  local ret=$?
-  if [ $ret -eq 0 ]; then
-    local count=$(ls -1A 2>/dev/null | wc -l)
-    if [ $count -lt 50 ]; then
-      eza -F --icons --group-directories-first 2>/dev/null || ls -F --color=auto
-    else
-      echo "📁 $(pwd) ($count items)"
-    fi
-  fi
-  return $ret
-}
+# mkdir and cd into it
+mkcd() { mkdir -p "$1" && cd "$1" }
 
 # fzf directory search and cd
 fcd() {
