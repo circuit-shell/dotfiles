@@ -1,7 +1,8 @@
-# mkdir and cd into it
-mkcd() {
-  mkdir -p "$1" && cd "$1"
-}
+# # mkdir and cd into it
+# mkcd() {
+#   mkdir -p "$1" && cd "$1"
+# }
+
 
 # cd with auto-ls (for small directories)
 cd() {
