@@ -1,45 +1,105 @@
 * {
-    font-family: JetBrainsMono Nerd Font;
-    font-size: 13px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
 }
 
 window#waybar {
-    background-color: rgba(30, 30, 46, 0.95);
+    background: rgba(30, 30, 46, 0.9);
     color: #cdd6f4;
-    transition-property: background-color;
-    transition-duration: .5s;
+}
+
+/* Workspaces */
+#workspaces {
+    background: transparent;
+    margin: 5px;
 }
 
 #workspaces button {
     padding: 0 10px;
-    color: #cdd6f4;
-    background-color: transparent;
-    border-radius: 0;
-}
-
-#workspaces button:hover {
-    background: rgba(137, 180, 250, 0.2);
+    background: transparent;
+    color: #6c7086;
+    border-radius: 10px;
+    transition: all 0.3s ease;
 }
 
 #workspaces button.active {
-    background-color: #89b4fa;
+    background: #89b4fa;
     color: #1e1e2e;
 }
 
-#clock, #battery, #cpu, #memory, #network, #pulseaudio, #tray {
+#workspaces button:hover {
+    background: #45475a;
+    color: #cdd6f4;
+}
+
+/* Window title */
+#window {
+    margin: 5px;
     padding: 0 10px;
-    margin: 0 3px;
+    background: #45475a;
+    color: #cdd6f4;
+    border-radius: 10px;
 }
 
-#battery.charging {
-    color: #a6e3a1;
+/* Clock */
+#clock {
+    margin: 5px;
+    padding: 0 15px;
+    background: #89b4fa;
+    color: #1e1e2e;
+    border-radius: 10px;
+    font-weight: bold;
 }
 
-#battery.warning:not(.charging) {
-    color: #f9e2af;
+/* System modules */
+#cpu, #memory, #temperature, #backlight, #battery, #network, #pulseaudio {
+    margin: 5px 0;
+    padding: 0 10px;
+    background: #45475a;
+    color: #cdd6f4;
+    border-radius: 10px;
 }
 
-#battery.critical:not(.charging) {
-    color: #f38ba8;
+#cpu { color: #a6e3a1; }
+#memory { color: #f9e2af; }
+#temperature { color: #fab387; }
+#backlight { color: #f5e0dc; }
+#battery { color: #94e2d5; }
+#network { color: #89dceb; }
+#pulseaudio { color: #cba6f7; }
+
+/* Tray */
+#tray {
+    margin: 5px;
+    padding: 0 10px;
+    background: #45475a;
+    border-radius: 10px;
+}
+
+/* Warnings */
+#temperature.critical {
+    background: #f38ba8;
+    color: #1e1e2e;
+}
+
+#battery.warning {
+    background: #f9e2af;
+    color: #1e1e2e;
+}
+
+#battery.critical {
+    background: #f38ba8;
+    color: #1e1e2e;
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    to {
+        background: transparent;
+        color: #f38ba8;
+    }
 }
 
