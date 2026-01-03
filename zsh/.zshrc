@@ -324,3 +324,6 @@ fi
 # unset ZSH_AUTOSUGGEST_USE_ASYNC
 
 export PATH="/usr/bin:$PATH"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
