@@ -4,39 +4,27 @@
     "height": 30,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "network", "cpu", "memory", "temperature", "battery", "tray"],
+    "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery", "tray"],
     
     "hyprland/workspaces": {
         "format": "{icon}",
-        "on-click": "activate",
         "format-icons": {
             "1": "1",
             "2": "2",
             "3": "3",
             "4": "4",
             "5": "5",
-            "urgent": "",
-            "active": "",
             "default": ""
+        },
+        "persistent-workspaces": {
+            "*": 5
         }
     },
     
     "clock": {
-        "format": "{:%H:%M  %Y-%m-%d}",
+        "format": "{:%H:%M}",
+        "format-alt": "{:%Y-%m-%d}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
-    
-    "cpu": {
-        "format": " {usage}%"
-    },
-    
-    "memory": {
-        "format": " {}%"
-    },
-    
-    "temperature": {
-        "critical-threshold": 80,
-        "format": " {temperatureC}°C"
     },
     
     "battery": {
@@ -49,9 +37,9 @@
     },
     
     "network": {
-        "format-wifi": " {essid}",
-        "format-ethernet": " {ipaddr}",
-        "format-disconnected": "睊 Disconnected",
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": "",
+        "format-disconnected": "⚠",
         "tooltip-format": "{ifname}: {ipaddr}"
     },
     
@@ -62,6 +50,19 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
+    },
+    
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": false
+    },
+    
+    "memory": {
+        "format": " {}%"
+    },
+    
+    "tray": {
+        "spacing": 10
     }
 }
 
