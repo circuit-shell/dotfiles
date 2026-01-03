@@ -11,6 +11,7 @@ window {
     color: #cdd6f4;
     background-color: #313244;
     border-radius: 5px;
+    padding: 10px;
 }
 
 #inner-box {
@@ -37,7 +38,8 @@ window {
 }
 
 #entry:selected {
-    background-color: #313244;
+    background-color: #89b4fa;
+    color: #1e1e2e;
     border-radius: 5px;
 }
 
