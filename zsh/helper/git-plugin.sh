@@ -15,8 +15,9 @@ alias gc='git commit -v'
 alias gc!='git commit -v --amend'
 alias gca='git commit -v -a'
 alias gca!='git commit -v -a --amend'
-alias gcm='git commit -m'
+alias gcmsg='git commit -m'
 alias gcam='git commit -a -m'
+alias gacmsg="gaa && gcmsg"  # Add all and commit with message
 
 # Branch
 alias gb='git branch'
@@ -41,6 +42,7 @@ alias gfa='git fetch --all --prune'
 alias gl='git pull'
 alias gp='git push'
 alias gpf='git push --force-with-lease'
+alias gpn="git push --no-verify"
 alias gpu='git push -u origin $(git branch --show-current)'
 
 # Log
@@ -90,4 +92,8 @@ alias gwt='git worktree'
 alias gwta='git worktree add'
 alias gwtls='git worktree list'
 alias gwtrm='git worktree remove'
+
+# LazyGit
+alias lg="lazygit"
+
 

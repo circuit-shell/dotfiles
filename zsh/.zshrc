@@ -234,16 +234,18 @@ fi
 # ---------------------------------------------------------------------------
 if command -v eza &>/dev/null; then
   alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions --all'
-  alias ll='eza -lhg'
-  alias lla='eza -alhg'
-  alias tree='eza --tree'
+  alias l='eza -F --icons'
+  alias ll='eza -lF --icons'
+  alias lla='eza -laF --icons'
+  alias la='eza -aF --icons'
+  alias lt='eza -T --icons --level=1'  
 fi
 
 # ---------------------------------------------------------------------------
 # SUBSECTION: bat (cat replacement)
 # ---------------------------------------------------------------------------
 if command -v bat &>/dev/null; then
-  alias cat='bat --paging=never --style=plain'
+  alias cat='bat --paging=never'
   alias catt='bat'
   alias cata='bat --show-all --paging=never'
 fi
@@ -257,13 +259,6 @@ if command -v zoxide &>/dev/null; then
   alias cd='z'
   alias cdi='zi'  # Interactive search
 fi
-
-# ---------------------------------------------------------------------------
-# SUBSECTION: Common Aliases
-# ---------------------------------------------------------------------------
-alias grep='grep --color=auto'
-alias diff='diff --color=auto'
-# #####################################################################################
 
 # #####################################################################################
 # SECTION: History Keybindings (Fixed for both macOS and Linux)
