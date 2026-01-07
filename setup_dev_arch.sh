@@ -55,7 +55,7 @@ yay -S --noconfirm \
   zsh zsh-vi-mode zsh-autosuggestions zsh-syntax-highlighting zsh-completions zoxide \
   kitty tmux lazygit zsh-theme-powerlevel10k-git tree-sitter-cli tree-sitter \
   bat eza ttf-firacode-nerd ttf-jetbrains-mono-nerd ttf-fira-code ttf-dejavu ttf-liberation \
-  noto-fonts noto-fonts-emoji ttf-meslo-nerd
+  noto-fonts noto-fonts-emoji ttf-meslo-nerd fcitx5
 
 # --- Tmux Plugin Manager ---
 echo "🔌 Installing TPM..."
