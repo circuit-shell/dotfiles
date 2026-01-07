@@ -2,7 +2,7 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Master Mx: switch to third channel
+# @raycast.title MX Bluetooth Channel 3
 # @raycast.mode silent
 
 # Optional parameters:
@@ -10,7 +10,7 @@
 # @raycast.packageName Logitech
 
 # Documentation:
-# @raycast.description Switch MX Master 3 to third channel
+# @raycast.description Switch MX Master 3 to channel 3 (Bluetooth)
 # @raycast.author spectr3r
 # @raycast.authorURL https://github.com/spectr3r-system
 
@@ -22,3 +22,7 @@ sudo /usr/local/bin/hidapitester \
     --length 20 \
     --send-output 0x11,0x00,0x0A,0x1E,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 \
     > /dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+    osascript -e 'display notification "Switched to channel 3" with title "MX Master 3 (BT)" sound name "Glass"'
+fi
