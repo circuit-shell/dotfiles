@@ -17,10 +17,10 @@
 #tray{
   /*background-color: rgba(29,31,46, 0.95);*/
   background-color: rgba(15,27,53,0.9);
-  padding: 4px 6px; /* 保持内部间距 */
-  margin-top: 6px; /* 外部间距增加 */
-  margin-left: 6px; /* 外部间距增加 */
-  margin-right: 6px; /* 外部间距增加 */
+  padding: 4px 6px; 
+  margin-top: 6px; 
+  margin-left: 6px;
+  margin-right: 6px;
   border-radius: 10px;
   border-width: 0px;
 }
@@ -54,6 +54,7 @@
 #backlight,
 #custom-temperature,
 #memory,
+#mpris,
 #cpu{
   background-color: rgba(15,27,53,0.9);
   margin-top: 6px; /* 与屏幕顶部留出距离 */
