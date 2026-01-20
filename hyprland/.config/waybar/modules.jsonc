@@ -110,12 +110,7 @@
       ""
     ]
   },
-  // Language (Hyprland)
-  "hyprland/language": {
-    "format": "󰌌 {short}",
-    "tooltip-format": "Language: {long}"
-  },
-  "custom/backlight": {
+    "custom/backlight": {
     "format": " {percentage}%",
     "exec": "ddcutil getvcp 10 | grep -oP 'current value =\\s*\\K[0-9]+' | xargs -I{} echo '{\"percentage\": {}}'",
     "return-type": "json",
@@ -140,9 +135,9 @@
   },
   "pulseaudio": {
     "scroll-step": 1,
-    "format": "{icon} {volume: >3}%",
-    "format-bluetooth": "{icon} {volume: >3}%",
-    "format-muted": "󰝟 ",
+    "format": "{icon}{volume: >3}%",
+    "format-bluetooth": "{icon}{volume: >3}%",
+    "format-muted": "󰝟  0%",
     "format-icons": {
       "headphones": "",
       "handsfree": "",

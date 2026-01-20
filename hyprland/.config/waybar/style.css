@@ -84,11 +84,6 @@ tooltip label {
   border-color: @pink;
 }
 
-/* #workspaces button.empty { */
-/* 	opacity: 0.3; */
-/* 	background: @background-secondary; */
-/* } */
-
 #workspaces button.urgent {
   background: @error;
   color: @base;

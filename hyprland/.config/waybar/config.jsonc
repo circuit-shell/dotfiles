@@ -28,7 +28,6 @@
     "cpu",
     "custom/temperature",
     "battery",
-    "hyprland/language",
     "custom/backlight",
     "network",
     "battery",
