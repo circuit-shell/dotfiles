@@ -1,41 +1,41 @@
 {
   "style": "~/.config/waybar/style.css",
-  
   "layer": "top",
   "position": "top",
   "height": 40,
-  
   "modules-left": [
     "custom/launcher",
+    "tray",
     "hyprland/workspaces",
+    "idle_inhibitor",
+    "custom/lock",
+    "custom/reboot",
+    "custom/power",
     "custom/weather",
-    "custom/updates",
-    "custom/cava"
+    "custom/updates"
   ],
-  
   "modules-center": [
+    "hyprland/window"
+  ],
+  "modules-right": [
+    "custom/cava",
+    "pulseaudio",
+    "battery",
+    "backlight",
+    "custom/vpn",
+    "custom/notification",
     "memory",
     "cpu",
-    "temperature"
-  ],
-  
-  "modules-right": [
-    "idle_inhibitor",
+    "custom/temperature",
     "battery",
     "hyprland/language",
-    "keyboard-state",
-    "backlight",
-    "pulseaudio",
+    "custom/backlight",
     "network",
-    "custom/vpn",
-    "clock",
-    "custom/notification",
-    "tray"
+    "battery",
+    "clock"
   ],
-
   "include": "~/.config/waybar/modules.jsonc"
 }
-
 // {
 //   "layer": "top",
 //   "position": "top",
