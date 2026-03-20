@@ -27,3 +27,24 @@ export GOROOT=$(brew --prefix golang)/libexec
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$HOME/go/bin
 
+# Function to create a Btrfs snapshot
+snaps() {
+	if [ -z "$1" ]; then
+	echo "❌ Error: No name provided for the snapshot."
+	return 1  # Exit with a failure status
+	fi
+
+	name="$1_$(date +%Y%m%d_%H%M%S)"
+	sudo btrfs subvolume snapshot / "/.snapshots/@_$name"
+	echo "✅ Snapshot created: @_$name"
+	sudo btrfs subvolume list /.snapshots
+}
+
+snaps() {
+	if [ -z "$1" ]; then
+	    echo "Usage: snap-delete <snapshot-name>"
+	    exit 1
+	fi
+	sudo btrfs subvolume delete "/.snapshots/$1"
+	echo "🗑️ Deleted: $1"
+}

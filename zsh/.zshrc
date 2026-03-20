@@ -124,27 +124,27 @@ if [ "$OS" = 'Mac' ]; then
   # ---------------------------------------------------------------------------
   # SUBSECTION: Neovim
   # ---------------------------------------------------------------------------
- # get_nvim_path() {
- #   if [[ -f ~/nvim-macos-arm64/bin/nvim ]]; then
- #     echo "$HOME/nvim-macos-arm64/bin/nvim"
- #   elif command -v brew &>/dev/null && [[ -f "$(brew --prefix nvim)/bin/nvim" ]]; then
- #     echo "$(brew --prefix nvim)/bin/nvim"
- #   elif command -v nvim &>/dev/null; then
- #     command -v nvim
- #   else
- #     echo "nvim not found" >&2
- #     return 1
- #   fi
- # }
+  get_nvim_path() {
+   if [[ -f ~/nvim-macos-arm64/bin/nvim ]]; then
+     echo "$HOME/nvim-macos-arm64/bin/nvim"
+   elif command -v brew &>/dev/null && [[ -f "$(brew --prefix nvim)/bin/nvim" ]]; then
+     echo "$(brew --prefix nvim)/bin/nvim"
+   elif command -v nvim &>/dev/null; then
+     command -v nvim
+   else
+     echo "nvim not found" >&2
+     return 1
+   fi
+  }
 
- # v() {
- #   local nvim_path=$(get_nvim_path)
- #   if [[ $? -eq 0 ]]; then
- #     $nvim_path "$@"
- #   fi
- # }
+ v() {
+   local nvim_path=$(get_nvim_path)
+   if [[ $? -eq 0 ]]; then
+     $nvim_path "$@"
+   fi
+ }
 
- # export EDITOR=$(get_nvim_path)
+ export EDITOR=$(get_nvim_path)
 
  # if command -v nvim &>/dev/null || [[ -f ~/nvim-macos-arm64/bin/nvim ]] || \
  #    (command -v brew &>/dev/null && [[ -f "$(brew --prefix nvim)/bin/nvim" ]]); then
