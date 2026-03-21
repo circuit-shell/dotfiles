@@ -203,6 +203,10 @@ elif [ "$OS" = 'Linux' ]; then
   # Vi mode
   [[ -f /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
+    source ~/github.com/circuit-shell/dotfiles/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
   
   # Syntax highlighting (must be last)
   [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
