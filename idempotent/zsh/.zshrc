@@ -1,9 +1,15 @@
-# #####################################################################################
+#####################################################################################
 # SECTION: Auto pull dotfiles
-# #####################################################################################
+#####################################################################################
+# 1. Elimina el espacio después del =
+# 2. Usa una variable normal (local solo funciona dentro de funciones)
+dotfiles_dir="$HOME/github.com/circuit-shell/dotfiles"
+
 echo "Pulling latest changes, please wait..."
-(cd ~/github.com/circuit-shell/dotfiles && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
-# #####################################################################################
+# El subshell ( ) mantiene tu ubicación actual después del comando
+(cd "$dotfiles_dir" && git pull >/dev/null 2>&1) || echo "Failed to pull dotfiles"
+#####################################################################################
+
 
 # #####################################################################################
 # SECTION: Detect OS (Must be early)
@@ -291,7 +297,7 @@ fi
 #####################################################################################
 # SECTION: Load Helper Files
 #####################################################################################
-local helper_dir="$HOME/github.com/circuit-shell/dotfiles/idempotent/zsh/helper"
+local helper_dir="$dotfiles/idempotent/zsh/helper"
 local helpers=(functions aliases git-plugin private)
 
 for helper in $helpers; do
