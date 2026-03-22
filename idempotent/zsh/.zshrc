@@ -287,21 +287,17 @@ if command -v mise &>/dev/null; then
 fi
 # #####################################################################################
 
-# #####################################################################################
-# SECTION: Load Helper Files (MUST BE LAST - after all plugins loaded)
-# #####################################################################################
-[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/functions.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zsh/helper/functions.sh
 
-[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/aliases.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zsh/helper/aliases.sh
+#####################################################################################
+# SECTION: Load Helper Files
+#####################################################################################
+local helper_dir="$HOME/github.com/circuit-shell/dotfiles/idempotent/zsh/helper"
+local helpers=(functions aliases git-plugin private)
 
-[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/git-plugin.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zsh/helper/git-plugin.sh
-
-[[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/private.sh ]] && \
-  source ~/github.com/circuit-shell/dotfiles/zsh/helper/private.sh
-# #####################################################################################
+for helper in $helpers; do
+  [[ -f "$helper_dir/$helper.sh" ]] && source "$helper_dir/$helper.sh"
+done
+#####################################################################################
 
 # Unset autosuggestions async (from your config)
 # unset ZSH_AUTOSUGGEST_USE_ASYNC
