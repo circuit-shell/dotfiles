@@ -31,6 +31,10 @@ alias md="mkdir -p"
 alias die="rm -rf"
 alias o="open ./"
 
+
+
+alias findstow="find ~ -maxdepth 1 -type l -ls; find ~/.config -maxdepth 3 -type l -ls"
+
 # ===== NPM/Node/JavaScript =====
 
 # NPM shortcuts
