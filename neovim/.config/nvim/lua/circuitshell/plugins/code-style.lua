@@ -38,15 +38,20 @@ return {
 					typescriptreact = { "prettier" },
 					svelte = { "prettier" },
 					css = { "prettier" },
+					scss = { "prettier" },
+					less = { "prettier" },
 					html = { "prettier" },
 					json = { "prettier" },
+					jsonc = { "prettier" },
 					yaml = { "yamlfmt" },
 					markdown = { "prettier" },
 					graphql = { "prettier" },
 					liquid = { "prettier" },
 					lua = { "stylua" },
 					go = { "goimports-reviser", "golines", "gofmt" },
-					python = { "isort", "black" },
+					-- ruff handles both import sorting and formatting (replaces isort + black)
+					-- ruff is managed by mason; install project deps with uv
+					python = { "ruff_organize_imports", "ruff_format" },
 				},
 			})
 			vim.keymap.set({ "n", "v" }, "<leader>lf", function()

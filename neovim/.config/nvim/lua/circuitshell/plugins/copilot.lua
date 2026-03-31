@@ -1,16 +1,14 @@
-local handle = io.popen("whoami")
-local current_user = ""
-if handle then
-	current_user = handle:read("*a"):gsub("%s+", "")
-	handle:close()
-end
-
-local lazy_copilot = current_user == "spectr3r-system"
+local copilot_enabled = vim.env.NVIM_COPILOT ~= "0"
+local claude_enabled = vim.env.NVIM_CLAUDE ~= "0"
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		vim.schedule(function()
-			vim.notify("Copilot enabled: " .. tostring(not lazy_copilot), vim.log.levels.INFO)
+			local lines = {
+				"  " .. (copilot_enabled and "● Copilot:     enabled" or "○ Copilot:     disabled"),
+				"  " .. (claude_enabled and "● Claude Code: enabled" or "○ Claude Code: disabled"),
+			}
+			vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO, { title = "AI Features" })
 		end)
 	end,
 })
@@ -18,57 +16,38 @@ vim.api.nvim_create_autocmd("VimEnter", {
 return {
 	{
 		"github/copilot.vim",
-		lazy = not lazy_copilot,
+		enabled = copilot_enabled,
+		event = "InsertEnter",
+		cmd = "Copilot",
 		config = function()
-			-- Disable default Tab mapping, this helps to be able to use suggestion in copilot chat
+			-- Keep Tab free for nvim-cmp
 			vim.g.copilot_no_tab_map = true
-
-			-- Set up Ctrl+l mapping to accept the suggestion
-			vim.api.nvim_set_keymap(
-				"i",
-				"<C-l>",
-				'copilot#Accept("<CR>")',
-				{ silent = true, expr = true, noremap = true }
-			)
-
-			-- Add toggle function
-			vim.api.nvim_create_user_command("ToggleCopilot", function()
-				if vim.g.copilot_enabled == 0 then
-					vim.cmd("Copilot enable")
-					print("Copilot enabled")
-				else
-					vim.cmd("Copilot disable")
-					print("Copilot disabled")
-				end
-			end, {})
-
-			-- Add leader+uc mapping to toggle Copilot
-			vim.api.nvim_set_keymap("n", "<leader>tC", ":ToggleCopilot<CR>", { silent = true, noremap = true })
-			-- Add leader leader+lc mapping to toggle Copilot chat
-			vim.api.nvim_set_keymap("n", "<leader>tc", ":CopilotChatToggle<CR>", { silent = true, noremap = true })
+			-- Accept suggestion with Ctrl+l
+			vim.keymap.set("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true, noremap = true })
 		end,
 	},
 	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		lazy = lazy_copilot,
-		dependencies = {
-			{ "github/copilot.vim" },
-			{ "nvim-lua/plenary.nvim", branch = "master" },
-		},
-		build = "make tiktoken",
+		"coder/claudecode.nvim",
+		enabled = claude_enabled,
 		opts = {
-			selection = function(source)
-				local select = require("CopilotChat.select")
-				return select.visual(source) or ""
-			end,
-			model = "gpt-4o",
-			context = nil,
-			mappings = {
-				reset = {
-					insert = "",
-					normal = "R",
+			terminal = {
+				snacks_win_opts = {
+					keys = {
+						nav_left  = { "<C-h>", function() vim.cmd("TmuxNavigateLeft") end,  mode = "t", desc = "Navigate left" },
+						nav_down  = { "<C-j>", function() vim.cmd("TmuxNavigateDown") end,  mode = "t", desc = "Navigate down" },
+						nav_up    = { "<C-k>", function() vim.cmd("TmuxNavigateUp") end,    mode = "t", desc = "Navigate up" },
+						nav_right = { "<C-l>", function() vim.cmd("TmuxNavigateRight") end, mode = "t", desc = "Navigate right" },
+					},
 				},
 			},
+		},
+		keys = {
+			{ "<leader>ac", "<cmd>ClaudeCode<cr>",       desc = "Toggle Claude Code" },
+			{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>",  desc = "Focus Claude Code" },
+			{ "<leader>ab", "<cmd>ClaudeCodeAdd<cr>",    desc = "Add Buffer to Claude" },
+			{ "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept Diff" },
+			{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Reject Diff" },
+			{ "<leader>as", "<cmd>ClaudeCodeSend<cr>",   desc = "Send Selection to Claude", mode = "v" },
 		},
 	},
 }

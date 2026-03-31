@@ -1,6 +1,3 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/render-markdown.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/render-markdown.lua
-
 -- https://github.com/MeanderingProgrammer/markdown.nvim
 --
 -- When I hover over markdown headings, this plugins goes away, so I need to
@@ -8,11 +5,10 @@
 -- I tried adding this as an autocommand, in the options.lua
 -- file, also in the markdownl.lua file, but the highlights kept being overriden
 -- so the only way I was able to make it work was loading it
--- after the config.lazy in the init.lua file lamw25wmal
+-- after the config.lazy in the init.lua file
 
 return {
 	{
-
 		"iamcco/markdown-preview.nvim",
 		keys = {
 			{
@@ -36,9 +32,16 @@ return {
 		-- :checkhealth render-markdown
 		-- https://github.com/MeanderingProgrammer/render-markdown.nvim/issues/138#issuecomment-2295422741
 		opts = {
-			bullet = {
-				-- Turn on / off list bullet rendering
+			indent = {
 				enabled = true,
+				per_level = 2,
+				skip_level = 1,
+				skip_heading = false,
+			},
+			bullet = {
+				enabled = true,
+				left_pad = 2,
+				right_pad = 1,
 			},
 			checkbox = {
 				-- Turn on / off checkbox state rendering
@@ -72,9 +75,9 @@ return {
 					conceal = false,
 				},
 			},
-			-- Add custom icons lamw26wmal
+			-- Add custom icons
 			link = {
-				image = vim.g.neovim_mode == "skitty" and "" or "󰥶 ",
+				image = "󰥶 ",
 				custom = {
 					youtu = { pattern = "youtu%.be", icon = "󰗃 " },
 				},
@@ -104,6 +107,85 @@ return {
 				-- transparent, so just disabling all rendering 😢
 				style = "none",
 			},
+		},
+	},
+
+	-- Inline image rendering using Kitty Graphics Protocol.
+	-- Prerequisites: brew install imagemagick
+	-- For tmux: set -g allow-passthrough on  in .tmux.conf
+	-- For kitty: allow_remote_control yes  in kitty.conf
+	{
+		"3rd/image.nvim",
+		build = false,
+		ft = { "markdown" },
+		opts = {
+			backend = "kitty",
+			processor = "magick_cli",
+			integrations = {
+				markdown = {
+					enabled = true,
+					clear_in_insert_mode = true,
+					download_remote_images = true,
+					only_render_image_at_cursor = false,
+					filetypes = { "markdown" },
+				},
+			},
+			max_width_window_percentage = 60,
+			max_height_window_percentage = 40,
+			kitty_method = "normal",
+			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
+		},
+	},
+
+	-- Renders mermaid (and other diagram) code blocks inline as images.
+	-- Prerequisites: volta run --node 18 npm install -g @mermaid-js/mermaid-cli
+	{
+		"3rd/diagram.nvim",
+		dependencies = { "3rd/image.nvim" },
+		ft = { "markdown" },
+		config = function()
+			require("diagram").setup({
+				integrations = {
+					require("diagram.integrations.markdown"),
+				},
+				renderers = {
+					mermaid = ("mmdc"),
+					plantuml = ("plantuml"),
+					d2 = ("d2"),
+					gnuplot = ("gnuplot"),
+				},
+			})
+		end,
+	},
+
+	-- Paste images from clipboard into markdown.
+	-- Usage: copy an image to clipboard, then <leader>pi in a markdown file.
+	-- You will be prompted for a filename; the image is saved relative to the
+	-- current file (in ./assets/ by default) and a markdown link is inserted.
+	{
+		"HakonHarnes/img-clip.nvim",
+		ft = { "markdown" },
+		opts = {
+			default = {
+				dir_path = "assets",
+				relative_to_current_file = true,
+				prompt_for_file_name = true,
+				show_dir_path_in_prompt = true,
+				use_absolute_path = false,
+				insert_mode_after_paste = false,
+			},
+			filetypes = {
+				markdown = {
+					url_encode_path = true,
+					template = "![$CURSOR]($FILE_PATH)",
+					drag_and_drop = {
+						enabled = true,
+					},
+				},
+			},
+		},
+		keys = {
+			{ "<leader>pi", "<cmd>PasteImage<cr>", desc = "Paste Image", ft = "markdown" },
 		},
 	},
 }

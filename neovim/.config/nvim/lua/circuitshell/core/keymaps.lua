@@ -185,3 +185,14 @@ vim.keymap.set("n", "<CR>", function()
 		vim.cmd("normal! zz")
 	end
 end, { desc = "[P]Toggle fold" })
+
+-- ============================================================================
+-- TERMINAL MODE NAVIGATION (vim-tmux-navigator)
+-- ============================================================================
+
+-- Allow Ctrl+h/j/k/l to navigate out of terminal buffers (e.g. ClaudeCode panel)
+-- Uses TmuxNavigate commands so navigation falls through to tmux panes when no neovim split exists
+keymap.set("t", "<C-h>", "<C-\\><C-n>:TmuxNavigateLeft<CR>",  { desc = "Navigate left from terminal" })
+keymap.set("t", "<C-j>", "<C-\\><C-n>:TmuxNavigateDown<CR>",  { desc = "Navigate down from terminal" })
+keymap.set("t", "<C-k>", "<C-\\><C-n>:TmuxNavigateUp<CR>",    { desc = "Navigate up from terminal" })
+keymap.set("t", "<C-l>", "<C-\\><C-n>:TmuxNavigateRight<CR>", { desc = "Navigate right from terminal" })
