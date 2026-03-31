@@ -37,7 +37,12 @@ return {
 			implicitProjectConfig = {
 				target = "ESNext",
 				checkJs = true,
+				experimentalDecorators = true,
 			},
+		},
+		-- Raise memory ceiling for large turborepo monorepos
+		tsserver = {
+			maxTsServerMemory = 4096,
 		},
 	},
 }

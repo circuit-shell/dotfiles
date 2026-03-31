@@ -122,7 +122,7 @@ return {
 		-- or override default keymaps as shown in the example below.
 		global_keymaps = {
 			["Send request"] = { -- sets global mapping
-				"<leader>cs",
+				"<leader>rs",
 				function()
 					require("kulala").run()
 				end,

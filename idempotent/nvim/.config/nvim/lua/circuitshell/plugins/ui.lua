@@ -156,6 +156,7 @@ return {
 					local github_domains = {
 						"github%.cloud%.com",
 						"github%.cloud%.capitalone%.com",
+						"github%.com",
 					}
 
 					-- URL pattern structure for GitHub-style repos
@@ -396,24 +397,6 @@ return {
 
 			-- Apply the colorscheme
 			vim.cmd.colorscheme("catppuccin")
-		end,
-	},
-	{
-		"gelguy/wilder.nvim",
-		event = "CmdlineEnter",
-		config = function()
-			local wilder = require("wilder")
-
-			wilder.setup({ modes = { ":" } })
-
-			wilder.set_option(
-				"renderer",
-				wilder.popupmenu_renderer(wilder.popupmenu_palette_theme({
-					border = "single",
-					max_height = "20%",
-					min_height = 0,
-				}))
-			)
 		end,
 	},
 }
