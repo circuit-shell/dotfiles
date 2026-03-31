@@ -106,7 +106,7 @@ if [ "$OS" = 'Mac' ]; then
     export PATH="$(brew --prefix)/sbin:$PATH"
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
   fi
-  
+
   # ---------------------------------------------------------------------------
   # SUBSECTION: xterm-kitty terminfo
   # ---------------------------------------------------------------------------
@@ -128,7 +128,7 @@ if [ "$OS" = 'Mac' ]; then
     fi
   }
   install_xterm_kitty_terminfo
-  
+
   # ---------------------------------------------------------------------------
   # SUBSECTION: Neovim
   # ---------------------------------------------------------------------------
@@ -159,22 +159,22 @@ if [ "$OS" = 'Mac' ]; then
  #   export MANPAGER='$(get_nvim_path) +Man!'
  #   export MANWIDTH=999
  # fi
-  
+
   # ---------------------------------------------------------------------------
   # SUBSECTION: Plugins (macOS paths)
   # ---------------------------------------------------------------------------
   # Autosuggestions
   [[ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  
+
   # Vi mode
-  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
-    source ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-  
+  [[ -f ~/github.com/circuit-shell/dotfiles/idempotent/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
+    source ~/github.com/circuit-shell/dotfiles/idempotent/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
   # Syntax highlighting (must be last)
   [[ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  
+
   # fzf
   if [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
@@ -182,7 +182,7 @@ if [ "$OS" = 'Mac' ]; then
     export FZF_COMPLETION_TRIGGER='::'
     export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
   fi
-  
+
   # Powerlevel10k
   [[ -f "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" ]] && \
     source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
@@ -199,22 +199,22 @@ elif [ "$OS" = 'Linux' ]; then
     export MANPAGER='nvim +Man!'
     export MANWIDTH=999
   fi
-  
+
   # ---------------------------------------------------------------------------
   # SUBSECTION: Plugins (Linux paths)
   # ---------------------------------------------------------------------------
   # Autosuggestions
   [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-  
- # Vi mode
-  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
-    source ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-  
+
+  # Vi mode
+  [[ -f ~/github.com/circuit-shell/dotfiles/idempotent/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
+    source ~/github.com/circuit-shell/dotfiles/idempotent/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
   # Syntax highlighting (must be last)
   [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  
+
   # fzf
   if [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
     source /usr/share/fzf/key-bindings.zsh
@@ -225,7 +225,7 @@ elif [ "$OS" = 'Linux' ]; then
     export FZF_COMPLETION_TRIGGER='::'
     export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
   fi
-  
+
   # Powerlevel10k
   [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] && \
     source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
@@ -245,7 +245,7 @@ if command -v eza &>/dev/null; then
   alias ll='eza -lF --icons'
   alias lla='eza -laF --icons'
   alias la='eza -aF --icons'
-  alias lt='eza -T --icons --level=1'  
+  alias lt='eza -T --icons --level=1'
 fi
 
 # ---------------------------------------------------------------------------
