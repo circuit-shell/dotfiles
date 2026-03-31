@@ -1,0 +1,69 @@
+return {
+	{
+		"lewis6991/gitsigns.nvim",
+		signcolumn = true,
+		numhl = false,
+		event = { "BufReadPre", "BufNewFile" },
+		signs = {
+			add = { text = "➕" }, -- Unicode plus sign
+			change = { text = "✏️" }, -- Pencil emoji
+			delete = { text = "➖" }, -- Unicode minus sign
+			topdelete = { text = "⏴" }, -- Left-pointing triangle
+			changedelete = { text = "⏵" }, -- Right-pointing triangle
+			untracked = { text = "❓" }, -- Question mark emoji
+		},
+		signs_staged = {
+			add = { text = "➕" }, -- Unicode plus sign
+			change = { text = "✏️" }, -- Pencil emoji
+			delete = { text = "➖" }, -- Unicode minus sign
+			topdelete = { text = "⏴" }, -- Left-pointing triangle
+			changedelete = { text = "⏵" }, -- Right-pointing triangle
+			untracked = { text = "❓" }, -- Question mark emoji
+		},
+		opts = {
+			on_attach = function(bufnr)
+				local gs = package.loaded.gitsigns
+
+				local function map(mode, l, r, desc)
+					vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
+				end
+
+				-- Navigation
+				map("n", "<leader>gn", gs.next_hunk, "Next Hunk")
+				map("n", "<leader>gp", gs.prev_hunk, "Prev Hunk")
+
+				-- Actions
+				map("n", "<leader>gs", gs.stage_hunk, "Stage hunk")
+				map("n", "<leader>gr", gs.reset_hunk, "Reset hunk")
+				map("n", "<leader>gS", gs.stage_buffer, "Stage buffer")
+				map("n", "<leader>gR", gs.reset_buffer, "Reset buffer")
+				map("n", "<leader>gu", gs.undo_stage_hunk, "Undo stage hunk")
+				map("n", "<leader>gv", gs.preview_hunk, "View hunk")
+				map("n", "<leader>gB", gs.toggle_current_line_blame, "Toggle line blame")
+				map("n", "<leader>gd", gs.diffthis, "Diff this")
+				map("n", "<leader>gD", function()
+					gs.diffthis("~")
+				end, "Diff this ~")
+
+				-- Text object
+				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")
+			end,
+		},
+	},
+	{
+		"f-person/git-blame.nvim",
+		event = "VeryLazy",
+		config = function()
+			vim.cmd("highlight default link gitblame SpecialComment")
+			require("gitblame").setup({
+				enabled = true,
+				display_virtual_text = true,
+				message_template = "    <author> at <date> on <sha>    ",
+				message_when_not_committed = "    Not commited    ",
+				date_format = "%a %b %d %Y",
+				delay = 150,
+			})
+			vim.keymap.set("n", "<leader>tb", ":GitBlameToggle<CR>", {})
+		end,
+	},
+}
