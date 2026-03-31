@@ -159,11 +159,9 @@ if [ "$OS" = 'Mac' ]; then
   [[ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   
-  # # Vi mode
-
-  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
-    source ~/github.com/circuit-shell/dotfiles/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-
+  # Vi mode
+  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
+    source ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh
   
   # Syntax highlighting (must be last)
   [[ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
@@ -201,10 +199,9 @@ elif [ "$OS" = 'Linux' ]; then
   [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
   
-  # # Vi mode
-  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
-    source ~/github.com/circuit-shell/dotfiles/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-
+ # Vi mode
+  [[ -f ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh ]] && \
+    source ~/github.com/circuit-shell/dotfiles/zsh/helper/zsh-vi-mode/zsh-vi-mode.plugin.zsh
   
   # Syntax highlighting (must be last)
   [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
