@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(find /Users/adelgado057/github.com/circuit-shell/dotfiles/neovim -type f \\\\\\(-name *.lua -o -name *.vim -o -name *.md -o -name *.toml -o -name *.yaml -o -name *.yml -o -name *.json \\\\\\))",
-      "WebFetch(domain:github.com)"
-    ]
-  }
-}
