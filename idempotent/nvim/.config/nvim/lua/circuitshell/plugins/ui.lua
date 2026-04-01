@@ -114,6 +114,12 @@ return {
 							action = ":lua Snacks.dashboard.pick('files')",
 						},
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+						{
+							icon = " ",
+							key = "G",
+							desc = "Git Files",
+							action = ":Telescope git_status",
+						},
 					},
 					-- ASCII art header
 					header = [[

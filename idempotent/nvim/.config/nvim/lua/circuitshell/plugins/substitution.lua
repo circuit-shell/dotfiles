@@ -65,6 +65,19 @@ return {
 		},
 	},
 	{
+		"folke/flash.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("flash").setup()
+			vim.keymap.set({ "n", "x", "o" }, "<leader>s", function()
+				require("flash").jump()
+			end, { desc = "Flash jump" })
+			vim.keymap.set({ "n", "x", "o" }, "<leader>S", function()
+				require("flash").treesitter()
+			end, { desc = "Flash treesitter" })
+		end,
+	},
+	{
 		"nvim-mini/mini.pairs",
 		event = "InsertEnter",
 		config = function()
