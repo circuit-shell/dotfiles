@@ -20,34 +20,50 @@ return {
 		event = "InsertEnter",
 		cmd = "Copilot",
 		config = function()
-			-- Keep Tab free for nvim-cmp
 			vim.g.copilot_no_tab_map = true
-			-- Accept suggestion with Ctrl+l
-			vim.keymap.set("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true, noremap = true })
+			vim.keymap.set("i", "<C-l>", "<Plug>(copilot-accept-word)", { silent = true })
+			vim.cmd("Copilot")
 		end,
 	},
 	{
 		"coder/claudecode.nvim",
 		enabled = claude_enabled,
+		dependencies = { "folke/snacks.nvim" },
 		opts = {
+			diff_opts = {
+				layout = "vertical", -- "vertical" or "horizontal"
+				open_in_new_tab = true,
+				keep_terminal_focus = true, -- If true, moves focus back to terminal after diff opens
+				hide_terminal_in_new_tab = false,
+			},
 			terminal = {
+				---@module "snacks"
+				---@type snacks.win.Config|{}
 				snacks_win_opts = {
+					position = "float",
+					width = 0.8,
+					height = 0.8,
+					border = "double",
+					backdrop = 70,
 					keys = {
-						nav_left  = { "<C-h>", function() vim.cmd("TmuxNavigateLeft") end,  mode = "t", desc = "Navigate left" },
-						nav_down  = { "<C-j>", function() vim.cmd("TmuxNavigateDown") end,  mode = "t", desc = "Navigate down" },
-						nav_up    = { "<C-k>", function() vim.cmd("TmuxNavigateUp") end,    mode = "t", desc = "Navigate up" },
-						nav_right = { "<C-l>", function() vim.cmd("TmuxNavigateRight") end, mode = "t", desc = "Navigate right" },
+						claude_hide = {
+							"<C-q>",
+							function(self)
+								self:hide()
+							end,
+							mode = "t",
+							desc = "Hide",
+						},
 					},
 				},
 			},
 		},
 		keys = {
-			{ "<leader>ac", "<cmd>ClaudeCode<cr>",       desc = "Toggle Claude Code" },
-			{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>",  desc = "Focus Claude Code" },
-			{ "<leader>ab", "<cmd>ClaudeCodeAdd<cr>",    desc = "Add Buffer to Claude" },
+			{ "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code", mode = { "n", "x" } },
+			{ "<leader>ab", "<cmd>ClaudeCodeAdd<cr>", desc = "Add Buffer to Claude" },
 			{ "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept Diff" },
-			{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Reject Diff" },
-			{ "<leader>as", "<cmd>ClaudeCodeSend<cr>",   desc = "Send Selection to Claude", mode = "v" },
+			{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Reject Diff" },
+			{ "<leader>cC", "<cmd>ClaudeCodeSend<cr>", desc = "Send Selection to Claude", mode = "v" },
 		},
 	},
 }

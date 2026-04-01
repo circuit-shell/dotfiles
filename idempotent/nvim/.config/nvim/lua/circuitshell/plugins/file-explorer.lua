@@ -56,7 +56,7 @@ return {
 					["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
 					["<C-p>"] = "actions.preview",
 					["<C-c>"] = "actions.close",
-					["<C-l>"] = "actions.refresh",
+					["<C-r>"] = "actions.refresh",
 					["-"] = "actions.parent",
 					["_"] = "actions.open_cwd",
 					["`"] = "actions.cd",
@@ -107,6 +107,7 @@ return {
 			"aaronhallaert/advanced-git-search.nvim",
 			"debugloop/telescope-undo.nvim",
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			"folke/noice.nvim",
 		},
 		config = function()
 			local telescope = require("telescope")
@@ -161,6 +162,8 @@ return {
 				},
 				defaults = {
 					path_display = { "absolute" },
+					hidden = true,
+					no_ignore = true,
 					mappings = {
 						i = {
 							["<C-k>"] = actions.move_selection_previous,
@@ -203,13 +206,13 @@ return {
 			keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Fuzzy find help tags" })
 			keymap.set("n", "<leader>fg", "<cmd>Telescope changed_files<cr>", { desc = "Fuzzy find git files" })
 			keymap.set("n", "<leader>ft", "<cmd>TodoTelescope <cr>", { desc = "Find todos" })
-			-- keymap.set("n", "<leader>tm", "<cmd>Telescope noice<cr>", { desc = "Fuzzy find messages" })
+			keymap.set("n", "<leader>fn", "<cmd>Telescope noice<cr>", { desc = "Noice message history" })
 
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("undo")
 			require("telescope").load_extension("changed_files")
 			require("telescope").load_extension("advanced_git_search")
-			-- require("telescope").load_extension("noice")
+			require("telescope").load_extension("noice")
 		end,
 	},
 }

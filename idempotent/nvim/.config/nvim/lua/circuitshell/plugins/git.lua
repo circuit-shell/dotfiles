@@ -28,11 +28,8 @@ return {
 					vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
 				end
 
-				-- Navigation
 				map("n", "<leader>gn", gs.next_hunk, "Next Hunk")
 				map("n", "<leader>gp", gs.prev_hunk, "Prev Hunk")
-
-				-- Actions
 				map("n", "<leader>gs", gs.stage_hunk, "Stage hunk")
 				map("n", "<leader>gr", gs.reset_hunk, "Reset hunk")
 				map("n", "<leader>gS", gs.stage_buffer, "Stage buffer")

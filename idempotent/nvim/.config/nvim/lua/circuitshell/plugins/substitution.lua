@@ -19,7 +19,12 @@ return {
 	{
 		"nvim-mini/mini.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"JoosepAlviste/nvim-ts-context-commentstring",
+		},
 		config = function()
+			require("ts_context_commentstring").setup({ enable_autocmd = false })
+
 			-- import mini comment plugin safely
 			local comment = require("mini.comment")
 
@@ -27,7 +32,10 @@ return {
 			comment.setup({
 				---Add a space b/w comment and the line
 				options = {
-					custom_commentstring = nil,
+					custom_commentstring = function()
+						return require("ts_context_commentstring.internal").calculate_commentstring()
+							or vim.bo.commentstring
+					end,
 				},
 				-- Keymaps
 				mappings = {

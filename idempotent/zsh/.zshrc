@@ -262,9 +262,9 @@ fi
 # ---------------------------------------------------------------------------
 if command -v zoxide &>/dev/null; then
   eval "$(zoxide init zsh)"
-  alias cdd='z -'
-  alias cd='z'
-  alias cdi='zi'  # Interactive search
+  # alias cdd='z -'
+  # alias cd='z'
+  # alias cdi='zi'  # Interactive search
 fi
 
 # #####################################################################################
