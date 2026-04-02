@@ -130,9 +130,9 @@ return {
 			}
 			telescope.setup({
 				pickers = {
-					find_files = theme_config,
+					find_files = vim.tbl_extend("force", theme_config, { hidden = true }),
 					oldfiles = theme_config,
-					live_grep = theme_config,
+					live_grep = vim.tbl_extend("force", theme_config, { additional_args = { "--hidden" } }),
 					grep_string = theme_config,
 					buffers = theme_config,
 					help_tags = theme_config,
@@ -164,6 +164,45 @@ return {
 					path_display = { "absolute" },
 					hidden = true,
 					no_ignore = true,
+					file_ignore_patterns = {
+						-- Version control
+						"%.git/",
+						-- JS/TS
+						"node_modules/",
+						"dist/",
+						"%.next/",
+						-- General build
+						"build/",
+						"out/",
+						"%.cache/",
+						-- Rust
+						"target/",
+						-- Go
+						"vendor/",
+						-- Python
+						"__pycache__/",
+						"%.venv/",
+						"venv/",
+						"%.egg%-info/",
+						-- C/C++
+						"CMakeFiles/",
+						"cmake%-build%-",
+						-- C#/.NET
+						"bin/",
+						"obj/",
+						"packages/",
+						-- Java
+						"%.gradle/",
+						"%.mvn/",
+						-- Ruby
+						"%.bundle/",
+						"coverage/",
+						-- Swift
+						"%.build/",
+						"DerivedData/",
+						-- macOS
+						"%.DS_Store",
+					},
 					mappings = {
 						i = {
 							["<C-k>"] = actions.move_selection_previous,
@@ -206,7 +245,7 @@ return {
 			keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Fuzzy find help tags" })
 			keymap.set("n", "<leader>fg", "<cmd>Telescope changed_files<cr>", { desc = "Fuzzy find git files" })
 			keymap.set("n", "<leader>ft", "<cmd>TodoTelescope <cr>", { desc = "Find todos" })
-			keymap.set("n", "<leader>fn", "<cmd>Telescope noice<cr>", { desc = "Noice message history" })
+			keymap.set("n", "<leader>fn", function() Snacks.notifier.show_history() end, { desc = "Notification history" })
 
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("undo")

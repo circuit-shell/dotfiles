@@ -57,6 +57,9 @@ return {
 			-- File explorer integration
 			explorer = { enabled = true },
 
+			-- Picker defaults (used by explorer)
+			picker = { sources = { explorer = { hidden = true } } },
+
 			-- Fast file opening
 			quickfile = { enabled = true },
 
@@ -247,7 +250,7 @@ return {
 
 			-- File explorer
 			{
-				"<leader>e",
+				"<leader>ee",
 				function()
 					Snacks.explorer()
 				end,

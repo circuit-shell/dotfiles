@@ -54,14 +54,21 @@ return {
 		"nvim-mini/mini.surround",
 		opts = {
 			mappings = {
-				add = "sa",
-				delete = "sd",
-				find = "sf",
-				find_left = "sF",
-				highlight = "sh",
-				replace = "sr",
+				add = "gza",
+				delete = "gzd",
+				find = "gzf",
+				find_left = "gzF",
+				highlight = "gzh",
+				replace = "gzr",
 			},
 		},
+		config = function(_, opts)
+			require("mini.surround").setup(opts)
+			local surround_pairs = { ['"'] = '"', ["'"] = "'", ["`"] = "`", ["("] = "(", ["{"] = "{", ["["] = "[" }
+			for key, _ in pairs(surround_pairs) do
+				vim.keymap.set("x", key, "gza" .. key, { remap = true, desc = "Surround with " .. key })
+			end
+		end,
 	},
 	{
 		"folke/flash.nvim",
