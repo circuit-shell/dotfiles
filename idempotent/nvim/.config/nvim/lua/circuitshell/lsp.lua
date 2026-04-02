@@ -54,6 +54,24 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- vim.lsp.inlay_hint.enable(true)
 
+-- Restrict servers that should only attach in matching projects
+vim.lsp.config("angularls", {
+	root_dir = function(fname)
+		return vim.fs.root(fname, { "angular.json", ".angular-cli.json" })
+	end,
+})
+
+vim.lsp.config("tailwindcss", {
+	root_dir = function(fname)
+		return vim.fs.root(fname, {
+			"tailwind.config.js",
+			"tailwind.config.ts",
+			"tailwind.config.mjs",
+			"tailwind.config.cjs",
+		})
+	end,
+})
+
 local severity = vim.diagnostic.severity
 
 vim.diagnostic.config({

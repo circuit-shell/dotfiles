@@ -379,6 +379,8 @@ return {
 
 				-- Custom highlight overrides
 				custom_highlights = {
+					NormalFloat = { bg = "NONE" },
+					FloatBorder = { bg = "NONE" },
 					["@punctuation.delimiter"] = { fg = "#F8F8F2" },
 					["Delimiter"] = { fg = "#F8F8F2" },
 					["DiagnosticUnnecessary"] = { fg = "#FF5555" },
