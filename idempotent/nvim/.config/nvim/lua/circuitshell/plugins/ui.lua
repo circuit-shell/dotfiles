@@ -99,33 +99,30 @@ return {
 							action = "<cmd>AutoSession restore<CR>",
 						},
 						{
-							icon = " ",
-							key = "r",
-							desc = "Recent Files",
-							action = ":lua Snacks.dashboard.pick('oldfiles')",
+							icon = " ",
+							key = "G",
+							desc = "Git Files",
+							action = ":Telescope changed_files",
 						},
 						{
 							icon = " ",
 							key = "g",
 							desc = "Find Text",
-							action = ":lua Snacks.dashboard.pick('live_grep')",
+							action = ":Telescope live_grep",
 						},
 						{
 							icon = " ",
 							key = "f",
 							desc = "Find File",
-							action = ":lua Snacks.dashboard.pick('files')",
+							action = ":Telescope find_files",
 						},
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
-						{
-							icon = " ",
-							key = "G",
-							desc = "Git Files",
-							action = ":Telescope git_status",
-						},
 					},
 					-- ASCII art header
-					header = "   circuit-shell's nvim⠀⠀⠀\n\n" .. vim.fn.getcwd():gsub("^" .. vim.env.HOME, "~") .. "\n" .. [[
+					header = "   circuit-shell's nvim⠀⠀⠀\n\n"
+						.. vim.fn.getcwd():gsub("^" .. vim.env.HOME, "~")
+						.. "\n"
+						.. [[
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⢺⣿⣿⡗⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
