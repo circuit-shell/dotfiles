@@ -50,6 +50,14 @@ opt.showmode = false -- don't show mode in command line
 -- Editor behavior
 opt.backspace = "indent,eol,start" -- allow backspace over everything
 opt.virtualedit = "onemore" -- allow cursor one character beyond line end
+opt.scrolloff = 10 -- keep 10 lines above/below cursor
+opt.sidescrolloff = 10 -- keep 10 columns left/right of cursor
+opt.softtabstop = 2 -- spaces per tab/backspace
+opt.smartindent = true -- smart auto-indent
+opt.updatetime = 300 -- faster CursorHold (LSP, gitsigns)
+opt.timeoutlen = 500 -- key sequence timeout
+opt.autoread = true -- auto-reload files changed outside nvim
+opt.iskeyword:append("-") -- treat - as part of a word
 
 -- Clipboard settings
 opt.clipboard:append("unnamedplus") -- use system clipboard
