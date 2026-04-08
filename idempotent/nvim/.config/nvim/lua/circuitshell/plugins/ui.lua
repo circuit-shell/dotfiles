@@ -64,7 +64,7 @@ return {
 			quickfile = { enabled = true },
 
 			-- Image preview support
-			image = { enabled = true },
+			image = { enabled = false },
 
 			-- Highlight word under cursor throughout buffer
 			words = { enabled = true },
@@ -93,17 +93,18 @@ return {
 					-- Dashboard action keys
 					keys = {
 						{
-							icon = " ",
-							key = "s",
-							desc = "Restore Session",
-							action = "<cmd>AutoSession restore<CR>",
-						},
-						{
 							icon = " ",
 							key = "G",
 							desc = "Git Files",
 							action = ":Telescope changed_files",
 						},
+						{
+							icon = " ",
+							key = "s",
+							desc = "Restore Session",
+							action = "<cmd>AutoSession restore<CR>",
+						},
+
 						{
 							icon = " ",
 							key = "g",
@@ -120,7 +121,7 @@ return {
 					},
 					-- ASCII art header
 					header = "You are in\n"
-            .. vim.fn.getcwd():gsub("^" .. vim.env.HOME, "~")
+						.. vim.fn.getcwd():gsub("^" .. vim.env.HOME, "~")
 						.. "\n"
 						.. [[
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀

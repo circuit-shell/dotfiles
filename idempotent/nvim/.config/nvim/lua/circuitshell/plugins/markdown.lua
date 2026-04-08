@@ -1,48 +1,38 @@
--- https://github.com/MeanderingProgrammer/markdown.nvim
---
--- When I hover over markdown headings, this plugins goes away, so I need to
--- edit the default highlights
--- I tried adding this as an autocommand, in the options.lua
--- file, also in the markdownl.lua file, but the highlights kept being overriden
--- so the only way I was able to make it work was loading it
--- after the config.lazy in the init.lua file
-
 return {
 	{
-		"iamcco/markdown-preview.nvim",
+		"selimacerbas/markdown-preview.nvim",
+		dependencies = { "selimacerbas/live-server.nvim" },
 		keys = {
-			{
-				"<leader>mp",
-				ft = "markdown",
-				"<cmd>MarkdownPreviewToggle<cr>",
-				desc = "Markdown Preview",
-			},
+			{ "<leader>mp", "<cmd>MarkdownPreview<cr>", ft = "markdown", desc = "Markdown Preview" },
+			{ "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", ft = "markdown", desc = "Markdown Preview Stop" },
+			{ "<leader>mr", "<cmd>MarkdownPreviewRefresh<cr>", ft = "markdown", desc = "Markdown Preview Refresh" },
 		},
-		init = function()
-			-- The default filename is 「${name}」and I just hate those symbols
-			vim.g.mkdp_page_title = "${name}"
+		config = function()
+			require("markdown_preview").setup({
+				instance_mode = "takeover",
+				open_browser = true,
+				debounce_ms = 300,
+				scroll_sync = true,
+			})
 		end,
 	},
 
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		enabled = true,
-		-- Moved highlight creation out of opts as suggested by plugin maintainer
-		-- There was no issue, but it was creating unnecessary noise when ran
-		-- :checkhealth render-markdown
-		-- https://github.com/MeanderingProgrammer/render-markdown.nvim/issues/138#issuecomment-2295422741
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" }, -- if you use standalone mini plugins
+		ft = { "markdown" },
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
 		opts = {
+			render_modes = { "n", "c", "t" },
+
 			indent = {
 				enabled = true,
 				per_level = 2,
 				skip_level = 1,
 				skip_heading = false,
 			},
-			bullet = {
-				enabled = true,
-				left_pad = 2,
-				right_pad = 1,
-			},
+
 			checkbox = {
 				-- Turn on / off checkbox state rendering
 				enabled = true,
@@ -75,45 +65,35 @@ return {
 					conceal = false,
 				},
 			},
-			-- Add custom icons
-			link = {
-				image = "󰥶 ",
-				custom = {
-					youtu = { pattern = "youtu%.be", icon = "󰗃 " },
-				},
-			},
-			heading = {
-				sign = false,
-				icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
-				backgrounds = {
-					"Headline1Bg",
-					"Headline2Bg",
-					"Headline3Bg",
-					"Headline4Bg",
-					"Headline5Bg",
-					"Headline6Bg",
-				},
-				foregrounds = {
-					"Headline1Fg",
-					"Headline2Fg",
-					"Headline3Fg",
-					"Headline4Fg",
-					"Headline5Fg",
-					"Headline6Fg",
-				},
-			},
-			code = {
-				-- if I'm not using yabai, I cannot make the color of the codeblocks
-				-- transparent, so just disabling all rendering 😢
-				style = "none",
+		},
+		keys = {
+			{
+				"<leader>cy",
+				ft = "markdown",
+				function()
+					local node = vim.treesitter.get_node()
+					while node do
+						if node:type() == "fenced_code_block" then
+							for i = 0, node:named_child_count() - 1 do
+								local child = node:named_child(i)
+								if child and child:type() == "code_fence_content" then
+									local sr, _, er, _ = child:range()
+									local lines = vim.api.nvim_buf_get_lines(0, sr, er, false)
+									vim.fn.setreg("+", table.concat(lines, "\n"))
+									vim.notify("Code block copied!", vim.log.levels.INFO)
+									return
+								end
+							end
+						end
+						node = node:parent()
+					end
+					vim.notify("No code block under cursor", vim.log.levels.WARN)
+				end,
+				desc = "Copy code block",
 			},
 		},
 	},
 
-	-- Inline image rendering using Kitty Graphics Protocol.
-	-- Prerequisites: brew install imagemagick
-	-- For tmux: set -g allow-passthrough on  in .tmux.conf
-	-- For kitty: allow_remote_control yes  in kitty.conf
 	{
 		"3rd/image.nvim",
 		build = false,
@@ -126,42 +106,46 @@ return {
 					enabled = true,
 					clear_in_insert_mode = true,
 					download_remote_images = true,
-					only_render_image_at_cursor = false,
+					only_render_image_at_cursor = true,
 					filetypes = { "markdown" },
 				},
 			},
 			max_width_window_percentage = 60,
 			max_height_window_percentage = 40,
-			kitty_method = "normal",
 			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
 		},
 	},
 
-	-- Renders mermaid (and other diagram) code blocks inline as images.
-	-- Prerequisites: volta run --node 18 npm install -g @mermaid-js/mermaid-cli
 	{
 		"3rd/diagram.nvim",
-		dependencies = { "3rd/image.nvim" },
-		ft = { "markdown" },
-		config = function()
-			require("diagram").setup({
-				integrations = {
-					require("diagram.integrations.markdown"),
+		dependencies = {
+			"3rd/image.nvim",
+		},
+		opts = {
+			-- Disable automatic rendering for manual-only workflow
+			events = {
+				render_buffer = {}, -- Empty = no automatic rendering
+				clear_buffer = { "BufLeave" },
+			},
+			renderer_options = {
+				mermaid = {
+					theme = "dark",
+					scale = 2,
 				},
-				renderers = {
-					mermaid = ("mmdc"),
-					plantuml = ("plantuml"),
-					d2 = ("d2"),
-					gnuplot = ("gnuplot"),
-				},
-			})
-		end,
+			},
+		},
+		keys = {
+			{
+				"<leader>md",
+				function()
+					require("diagram").show_diagram_hover()
+				end,
+				mode = "n",
+				ft = { "markdown", "norg" }, -- Only in these filetypes
+				desc = "Show diagram in new tab",
+			},
+		},
 	},
-
-	-- Paste images from clipboard into markdown.
-	-- Usage: copy an image to clipboard, then <leader>pi in a markdown file.
-	-- You will be prompted for a filename; the image is saved relative to the
-	-- current file (in ./assets/ by default) and a markdown link is inserted.
 	{
 		"HakonHarnes/img-clip.nvim",
 		ft = { "markdown" },

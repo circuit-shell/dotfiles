@@ -118,6 +118,33 @@ return {
 			vim.o.foldenable = true
 
 			require("ufo").setup({
+				fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+					local newVirtText = {}
+					local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+					local sufWidth = vim.fn.strdisplaywidth(suffix)
+					local targetWidth = width - sufWidth
+					local curWidth = 0
+
+					local firstLine = vim.fn.getline(lnum)
+					local indent = string.match(firstLine, "^%s+")
+					table.insert(newVirtText, { indent or "", "Folded" })
+
+					for _, chunk in ipairs(virtText) do
+						local chunkText = chunk[1]
+						local hlGroup = chunk[2]
+						local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+						if targetWidth > curWidth + chunkWidth then
+							table.insert(newVirtText, chunk)
+							curWidth = curWidth + chunkWidth
+						else
+							chunkText = truncate(chunkText, targetWidth - curWidth)
+							table.insert(newVirtText, { chunkText, hlGroup })
+							break
+						end
+					end
+					table.insert(newVirtText, { suffix, "MoreMsg" })
+					return newVirtText
+				end,
 				close_fold_kinds_for_ft = {
 					["lua"] = { "comment" },
 				},
