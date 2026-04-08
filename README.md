@@ -107,3 +107,4 @@ cd /usr/local/stow/
 stow -D [package-name]
 sudo rm -rf /usr/local/stow/[package-name]
 ```
+#989898

@@ -26,6 +26,13 @@ return {
 		opts = {
 			render_modes = { "n", "c", "t" },
 
+			-- No heading glyphs: avoids nvim-ufo fold lines showing icon + visible `#` together.
+			heading = {
+				icons = function()
+					return nil
+				end,
+			},
+
 			indent = {
 				enabled = true,
 				per_level = 2,
