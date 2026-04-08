@@ -181,21 +181,25 @@ return {
 
 					local line = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1] or ""
 
+					-- Synthetic leading padding only for markdown (col-0 extmarks + ATX depth).
+					-- For other filetypes, virtText from nvim-ufo already includes the line's leading
+					-- whitespace; prepending line:match("^%s+") doubled indent on folded lines.
 					local padding = ""
 					if vim.bo[bufnr].filetype == "markdown" then
 						padding = render_markdown_leading_fold_padding(bufnr, lnum)
-					end
-					if padding == "" then
-						local hashes = line:match("^(#+)")
-						local level = hashes and #hashes or 0
-						padding = level > 1 and string.rep(" ", (level - 1) * 2) or ""
-					end
-					if padding == "" then
-						padding = line:match("^%s+") or ""
+						if padding == "" then
+							local hashes = line:match("^(#+)")
+							local level = hashes and #hashes or 0
+							padding = level > 1 and string.rep(" ", (level - 1) * 2) or ""
+						end
 					end
 
-					table.insert(newVirtText, { padding, "RenderMarkdownIndent" })
-					curWidth = vim.fn.strdisplaywidth(padding)
+					if padding ~= "" then
+						table.insert(newVirtText, { padding, "RenderMarkdownIndent" })
+						curWidth = vim.fn.strdisplaywidth(padding)
+					else
+						curWidth = 0
+					end
 
 					for _, chunk in ipairs(virtText) do
 						local chunkText = chunk[1]
