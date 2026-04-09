@@ -149,6 +149,8 @@ local function open_mermaid_in_viewer()
 		lines[#lines + 1] = line
 	end
 	vim.fn.writefile(lines, inp)
+	-- -t dark: mermaid-cli built-in dark theme (was forest = light).
+	-- -b transparent: avoids a white plate behind the diagram in viewers.
 	local cmd = {
 		"mmdc",
 		"-i",
@@ -156,7 +158,9 @@ local function open_mermaid_in_viewer()
 		"-o",
 		outp,
 		"-t",
-		"forest",
+		"dark",
+		"-b",
+		"transparent",
 		"-s",
 		"3",
 	}
