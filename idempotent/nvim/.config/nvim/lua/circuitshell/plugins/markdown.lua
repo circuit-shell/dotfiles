@@ -48,12 +48,17 @@ return {
 			{ "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", ft = "markdown", desc = "Markdown preview stop" },
 		},
 		config = function()
+			-- "multi" + circuitshell workspace: server root = the .md file's directory (see markdown_preview_workspace).
+			-- Preview writes content.md + index.html there; gitignore those and .mp-media-cache/.
 			require("markdown_preview").setup({
-				instance_mode = "takeover",
+				instance_mode = "multi",
 				open_browser = true,
 				debounce_ms = 300,
 				scroll_sync = true,
 			})
+			local mpw = require("circuitshell.markdown_preview_workspace")
+			mpw.patch_workspace_for_buffer()
+			mpw.patch_write_text_rewrite_images()
 		end,
 	},
 
