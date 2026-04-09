@@ -130,8 +130,8 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 		vim.api.nvim_buf_set_lines(buf, 0, -1, false, {
 			"# " .. diagram.renderer_id:upper() .. " Diagram",
 			"",
-			"Press 'q' to close this tab",
-			"Press 'o' to open image with system viewer",
+			"Press 'q' / Esc to close   'o' open in system viewer",
+			"Zoom: = or + in   - or _ out   zr reset",
 			"",
 		})
 
@@ -144,13 +144,95 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 			y = 4,
 		})
 
+		-- Allow zoom past global image.nvim max_*_window_percentage in this preview tab.
+		if image then
+			image.ignore_global_max_size = true
+		end
+
+		-- Max scale vs first-fit size (still clamped to window by apply_zoom).
+		local ZOOM_MAX = 48.0
+
+		local zoom = 1.0
+		local base_w, base_h ---@type number?, number?
+
+		local function capture_bases()
+			if not image then
+				return
+			end
+			local rg = image.rendered_geometry
+			if rg and rg.width and rg.height and rg.width > 0 and rg.height > 0 then
+				base_w = rg.width
+				base_h = rg.height
+				zoom = 1.0
+			end
+		end
+
+		local function clamp_dims(w, h)
+			local win_w = vim.api.nvim_win_get_width(win)
+			local win_h = vim.api.nvim_win_get_height(win)
+			w = math.min(w, math.max(1, win_w - 1))
+			h = math.min(h, math.max(1, win_h - 2))
+			return math.max(1, w), math.max(1, h)
+		end
+
+		local function apply_zoom()
+			if not image or not base_w or not base_h then
+				return
+			end
+			local w = math.floor(base_w * zoom)
+			local h = math.floor(base_h * zoom)
+			w, h = clamp_dims(w, h)
+			image:render({ width = w, height = h })
+		end
+
+		local function zoom_in()
+			if not base_w then
+				capture_bases()
+			end
+			if not base_w then
+				return
+			end
+			zoom = math.min(zoom * 1.15, ZOOM_MAX)
+			apply_zoom()
+		end
+
+		local function zoom_out()
+			if not base_w then
+				capture_bases()
+			end
+			if not base_w then
+				return
+			end
+			zoom = math.max(zoom / 1.15, 0.15)
+			apply_zoom()
+		end
+
+		local function zoom_reset()
+			if not base_w then
+				capture_bases()
+			end
+			if not base_w then
+				return
+			end
+			zoom = 1.0
+			apply_zoom()
+		end
+
 		if image then
 			image:render()
+			capture_bases()
 		else
 			vim.api.nvim_buf_set_lines(buf, -1, -1, false, {
 				"Image display failed. File: " .. renderer_result.file_path,
 			})
 		end
+
+		local map_opts = { buffer = buf }
+		vim.keymap.set("n", "=", zoom_in, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom in" }))
+		vim.keymap.set("n", "+", zoom_in, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom in" }))
+		vim.keymap.set("n", "-", zoom_out, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom out" }))
+		vim.keymap.set("n", "_", zoom_out, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom out" }))
+		vim.keymap.set("n", "zr", zoom_reset, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom reset" }))
 
 		vim.keymap.set("n", "q", function()
 			if image then

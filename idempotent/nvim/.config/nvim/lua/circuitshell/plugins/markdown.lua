@@ -131,7 +131,10 @@ return {
 			},
 			renderer_options = {
 				mermaid = {
-					theme = "dark",
+					-- mmdc -t: default | dark | forest | neutral (see `mmdc --help`)
+					theme = "forest",
+					-- Optional background: "transparent", "white", or "#rrggbb"
+					-- background = "transparent",
 					scale = 3,
 				},
 			},
