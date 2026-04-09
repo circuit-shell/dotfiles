@@ -1,7 +1,6 @@
 -- Vendored from 3rd/diagram.nvim lua/diagram/hover.lua with one fix:
--- Upstream uses y = 5 while the header buffer only has 5 lines (0-indexed rows 0–4).
--- image.nvim calls screenpos(win, y + 1, ...) → line 6 → E966 Invalid line number.
--- Anchor on the last line: y = 4. Track: https://github.com/3rd/diagram.nvim (hover tab + image.nvim)
+-- Upstream used y = 5 with only 5 header lines → E966 (invalid line 6).
+-- Anchor on the last header line (0-indexed). Buffer line count changes when help text grows.
 
 local image_nvim = require("image")
 
@@ -131,9 +130,13 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 			"# " .. diagram.renderer_id:upper() .. " Diagram",
 			"",
 			"Press 'q' / Esc to close   'o' open in system viewer",
-			"Zoom: = or + in   - or _ out   zr reset",
+			"Zoom: = + in   - _ out   zr reset",
+			"Pan (oversized diagram): h j k l or arrows (view scrolls to keep image)",
 			"",
 		})
+
+		-- 6 header lines → rows 0..5; image anchors on final blank line (avoid E966).
+		local BASE_ROW = 5
 
 		local image = image_nvim.from_file(renderer_result.file_path, {
 			buffer = buf,
@@ -141,7 +144,7 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 			with_virtual_padding = true,
 			inline = true,
 			x = 0,
-			y = 4,
+			y = BASE_ROW,
 		})
 
 		-- Allow zoom past global image.nvim max_*_window_percentage in this preview tab.
@@ -149,14 +152,16 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 			image.ignore_global_max_size = true
 		end
 
-		-- Max scale vs first-fit size (still clamped to window by apply_zoom).
+		-- Max scale vs first-fit size; diagram may exceed window → Kitty/image.nvim crops; pan shifts anchor.
 		local ZOOM_MAX = 48.0
+		local PAN_STEP = 2
 
 		local zoom = 1.0
+		local pan_x, pan_y = 0, 0
 		local base_w, base_h ---@type number?, number?
 
 		local function capture_bases()
-			if not image then
+			if not image or base_w then
 				return
 			end
 			local rg = image.rendered_geometry
@@ -164,25 +169,86 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 				base_w = rg.width
 				base_h = rg.height
 				zoom = 1.0
+				pan_x = 0
+				pan_y = 0
 			end
 		end
 
-		local function clamp_dims(w, h)
+		--- Avoid absurd magick/kitty work; still allows multi-window-size diagrams for panning.
+		local function cap_dims(w, h)
 			local win_w = vim.api.nvim_win_get_width(win)
 			local win_h = vim.api.nvim_win_get_height(win)
-			w = math.min(w, math.max(1, win_w - 1))
-			h = math.min(h, math.max(1, win_h - 2))
-			return math.max(1, w), math.max(1, h)
+			local wmax = math.max(win_w * 10, 64)
+			local hmax = math.max(win_h * 10, 32)
+			return math.max(1, math.min(w, wmax)), math.max(1, math.min(h, hmax))
 		end
 
-		local function apply_zoom()
+		--- Keep pan in a range so some of the image stays visible (image.nvim clears if fully OOB).
+		local function clamp_pan(w, h)
+			local win_w = vim.api.nvim_win_get_width(win)
+			local win_h = vim.api.nvim_win_get_height(win)
+			if w <= win_w + 1 then
+				pan_x = 0
+			else
+				local xmin = -(w - win_w + 2)
+				pan_x = math.max(xmin, math.min(0, pan_x))
+			end
+			if h <= win_h + 1 then
+				pan_y = 0
+			else
+				local ymax = math.max(0, h - win_h + 4)
+				pan_y = math.max(0, math.min(ymax, pan_y))
+			end
+		end
+
+		--- image.nvim uses screenpos(win, y + 1, …); y is 0-indexed → need #lines >= y + 1.
+		local function ensure_anchor_line_exists()
+			local y = BASE_ROW + pan_y
+			if y < 0 then
+				y = 0
+			end
+			local n = #vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+			local need = (y + 1) - n
+			if need > 0 then
+				local filler = {}
+				for _ = 1, need do
+					filler[#filler + 1] = ""
+				end
+				vim.api.nvim_buf_set_lines(buf, n, n, false, filler)
+			end
+		end
+
+		--- If the anchor row is outside the visible window, image.nvim refuses to draw (returns false).
+		--- Put the anchor on the first visible line so tall virtual-padding images stay on-screen.
+		local function scroll_anchor_into_view()
+			local y0 = BASE_ROW + pan_y
+			local line_1 = math.max(1, y0 + 1)
+			local lc = vim.api.nvim_buf_line_count(buf)
+			if line_1 > lc then
+				line_1 = lc
+			end
+			vim.api.nvim_win_set_cursor(win, { line_1, 0 })
+			vim.api.nvim_win_call(win, function()
+				pcall(vim.cmd, "silent! normal! zt")
+			end)
+		end
+
+		local function apply_view()
 			if not image or not base_w or not base_h then
 				return
 			end
 			local w = math.floor(base_w * zoom)
 			local h = math.floor(base_h * zoom)
-			w, h = clamp_dims(w, h)
-			image:render({ width = w, height = h })
+			w, h = cap_dims(w, h)
+			clamp_pan(w, h)
+			ensure_anchor_line_exists()
+			scroll_anchor_into_view()
+			image:render({
+				width = w,
+				height = h,
+				x = pan_x,
+				y = BASE_ROW + pan_y,
+			})
 		end
 
 		local function zoom_in()
@@ -193,7 +259,7 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 				return
 			end
 			zoom = math.min(zoom * 1.15, ZOOM_MAX)
-			apply_zoom()
+			apply_view()
 		end
 
 		local function zoom_out()
@@ -204,7 +270,7 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 				return
 			end
 			zoom = math.max(zoom / 1.15, 0.15)
-			apply_zoom()
+			apply_view()
 		end
 
 		local function zoom_reset()
@@ -215,10 +281,45 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 				return
 			end
 			zoom = 1.0
-			apply_zoom()
+			pan_x = 0
+			pan_y = 0
+			apply_view()
+		end
+
+		-- h / Left: show more of the left side; l / Right: more right (negative pan_x shifts drawable left).
+		local function pan_left()
+			if not base_w then
+				return
+			end
+			pan_x = pan_x + PAN_STEP
+			apply_view()
+		end
+		local function pan_right()
+			if not base_w then
+				return
+			end
+			pan_x = pan_x - PAN_STEP
+			apply_view()
+		end
+		-- j / Down: move diagram down → see upper area less, lower more
+		local function pan_down()
+			if not base_h then
+				return
+			end
+			pan_y = pan_y + PAN_STEP
+			apply_view()
+		end
+		local function pan_up()
+			if not base_h then
+				return
+			end
+			pan_y = pan_y - PAN_STEP
+			apply_view()
 		end
 
 		if image then
+			ensure_anchor_line_exists()
+			scroll_anchor_into_view()
 			image:render()
 			capture_bases()
 		else
@@ -233,6 +334,16 @@ M.show_diagram_hover = function(diagram, integrations, renderer_options)
 		vim.keymap.set("n", "-", zoom_out, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom out" }))
 		vim.keymap.set("n", "_", zoom_out, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom out" }))
 		vim.keymap.set("n", "zr", zoom_reset, vim.tbl_extend("force", map_opts, { desc = "Diagram zoom reset" }))
+
+		local pan_desc = { desc = "Diagram pan" }
+		vim.keymap.set("n", "h", pan_left, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "l", pan_right, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "j", pan_down, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "k", pan_up, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "<Left>", pan_left, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "<Right>", pan_right, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "<Down>", pan_down, vim.tbl_extend("force", map_opts, pan_desc))
+		vim.keymap.set("n", "<Up>", pan_up, vim.tbl_extend("force", map_opts, pan_desc))
 
 		vim.keymap.set("n", "q", function()
 			if image then
