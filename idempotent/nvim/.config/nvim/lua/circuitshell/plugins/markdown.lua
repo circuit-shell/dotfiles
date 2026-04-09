@@ -40,6 +40,24 @@ return {
 	},
 
 	{
+		"selimacerbas/markdown-preview.nvim",
+		dependencies = { "selimacerbas/live-server.nvim" },
+		ft = { "markdown" },
+		keys = {
+			{ "<leader>ml", "<cmd>MarkdownPreview<cr>", ft = "markdown", desc = "Markdown live preview" },
+			{ "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", ft = "markdown", desc = "Markdown preview stop" },
+		},
+		config = function()
+			require("markdown_preview").setup({
+				instance_mode = "takeover",
+				open_browser = true,
+				debounce_ms = 300,
+				scroll_sync = true,
+			})
+		end,
+	},
+
+	{
 		"HakonHarnes/img-clip.nvim",
 		ft = { "markdown" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
