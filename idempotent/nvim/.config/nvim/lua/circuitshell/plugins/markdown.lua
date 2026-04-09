@@ -105,25 +105,34 @@ return {
 			},
 			max_width_window_percentage = 85,
 			max_height_window_percentage = 65,
+			-- Reduces “stuck” Kitty graphics when splits / floats overlap (see image.nvim README).
+			window_overlap_clear_enabled = true,
 			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
 		},
 	},
 
 	{
 		"3rd/diagram.nvim",
+		ft = { "markdown", "norg" },
 		dependencies = {
 			"3rd/image.nvim",
 		},
+		-- diagram.nvim hover tab used y=5 with only 5 buffer lines → image.nvim E966 (invalid line 6).
+		init = function()
+			package.preload["diagram/hover"] = function()
+				return require("circuitshell.patches.diagram_hover")
+			end
+		end,
 		opts = {
-			-- Disable automatic rendering for manual-only workflow
+			-- Manual-only: auto render_buffer + Kitty often leaves orphan images (upstream recommends this).
 			events = {
-				render_buffer = {}, -- Empty = no automatic rendering
+				render_buffer = {},
 				clear_buffer = { "BufLeave" },
 			},
 			renderer_options = {
 				mermaid = {
 					theme = "dark",
-					scale = 2,
+					scale = 3,
 				},
 			},
 		},
@@ -134,8 +143,24 @@ return {
 					require("diagram").show_diagram_hover()
 				end,
 				mode = "n",
-				ft = { "markdown", "norg" }, -- Only in these filetypes
-				desc = "Show diagram in new tab",
+				ft = { "markdown", "norg" },
+				desc = "Mermaid/diagram preview (new tab)",
+			},
+			{
+				"<leader>mX",
+				function()
+					require("diagram").clear()
+					local buf = vim.api.nvim_get_current_buf()
+					local ok, image_api = pcall(require, "image")
+					if ok then
+						for _, img in ipairs(image_api.get_images({ buffer = buf })) do
+							img:clear()
+						end
+					end
+				end,
+				mode = "n",
+				ft = { "markdown", "norg" },
+				desc = "Clear stuck diagram + markdown images (buffer)",
 			},
 		},
 	},
