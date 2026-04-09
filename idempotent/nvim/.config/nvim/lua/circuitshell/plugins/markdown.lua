@@ -149,8 +149,9 @@ local function open_mermaid_in_viewer()
 		lines[#lines + 1] = line
 	end
 	vim.fn.writefile(lines, inp)
-	-- -t dark: mermaid-cli built-in dark theme (was forest = light).
-	-- -b transparent: avoids a white plate behind the diagram in viewers.
+	-- -t dark: mermaid-cli dark theme.
+	-- -b: SVG page color. "transparent" still looks white in Preview/browser (canvas is white).
+	--      Use a solid dark fill so system viewers match the diagram.
 	local cmd = {
 		"mmdc",
 		"-i",
@@ -160,7 +161,7 @@ local function open_mermaid_in_viewer()
 		"-t",
 		"dark",
 		"-b",
-		"transparent",
+		"#0d1117",
 		"-s",
 		"3",
 	}
