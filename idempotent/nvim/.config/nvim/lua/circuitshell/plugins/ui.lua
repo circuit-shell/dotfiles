@@ -64,7 +64,23 @@ return {
 			quickfile = { enabled = true },
 
 			-- Image preview support
-			image = { enabled = false },
+			image = {
+				enabled = true,
+
+				doc = {
+					enabled = true,
+					inline = false,
+					float = true,
+					max_width = 80,
+					max_height = 80,
+					---@param lang string tree-sitter language
+					---@param type snacks.image.Type image type
+					conceal = function(lang, type)
+						-- only conceal math expressions
+						return type == "math"
+					end,
+				},
+			},
 
 			-- Highlight word under cursor throughout buffer
 			words = { enabled = true },
