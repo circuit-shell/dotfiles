@@ -141,23 +141,70 @@ chezmoi init --source=/Users/$USER/github.com/circuit-shell/dotfiles
 
 ---
 
+## Making Changes (repo is the source of truth)
+
+The repo is the source of truth — always edit files here, then apply them to your machine. Never edit deployed files directly in `~/.zshrc`, `~/.config/nvim/`, etc.
+
+### Edit a file in the repo
+
+```sh
+# Find the source path for any deployed file:
+chezmoi source-path ~/.zshrc
+# → /Users/you/github.com/circuit-shell/dotfiles/dot_zshrc
+
+# Open it in your editor (shortcut for the above):
+chezmoi edit ~/.zshrc
+```
+
+Or just open the repo directly in your editor and edit the file there:
+
+```sh
+nvim ~/github.com/circuit-shell/dotfiles/dot_zshrc
+nvim ~/github.com/circuit-shell/dotfiles/dot_config/nvim/lua/circuitshell/plugins/ui.lua
+# etc.
+```
+
+### Preview and apply
+
+```sh
+# See what would change before writing anything:
+chezmoi diff
+
+# Apply a single file:
+chezmoi apply ~/.zshrc
+
+# Apply a whole directory:
+chezmoi apply ~/.config/nvim
+
+# Apply everything:
+chezmoi apply
+```
+
+### Save and sync
+
+```sh
+# After applying, commit to git so other machines get the change:
+cd $(chezmoi source-path)
+git add -A && git commit -m "feat: describe your change"
+git push
+
+# On another machine, pull and apply in one command:
+chezmoi update
+```
+
+---
+
 ## Daily Workflow
 
 ```sh
-# Edit a config (opens the source file in $EDITOR):
-chezmoi edit ~/.zshrc
-
-# Apply changes to your home directory:
-chezmoi apply
-
-# Preview what would change before applying:
-chezmoi diff
-
 # Pull latest changes from remote and apply:
 chezmoi update
 
-# Check sync status:
+# Check sync status (anything out of sync?):
 chezmoi status
+
+# Preview what would change:
+chezmoi diff
 ```
 
 ---
