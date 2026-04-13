@@ -1,15 +1,15 @@
 ---Fix selimacerbas/markdown-preview.nvim local images for live-server.nvim.
 ---
----1) Workspace = directory of the markdown file (not ~/.cache). The preview writes
----   content.md + index.html there (gitignore those + .mp-media-cache/).
+---1) Workspace = stable per-file dir under stdpath("cache")/markdown-preview/<hash>.
+---   The preview writes content.md + index.html there — never in the project dir.
 ---
 ---2) live-server uses fs_realpath + path_has_prefix; symlinked files resolve outside
 ---   the server root and get 404. No symlinks.
 ---
 ---3) The browser resolves image URLs against http://host:port/ (not the .md path).
----   We rewrite local ![](...) targets to URL paths under the server root: paths that
----   already sit under that directory become /relative/url; paths outside are copied
----   into .mp-media-cache/ so realpath stays under root.
+---   We rewrite local ![](...) targets to URL paths under the server root: paths are
+---   resolved relative to the actual markdown file's directory, then copied into the
+---   workspace's .mp-media-cache/ so realpath stays under root.
 ---
 ---Requires instance_mode = "multi" (takeover uses shared cache only).
 local M = {}
@@ -71,10 +71,15 @@ local function ensure_served_url(ws_root, abs_file)
 	return "/.mp-media-cache/" .. base
 end
 
-function M.rewrite_local_image_urls(text, ws_root)
-	if not text or text == "" or not ws_root or ws_root == "" then
+---Rewrite local image URLs in markdown text.
+---@param text string markdown content
+---@param file_dir string directory of the actual .md file (for resolving relative paths)
+---@param ws_root string live-server root (cache dir; images are copied here)
+function M.rewrite_local_image_urls(text, file_dir, ws_root)
+	if not text or text == "" or not file_dir or file_dir == "" or not ws_root or ws_root == "" then
 		return text
 	end
+	file_dir = vim.fn.fnamemodify(file_dir, ":p")
 	ws_root = vim.fn.fnamemodify(ws_root, ":p")
 
 	return (text:gsub("(%![%[][^%]]*%][%(])([^)]+)([%)])", function(prefix, inner, suffix)
@@ -90,7 +95,7 @@ function M.rewrite_local_image_urls(text, ws_root)
 		if raw:sub(1, 1) == "/" then
 			abs = vim.fn.fnamemodify(raw, ":p")
 		else
-			abs = vim.fn.fnamemodify(vim.fs.joinpath(ws_root, raw), ":p")
+			abs = vim.fn.fnamemodify(vim.fs.joinpath(file_dir, raw), ":p")
 		end
 		if vim.fn.filereadable(abs) ~= 1 then
 			return prefix .. inner .. suffix
@@ -110,13 +115,21 @@ function M.patch_workspace_for_buffer()
 	util._circuitshell_workspace_patched = true
 
 	local orig = util.workspace_for_buffer
+	local cache = {}
 
 	function util.workspace_for_buffer(bufnr)
 		local name = vim.api.nvim_buf_get_name(bufnr)
 		if name == "" or vim.fn.filereadable(name) ~= 1 then
 			return orig(bufnr)
 		end
-		return vim.fn.fnamemodify(name, ":p:h")
+		local real = vim.fn.fnamemodify(name, ":p")
+		if not cache[real] then
+			local sha = vim.fn.sha256(real)
+			local dir = vim.fs.joinpath(vim.fn.stdpath("cache"), "markdown-preview", sha:sub(1, 16))
+			vim.fn.mkdir(dir, "p")
+			cache[real] = dir
+		end
+		return cache[real]
 	end
 end
 
@@ -135,8 +148,9 @@ function M.patch_write_text_rewrite_images()
 			local bufnr = mp and mp._active_bufnr
 			local name = bufnr and vim.api.nvim_buf_get_name(bufnr) or ""
 			if name ~= "" and vim.fn.filereadable(name) == 1 then
-				local ws_root = vim.fn.fnamemodify(name, ":p:h")
-				text = M.rewrite_local_image_urls(text, ws_root)
+				local file_dir = vim.fn.fnamemodify(name, ":p:h")
+				local ws_root = vim.fn.fnamemodify(path, ":p:h")
+				text = M.rewrite_local_image_urls(text, file_dir, ws_root)
 			end
 		end
 		return orig(path, text)
