@@ -1,0 +1,19 @@
+#!/bin/bash
+# hash: {{ include "scripts" | sha256sum }}
+mkdir -p "$HOME/.local/bin"
+
+{{ if eq .chezmoi.os "darwin" -}}
+for f in "{{ .chezmoi.sourceDir }}/scripts/macos/"*; do
+  [[ -f "$f" ]] || continue
+  name="${f##*/}"
+  cp "$f" "$HOME/.local/bin/$name"
+  chmod 755 "$HOME/.local/bin/$name"
+done
+{{ else -}}
+for f in "{{ .chezmoi.sourceDir }}/scripts/linux/"*; do
+  [[ -f "$f" ]] || continue
+  name="${f##*/}"
+  cp "$f" "$HOME/.local/bin/$name"
+  chmod 755 "$HOME/.local/bin/$name"
+done
+{{ end -}}

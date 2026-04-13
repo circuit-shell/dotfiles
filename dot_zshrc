@@ -1,0 +1,262 @@
+#####################################################################################
+# SECTION: Variables
+#####################################################################################
+local helper_dir="$HOME/.zsh/helper"
+local helpers=(functions aliases git-plugin history-settings private)
+
+# #####################################################################################
+# SECTION: Detect OS (Must be early)
+# #####################################################################################
+case "$(uname -s)" in
+  Darwin)
+    OS='Mac'
+    ;;
+  Linux)
+    OS='Linux'
+    ;;
+  *)
+    OS='Other'
+    ;;
+esac
+# #####################################################################################
+
+# #####################################################################################
+# SECTION: Misc Config
+# #####################################################################################
+ENABLE_CORRECTION="false"
+COMPLETION_WAITING_DOTS="true"
+export LANG=en_US.UTF-8
+# #####################################################################################
+
+# #####################################################################################
+# SECTION: History Settings
+# #####################################################################################
+HIST_STAMPS="yyyy-mm-dd"
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+# Check if history file exists, if not, create it
+if [[ ! -f $HISTFILE ]]; then
+  touch $HISTFILE
+  chmod 600 $HISTFILE
+fi
+
+setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_VERIFY
+# #####################################################################################
+
+# #####################################################################################
+# SECTION: Autocompletion Settings
+# #####################################################################################
+zmodload zsh/complist
+autoload -U compinit
+compinit
+_comp_options+=(globdots)
+
+setopt AUTO_LIST
+setopt COMPLETE_IN_WORD
+
+# Define completers
+zstyle ':completion:*' completer _extensions _complete _approximate
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$HOME/.zcompcache"
+zstyle ':completion:*' complete true
+zstyle ':completion:*' menu select
+zstyle ':completion:*' complete-options true
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'
+zstyle ':completion:*:*:*:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*:*:*:*:default' list-colors '${(s.:.)LS_COLORS}'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# #####################################################################################
+
+# #####################################################################################
+# SECTION: OS-Specific Configurations
+# #####################################################################################
+if [ "$OS" = 'Mac' ]; then
+  # ---------------------------------------------------------------------------
+  # SUBSECTION: Homebrew
+  # ---------------------------------------------------------------------------
+  export HOMEBREW_NO_AUTO_UPDATE="1"
+  if command -v brew &>/dev/null; then
+    export PATH="$(brew --prefix)/bin:$PATH"
+    export PATH="$(brew --prefix)/sbin:$PATH"
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  fi
+
+  # ---------------------------------------------------------------------------
+  # SUBSECTION: xterm-kitty terminfo
+  # ---------------------------------------------------------------------------
+  install_xterm_kitty_terminfo() {
+    if ! infocmp xterm-kitty &>/dev/null; then
+      echo "xterm-kitty terminfo not found. Installing..."
+      tempfile=$(mktemp)
+      if curl -o "$tempfile" https://raw.githubusercontent.com/kovidgoyal/kitty/master/terminfo/kitty.terminfo; then
+        if tic -x -o ~/.terminfo "$tempfile"; then
+          echo "xterm-kitty terminfo installed successfully."
+        fi
+      fi
+      rm "$tempfile"
+    fi
+  }
+  install_xterm_kitty_terminfo
+
+  # ---------------------------------------------------------------------------
+  # SUBSECTION: Plugins (macOS paths via Homebrew)
+  # ---------------------------------------------------------------------------
+  # Autosuggestions
+  [[ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
+    source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+  # Vi mode (managed by chezmoi external)
+  [[ -f "$helper_dir/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] && \
+    source "$helper_dir/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+
+  # Syntax highlighting (must be last)
+  [[ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
+    source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+  # fzf
+  if [ -f ~/.fzf.zsh ]; then
+    source ~/.fzf.zsh
+    export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+    export FZF_COMPLETION_TRIGGER='::'
+    export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
+  fi
+
+  # Powerlevel10k
+  [[ -f "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" ]] && \
+    source "$(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme"
+
+elif [ "$OS" = 'Linux' ]; then
+  # ---------------------------------------------------------------------------
+  # SUBSECTION: Neovim (Linux)
+  # ---------------------------------------------------------------------------
+  if command -v nvim &>/dev/null; then
+    alias v='nvim'
+    alias vim='nvim'
+    alias vi='nvim'
+    export EDITOR='nvim'
+    export MANPAGER='nvim +Man!'
+    export MANWIDTH=999
+  fi
+
+  # ---------------------------------------------------------------------------
+  # SUBSECTION: Plugins (Linux paths — Arch and Fedora fallbacks)
+  # ---------------------------------------------------------------------------
+  # Autosuggestions (Arch path)
+  [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+  # Autosuggestions (Fedora / generic path)
+  [[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+  # Vi mode (managed by chezmoi external)
+  [[ -f "$helper_dir/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]] && \
+    source "$helper_dir/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+
+  # Syntax highlighting (Arch path, must be last)
+  [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  # Syntax highlighting (Fedora / generic path)
+  [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+  # fzf (Arch path)
+  if [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+    export FZF_COMPLETION_TRIGGER='::'
+    export FZF_DEFAULT_OPTS='--color=fg:#ebfafa,bg:#09090d,hl:#37f499 --color=fg+:#ebfafa,bg+:#0D1116,hl+:#37f499 --color=info:#04d1f9,prompt:#04d1f9,pointer:#7081d0 --color=marker:#7081d0,spinner:#f7c67f,header:#323449'
+  fi
+
+  # Powerlevel10k (Arch path)
+  [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] && \
+    source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+  # Powerlevel10k (Fedora / generic path)
+  [[ -f /usr/share/zsh/site-functions/powerlevel10k.zsh-theme ]] && \
+    source /usr/share/zsh/site-functions/powerlevel10k.zsh-theme
+fi
+# #####################################################################################
+
+# #####################################################################################
+# SECTION: Universal Tools (Work on both OS)
+# #####################################################################################
+
+# ---------------------------------------------------------------------------
+# SUBSECTION: eza (ls replacement)
+# ---------------------------------------------------------------------------
+if command -v eza &>/dev/null; then
+  alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions --all'
+  alias l='eza -F --icons'
+  alias ll='eza -lF --icons'
+  alias lla='eza -laF --icons'
+  alias la='eza -aF --icons'
+  alias lt='eza -T --icons --level=1'
+fi
+
+# ---------------------------------------------------------------------------
+# SUBSECTION: bat (cat replacement)
+# ---------------------------------------------------------------------------
+if command -v bat &>/dev/null; then
+  alias cat='bat --paging=never'
+  alias catt='bat'
+  alias cata='bat --show-all --paging=never'
+fi
+
+# ---------------------------------------------------------------------------
+# SUBSECTION: zoxide (cd replacement)
+# ---------------------------------------------------------------------------
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+# #####################################################################################
+# SECTION: History Keybindings
+# #####################################################################################
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '^[OA' history-search-backward
+bindkey '^[OB' history-search-forward
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
+# #####################################################################################
+
+# #####################################################################################
+# SECTION: mise (runtime manager)
+# #####################################################################################
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
+# #####################################################################################
+
+#####################################################################################
+# SECTION: Load Helper Files
+#####################################################################################
+for helper in $helpers; do
+  [[ -f "$helper_dir/$helper.sh" ]] && source "$helper_dir/$helper.sh"
+done
+#####################################################################################
+
+export PATH="/usr/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# #####################################################################################
+# SECTION: Powerlevel10k instant prompt
+# #####################################################################################
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# #####################################################################################
