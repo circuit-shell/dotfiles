@@ -1,5 +1,4 @@
 #!/bin/bash
-# hash: {{ include "scripts" | sha256sum }}
 mkdir -p "$HOME/.local/bin"
 
 {{ if eq .chezmoi.os "darwin" -}}
