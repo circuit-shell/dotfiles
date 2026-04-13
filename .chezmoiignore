@@ -1,20 +1,25 @@
 # Neovim plugin lock — machine-local
 dot_config/nvim/lazy-lock.json
 
-# OS-gated directories
-{{ if eq .chezmoi.os "darwin" }}
-dot_config/hypr/**
-dot_config/waybar/**
-dot_config/wofi/**
-dot_config/mako/**
-scripts/linux/**
-{{ end }}
-{{ if ne .chezmoi.os "darwin" }}
-scripts/macos/**
-brew/**
-{{ end }}
+# Repo-level files — not dotfiles, never deployed to home
+README.md
+CLAUDE.md
+nvim-keybindings.md
+brew
+scripts
 
 # Reference files — not deployed
 dot_zsh/helper/private.sh.example
-README.md
-CLAUDE.md
+
+# Linux-only configs — excluded on macOS
+{{ if eq .chezmoi.os "darwin" }}
+dot_config/hypr
+dot_config/waybar
+dot_config/wofi
+dot_config/mako
+{{ end }}
+
+# macOS-only — excluded on Linux
+{{ if ne .chezmoi.os "darwin" }}
+dot_config/kitty/kitty.conf.tmpl
+{{ end }}
