@@ -1,170 +1,297 @@
--- https://github.com/MeanderingProgrammer/markdown.nvim
---
--- When I hover over markdown headings, this plugins goes away, so I need to
--- edit the default highlights
--- I tried adding this as an autocommand, in the options.lua
--- file, also in the markdownl.lua file, but the highlights kept being overriden
--- so the only way I was able to make it work was loading it
--- after the config.lazy in the init.lua file
+-- Lightweight markdown helpers (mermaid → viewer, image open, copy fenced block).
+
+---@param bufnr integer
+---@return string|nil
+local function mermaid_source_at_cursor(bufnr)
+	local node = vim.treesitter.get_node({ bufnr = bufnr })
+	while node do
+		if node:type() == "fenced_code_block" then
+			local lang, content
+			for i = 0, node:named_child_count() - 1 do
+				local c = node:named_child(i)
+				if c:type() == "info_string" then
+					lang = vim.trim(vim.treesitter.get_node_text(c, bufnr))
+				elseif c:type() == "code_fence_content" then
+					content = vim.treesitter.get_node_text(c, bufnr)
+				end
+			end
+			if lang == "mermaid" and content and content ~= "" then
+				return content
+			end
+		end
+		node = node:parent()
+	end
+	return nil
+end
+
+--- link_destination often sits under anonymous nodes; walk all children.
+---@param node userdata
+---@param bufnr integer
+---@return string|nil
+local function find_link_destination_in_tree(node, bufnr)
+	if node:type() == "link_destination" then
+		local text = vim.treesitter.get_node_text(node, bufnr)
+		return (text:gsub("^<(.+)>$", "%1"))
+	end
+	for i = 0, node:child_count() - 1 do
+		local c = node:child(i)
+		if c then
+			local dest = find_link_destination_in_tree(c, bufnr)
+			if dest then
+				return dest
+			end
+		end
+	end
+	return nil
+end
+
+--- Fallback when injections / node names differ: cursor inside ![…](url) on this line.
+---@param bufnr integer
+---@param row0 integer 0-indexed line
+---@param col0 integer 0-indexed byte column
+---@return string|nil
+local function image_url_on_line_at_col(bufnr, row0, col0)
+	local line = (vim.api.nvim_buf_get_lines(bufnr, row0, row0 + 1, false) or {})[1] or ""
+	local search_from = 1
+	while true do
+		local bang = line:find("![", search_from, true)
+		if not bang then
+			break
+		end
+		local close_bracket = line:find("]", bang + 2, true)
+		if not close_bracket or line:sub(close_bracket + 1, close_bracket + 1) ~= "(" then
+			search_from = bang + 2
+		else
+			local url_start = close_bracket + 2
+			local close_paren = line:find(")", url_start, true)
+			if not close_paren then
+				break
+			end
+			local span_start0 = bang - 1
+			local span_end0 = close_paren - 1
+			if col0 >= span_start0 and col0 <= span_end0 then
+				local raw = line:sub(url_start, close_paren - 1)
+				return vim.trim((raw:gsub("^<(.+)>$", "%1")))
+			end
+			search_from = close_paren + 1
+		end
+	end
+	return nil
+end
+
+---@param bufnr integer
+---@return string|nil
+local function image_destination_at_cursor(bufnr)
+	local row1, col0 = unpack(vim.api.nvim_win_get_cursor(0))
+	local row0 = row1 - 1
+
+	local node = vim.treesitter.get_node({ bufnr = bufnr })
+	while node do
+		if node:type() == "image" then
+			local dest = find_link_destination_in_tree(node, bufnr)
+			if dest and dest ~= "" then
+				return dest
+			end
+		end
+		node = node:parent()
+	end
+
+	return image_url_on_line_at_col(bufnr, row0, col0)
+end
+
+---@param ref string
+---@param bufnr integer
+---@return string
+local function resolve_ref(ref, bufnr)
+	if ref:match("^https?://") or ref:match("^file:") then
+		return ref
+	end
+	local path = ref
+	if path:sub(1, 2) == "./" or (path:sub(1, 1) ~= "/" and not path:match("^%a:")) then
+		local base = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":p:h")
+		if base == "" or base == "." then
+			base = vim.fn.getcwd()
+		end
+		path = base .. "/" .. path
+	end
+	return vim.fn.fnamemodify(path, ":p")
+end
+
+---@param path string
+local function open_external(path)
+	if vim.ui and vim.ui.open then
+		vim.ui.open(path)
+	elseif vim.fn.has("macunix") == 1 then
+		vim.fn.system({ "open", path })
+	else
+		vim.notify("Cannot open (no vim.ui.open): " .. path, vim.log.levels.WARN)
+	end
+end
+
+local function open_mermaid_in_viewer()
+	local bufnr = vim.api.nvim_get_current_buf()
+	if vim.bo[bufnr].filetype ~= "markdown" then
+		return
+	end
+	local src = mermaid_source_at_cursor(bufnr)
+	if not src then
+		vim.notify("No mermaid ``` block under cursor", vim.log.levels.WARN)
+		return
+	end
+	if vim.fn.executable("mmdc") ~= 1 then
+		vim.notify("mmdc (mermaid-cli) not found in PATH", vim.log.levels.ERROR)
+		return
+	end
+	local inp = vim.fn.tempname() .. ".mmd"
+	local outp = vim.fn.tempname() .. ".svg"
+	local lines = {}
+	for line in vim.gsplit(src, "\n", { plain = true }) do
+		lines[#lines + 1] = line
+	end
+	vim.fn.writefile(lines, inp)
+	-- -t dark: mermaid-cli dark theme.
+	-- -b: SVG page color. "transparent" still looks white in Preview/browser (canvas is white).
+	--      Use a solid dark fill so system viewers match the diagram.
+	local cmd = {
+		"mmdc",
+		"-i",
+		inp,
+		"-o",
+		outp,
+		"-t",
+		"dark",
+		"-b",
+		"#0d1117",
+		"-s",
+		"3",
+	}
+	local r = vim.system(cmd):wait()
+	vim.fn.delete(inp)
+	if r.code ~= 0 then
+		vim.notify("mmdc failed:\n" .. (r.stderr or ""), vim.log.levels.ERROR)
+		if vim.fn.filereadable(outp) == 1 then
+			vim.fn.delete(outp)
+		end
+		return
+	end
+	if vim.fn.filereadable(outp) ~= 1 then
+		vim.notify("mmdc produced no output file", vim.log.levels.ERROR)
+		return
+	end
+	open_external(outp)
+end
+
+local function open_markdown_image_in_viewer()
+	local bufnr = vim.api.nvim_get_current_buf()
+	if vim.bo[bufnr].filetype ~= "markdown" then
+		return
+	end
+	local dest = image_destination_at_cursor(bufnr)
+	if not dest or dest == "" then
+		vim.notify("No ![image](…) under cursor", vim.log.levels.WARN)
+		return
+	end
+	local path = resolve_ref(vim.trim(dest), bufnr)
+	if path:match("^https?://") then
+		open_external(path)
+		return
+	end
+	if vim.fn.filereadable(path) ~= 1 then
+		vim.notify("File not found: " .. path, vim.log.levels.ERROR)
+		return
+	end
+	open_external(path)
+end
+
+local function copy_fenced_code_block()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local node = vim.treesitter.get_node({ bufnr = bufnr })
+	while node do
+		if node:type() == "fenced_code_block" then
+			for i = 0, node:named_child_count() - 1 do
+				local child = node:named_child(i)
+				if child and child:type() == "code_fence_content" then
+					local sr, _, er, _ = child:range()
+					local lines = vim.api.nvim_buf_get_lines(bufnr, sr, er, false)
+					vim.fn.setreg("+", table.concat(lines, "\n"))
+					vim.notify("Code block copied!", vim.log.levels.INFO)
+					return
+				end
+			end
+		end
+		node = node:parent()
+	end
+	vim.notify("No code block under cursor", vim.log.levels.WARN)
+end
 
 return {
 	{
-		"iamcco/markdown-preview.nvim",
-		keys = {
-			{
-				"<leader>mp",
-				ft = "markdown",
-				"<cmd>MarkdownPreviewToggle<cr>",
-				desc = "Markdown Preview",
-			},
-		},
-		init = function()
-			-- The default filename is 「${name}」and I just hate those symbols
-			vim.g.mkdp_page_title = "${name}"
-		end,
-	},
-
-	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		enabled = true,
-		-- Moved highlight creation out of opts as suggested by plugin maintainer
-		-- There was no issue, but it was creating unnecessary noise when ran
-		-- :checkhealth render-markdown
-		-- https://github.com/MeanderingProgrammer/render-markdown.nvim/issues/138#issuecomment-2295422741
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
+		ft = { "markdown" },
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
 		opts = {
+			render_modes = { "n", "c", "t" },
+
+			-- No heading glyphs: avoids nvim-ufo fold lines showing icon + visible `#` together.
+			heading = {
+				icons = function()
+					return nil
+				end,
+			},
+
 			indent = {
 				enabled = true,
 				per_level = 2,
 				skip_level = 1,
 				skip_heading = false,
 			},
+
 			bullet = {
-				enabled = true,
-				left_pad = 2,
-				right_pad = 1,
+				enabled = false,
 			},
+
 			checkbox = {
-				-- Turn on / off checkbox state rendering
-				enabled = true,
-				-- Determines how icons fill the available space:
-				--  inline:  underlying text is concealed resulting in a left aligned icon
-				--  overlay: result is left padded with spaces to hide any additional text
-				position = "inline",
-				unchecked = {
-					-- Replaces '[ ]' of 'task_list_marker_unchecked'
-					icon = "   󰄱 ",
-					-- Highlight for the unchecked icon
-					highlight = "RenderMarkdownUnchecked",
-					-- Highlight for item associated with unchecked checkbox
-					scope_highlight = nil,
-				},
-				checked = {
-					-- Replaces '[x]' of 'task_list_marker_checked'
-					icon = "   󰱒 ",
-					-- Highlight for the checked icon
-					highlight = "RenderMarkdownChecked",
-					-- Highlight for item associated with checked checkbox
-					scope_highlight = nil,
-				},
+				enabled = false,
 			},
+
 			html = {
-				-- Turn on / off all HTML rendering
 				enabled = true,
 				comment = {
-					-- Turn on / off HTML comment concealing
 					conceal = false,
 				},
 			},
-			-- Add custom icons
-			link = {
-				image = "󰥶 ",
-				custom = {
-					youtu = { pattern = "youtu%.be", icon = "󰗃 " },
-				},
-			},
-			heading = {
-				sign = false,
-				icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
-				backgrounds = {
-					"Headline1Bg",
-					"Headline2Bg",
-					"Headline3Bg",
-					"Headline4Bg",
-					"Headline5Bg",
-					"Headline6Bg",
-				},
-				foregrounds = {
-					"Headline1Fg",
-					"Headline2Fg",
-					"Headline3Fg",
-					"Headline4Fg",
-					"Headline5Fg",
-					"Headline6Fg",
-				},
-			},
-			code = {
-				-- if I'm not using yabai, I cannot make the color of the codeblocks
-				-- transparent, so just disabling all rendering 😢
-				style = "none",
-			},
 		},
 	},
 
-	-- Inline image rendering using Kitty Graphics Protocol.
-	-- Prerequisites: brew install imagemagick
-	-- For tmux: set -g allow-passthrough on  in .tmux.conf
-	-- For kitty: allow_remote_control yes  in kitty.conf
 	{
-		"3rd/image.nvim",
-		build = false,
+		"selimacerbas/markdown-preview.nvim",
+		dependencies = { "selimacerbas/live-server.nvim" },
 		ft = { "markdown" },
-		opts = {
-			backend = "kitty",
-			processor = "magick_cli",
-			integrations = {
-				markdown = {
-					enabled = true,
-					clear_in_insert_mode = true,
-					download_remote_images = true,
-					only_render_image_at_cursor = false,
-					filetypes = { "markdown" },
-				},
-			},
-			max_width_window_percentage = 60,
-			max_height_window_percentage = 40,
-			kitty_method = "normal",
-			hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
+		keys = {
+			{ "<leader>ml", "<cmd>MarkdownPreview<cr>", ft = "markdown", desc = "Markdown live preview" },
+			{ "<leader>ms", "<cmd>MarkdownPreviewStop<cr>", ft = "markdown", desc = "Markdown preview stop" },
 		},
-	},
-
-	-- Renders mermaid (and other diagram) code blocks inline as images.
-	-- Prerequisites: volta run --node 18 npm install -g @mermaid-js/mermaid-cli
-	{
-		"3rd/diagram.nvim",
-		dependencies = { "3rd/image.nvim" },
-		ft = { "markdown" },
 		config = function()
-			require("diagram").setup({
-				integrations = {
-					require("diagram.integrations.markdown"),
-				},
-				renderers = {
-					mermaid = ("mmdc"),
-					plantuml = ("plantuml"),
-					d2 = ("d2"),
-					gnuplot = ("gnuplot"),
-				},
+			-- "multi" + circuitshell patch: server root = the .md file's directory (see patches/markdown_preview_workspace).
+			-- Preview writes content.md + index.html there; gitignore those and .mp-media-cache/.
+			require("markdown_preview").setup({
+				instance_mode = "multi",
+				open_browser = true,
+				debounce_ms = 300,
+				scroll_sync = true,
 			})
+			local mpw = require("circuitshell.patches.markdown_preview_workspace")
+			mpw.patch_workspace_for_buffer()
+			mpw.patch_write_text_rewrite_images()
 		end,
 	},
 
-	-- Paste images from clipboard into markdown.
-	-- Usage: copy an image to clipboard, then <leader>pi in a markdown file.
-	-- You will be prompted for a filename; the image is saved relative to the
-	-- current file (in ./assets/ by default) and a markdown link is inserted.
 	{
 		"HakonHarnes/img-clip.nvim",
 		ft = { "markdown" },
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		opts = {
 			default = {
 				dir_path = "assets",
@@ -185,7 +312,30 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>pi", "<cmd>PasteImage<cr>", desc = "Paste Image", ft = "markdown" },
+			{
+				"<leader>md",
+				open_mermaid_in_viewer,
+				ft = "markdown",
+				desc = "Open mermaid block in system viewer (mmdc → SVG)",
+			},
+			{
+				"<leader>mi",
+				open_markdown_image_in_viewer,
+				ft = "markdown",
+				desc = "Open markdown image in system viewer",
+			},
+			{
+				"<leader>mp",
+				"<cmd>PasteImage<cr>",
+				ft = "markdown",
+				desc = "Paste clipboard image as markdown link",
+			},
+			{
+				"<leader>mc",
+				copy_fenced_code_block,
+				ft = "markdown",
+				desc = "Copy fenced code block",
+			},
 		},
 	},
 }

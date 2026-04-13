@@ -24,7 +24,7 @@ brew "ghostscript"
 brew "imagemagick"
 brew "tectonic"
 brew "node"
-brew "pngpaste"  # Used by obsidian.nvim to paste images
+brew "pngpaste"  # img-clip.nvim / clipboard image paste (also used by some Obsidian tooling)
 brew "trash" # CLI tool that moves files or folder to the trash, used by neo-tree.nvim
 brew "htop"
 brew "neovim"

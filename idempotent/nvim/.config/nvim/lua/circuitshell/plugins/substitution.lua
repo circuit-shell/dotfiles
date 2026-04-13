@@ -15,11 +15,15 @@ return {
 			keymap.set("x", "s", substitute.visual, { desc = "Substitute in visual mode" })
 		end,
 	},
-
 	{
 		"nvim-mini/mini.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"JoosepAlviste/nvim-ts-context-commentstring",
+		},
 		config = function()
+			require("ts_context_commentstring").setup({ enable_autocmd = false })
+
 			-- import mini comment plugin safely
 			local comment = require("mini.comment")
 
@@ -27,7 +31,10 @@ return {
 			comment.setup({
 				---Add a space b/w comment and the line
 				options = {
-					custom_commentstring = nil,
+					custom_commentstring = function()
+						return require("ts_context_commentstring.internal").calculate_commentstring()
+							or vim.bo.commentstring
+					end,
 				},
 				-- Keymaps
 				mappings = {
@@ -47,14 +54,34 @@ return {
 		"nvim-mini/mini.surround",
 		opts = {
 			mappings = {
-				add = "sa",
-				delete = "sd",
-				find = "sf",
-				find_left = "sF",
-				highlight = "sh",
-				replace = "sr",
+				add = "gza",
+				delete = "gzd",
+				find = "gzf",
+				find_left = "gzF",
+				highlight = "gzh",
+				replace = "gzr",
 			},
 		},
+		config = function(_, opts)
+			require("mini.surround").setup(opts)
+			local surround_pairs = { ['"'] = '"', ["'"] = "'", ["`"] = "`", ["("] = "(", ["{"] = "{", ["["] = "[" }
+			for key, _ in pairs(surround_pairs) do
+				vim.keymap.set("x", key, "gza" .. key, { remap = true, desc = "Surround with " .. key })
+			end
+		end,
+	},
+	{
+		"folke/flash.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("flash").setup()
+			vim.keymap.set({ "n", "x", "o" }, "<leader>s", function()
+				require("flash").jump()
+			end, { desc = "Flash jump" })
+			vim.keymap.set({ "n", "x", "o" }, "<leader>S", function()
+				require("flash").treesitter()
+			end, { desc = "Flash treesitter" })
+		end,
 	},
 	{
 		"nvim-mini/mini.pairs",

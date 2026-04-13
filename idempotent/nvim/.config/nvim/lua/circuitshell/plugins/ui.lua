@@ -57,11 +57,30 @@ return {
 			-- File explorer integration
 			explorer = { enabled = true },
 
+			-- Picker defaults (used by explorer)
+			picker = { sources = { explorer = { hidden = true } } },
+
 			-- Fast file opening
 			quickfile = { enabled = true },
 
 			-- Image preview support
-			image = { enabled = true },
+			image = {
+				enabled = true,
+
+				doc = {
+					enabled = true,
+					inline = false,
+					float = true,
+					max_width = 80,
+					max_height = 80,
+					---@param lang string tree-sitter language
+					---@param type snacks.image.Type image type
+					conceal = function(lang, type)
+						-- only conceal math expressions
+						return type == "math"
+					end,
+				},
+			},
 
 			-- Highlight word under cursor throughout buffer
 			words = { enabled = true },
@@ -90,34 +109,37 @@ return {
 					-- Dashboard action keys
 					keys = {
 						{
+							icon = " ",
+							key = "G",
+							desc = "Git Files",
+							action = ":Telescope changed_files",
+						},
+						{
 							icon = " ",
 							key = "s",
 							desc = "Restore Session",
 							action = "<cmd>AutoSession restore<CR>",
 						},
-						{
-							icon = " ",
-							key = "r",
-							desc = "Recent Files",
-							action = ":lua Snacks.dashboard.pick('oldfiles')",
-						},
+
 						{
 							icon = " ",
 							key = "g",
 							desc = "Find Text",
-							action = ":lua Snacks.dashboard.pick('live_grep')",
+							action = ":Telescope live_grep",
 						},
 						{
 							icon = " ",
 							key = "f",
 							desc = "Find File",
-							action = ":lua Snacks.dashboard.pick('files')",
+							action = ":Telescope find_files",
 						},
 						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 					},
 					-- ASCII art header
-					header = [[
-   circuit-shell's nvim⠀⠀⠀
+					header = "You are in\n"
+						.. vim.fn.getcwd():gsub("^" .. vim.env.HOME, "~")
+						.. "\n"
+						.. [[
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⢺⣿⣿⡗⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -138,6 +160,8 @@ return {
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣦⠁⢶⣌⡁⣿⢸⡇⣿⢘⣥⡷⠈⣴⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⡇⠀⠙⠻⣦⣜⣣⣴⠟⠋⠀⢸⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠟⠉⠀⠀⠀⠀⠈⠙⠋⠁⠀⠀⠀⠀⠉⠻⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+   config by circuit-shell⠀⠀⠀
 
 ]],
 				},
@@ -241,7 +265,7 @@ return {
 
 			-- File explorer
 			{
-				"<leader>e",
+				"<leader>ee",
 				function()
 					Snacks.explorer()
 				end,
@@ -370,6 +394,8 @@ return {
 
 				-- Custom highlight overrides
 				custom_highlights = {
+					NormalFloat = { bg = "NONE" },
+					FloatBorder = { bg = "NONE" },
 					["@punctuation.delimiter"] = { fg = "#F8F8F2" },
 					["Delimiter"] = { fg = "#F8F8F2" },
 					["DiagnosticUnnecessary"] = { fg = "#FF5555" },
