@@ -2,7 +2,7 @@
 # SECTION: Variables
 #####################################################################################
 local helper_dir="$HOME/.zsh/helper"
-local helpers=(functions aliases git-plugin history-settings private)
+local helpers=(functions aliases git-plugin private)
 
 # #####################################################################################
 # SECTION: Detect OS (Must be early)
@@ -224,13 +224,16 @@ fi
 
 # #####################################################################################
 # SECTION: History Keybindings
+# Applied via zvm_after_init so they survive zsh-vi-mode's post-init keymap reset
 # #####################################################################################
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
-bindkey '^[OA' history-search-backward
-bindkey '^[OB' history-search-forward
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
+zvm_after_init() {
+  bindkey '^[[A' history-search-backward
+  bindkey '^[[B' history-search-forward
+  bindkey '^[OA' history-search-backward
+  bindkey '^[OB' history-search-forward
+  bindkey '^P'   history-search-backward
+  bindkey '^N'   history-search-forward
+}
 # #####################################################################################
 
 # #####################################################################################
