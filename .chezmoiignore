@@ -13,13 +13,17 @@ dot_zsh/helper/private.sh.example
 
 # Linux-only configs — excluded on macOS
 {{ if eq .chezmoi.os "darwin" }}
-dot_config/hypr
-dot_config/waybar
-dot_config/wofi
-dot_config/mako
+.config/hypr
+.config/hypr/**
+.config/waybar
+.config/waybar/**
+.config/wofi
+.config/wofi/**
+.config/mako
+.config/mako/**
 {{ end }}
 
 # macOS-only — excluded on Linux
 {{ if ne .chezmoi.os "darwin" }}
-dot_config/kitty/kitty.conf.tmpl
+.config/kitty/kitty.conf
 {{ end }}
