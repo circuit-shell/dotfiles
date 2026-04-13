@@ -3,6 +3,12 @@
 
 sourceDir = {{ .chezmoi.sourceDir | quote }}
 
+[diff]
+  exclude = ["dirs"]
+
+[status]
+  exclude = ["dirs"]
+
 [data]
   email = {{ $email | quote }}
   name  = {{ $name  | quote }}
