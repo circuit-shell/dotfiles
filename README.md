@@ -23,7 +23,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)"
 
 ---
 
-## Fresh Install
+## Fresh Install (new machine)
 
 One command bootstraps the entire setup:
 
@@ -38,6 +38,89 @@ This will:
 4. Create a `~/.zsh/helper/private.sh` stub for private config
 5. Fetch the `zsh-vi-mode` plugin
 
+Then copy your private config:
+
+```sh
+# Bring over your machine-specific env vars from a backup or previous machine
+cp /path/to/old/private.sh ~/.zsh/helper/private.sh
+```
+
+---
+
+## Migrating from Stow (existing machine)
+
+If you're switching from the old Stow-based repo, migrate one tool at a time so nothing breaks mid-migration.
+
+### 1. Install chezmoi and register the repo
+
+```sh
+brew install chezmoi   # macOS
+chezmoi init --source=/path/to/dotfiles-v2
+```
+
+### 2. Migrate each tool
+
+For each tool: **unstow → apply via chezmoi → verify**.
+
+The old stow repo is assumed to be at `~/github.com/circuit-shell/dotfiles`.
+
+**p10k**
+```sh
+stow -v -d ~/github.com/circuit-shell/dotfiles/idempotent -t ~ -D p10k
+chezmoi apply ~/.p10k.zsh
+chezmoi status ~/.p10k.zsh   # should be empty
+```
+
+**vim**
+```sh
+stow -v -d ~/github.com/circuit-shell/dotfiles/idempotent -t ~ -D vim
+chezmoi apply ~/.vimrc
+chezmoi status ~/.vimrc
+```
+
+**tmux**
+```sh
+stow -v -d ~/github.com/circuit-shell/dotfiles/idempotent -t ~ -D tmux
+chezmoi apply ~/.tmux.conf
+chezmoi status ~/.tmux.conf
+tmux source ~/.tmux.conf   # reload to verify
+```
+
+**nvim**
+```sh
+stow -v -d ~/github.com/circuit-shell/dotfiles/idempotent -t ~ -D nvim
+chezmoi apply ~/.config/nvim
+chezmoi status ~/.config/nvim
+```
+
+**kitty**
+```sh
+stow -v -d ~/github.com/circuit-shell/dotfiles/macos -t ~ -D kitty
+chezmoi apply ~/.config/kitty
+chezmoi status ~/.config/kitty
+# Open a new kitty window to verify
+```
+
+**zsh** (do last — touches the active shell)
+```sh
+stow -v -d ~/github.com/circuit-shell/dotfiles/idempotent -t ~ -D zsh
+chezmoi apply ~/.zshrc ~/.zsh
+# Copy your private config over before opening a new shell:
+cp ~/github.com/circuit-shell/dotfiles/idempotent/zsh/helper/private.sh ~/.zsh/helper/private.sh
+chezmoi status ~/.zshrc ~/.zsh
+# Open a new terminal to verify
+```
+
+### 3. Finalize
+
+Once all tools are verified, remove the old repo and rename this one:
+
+```sh
+rm -rf ~/github.com/circuit-shell/dotfiles
+mv ~/github.com/circuit-shell/dotfiles-v2 ~/github.com/circuit-shell/dotfiles
+chezmoi init --source=/Users/$USER/github.com/circuit-shell/dotfiles
+```
+
 ---
 
 ## What Gets Deployed
@@ -49,9 +132,7 @@ This will:
 | nvim | `~/.config/nvim/` | all |
 | kitty | `~/.config/kitty/kitty.conf` | all (OS variant via template) |
 | p10k | `~/.p10k.zsh` | all |
-| bash | `~/.bashrc` | all |
 | vim | `~/.vimrc` | all |
-| vscode | `~/.config/Code/User/settings.json` | all |
 | hyprland | `~/.config/hypr/` | Linux only |
 | waybar | `~/.config/waybar/` | Linux only |
 | wofi | `~/.config/wofi/` | Linux only |
@@ -149,13 +230,11 @@ dotfiles/
 │   ├── kitty/              # → ~/.config/kitty/   (OS template)
 │   ├── hypr/               # → ~/.config/hypr/    (Linux only)
 │   ├── waybar/             # → ~/.config/waybar/  (Linux only)
-│   ├── wofi/               # → ~/.config/wofi/    (Linux only)
-│   └── Code/               # → ~/.config/Code/
+│   └── wofi/               # → ~/.config/wofi/    (Linux only)
 ├── dot_zshrc               # → ~/.zshrc
 ├── dot_zsh/helper/         # → ~/.zsh/helper/
 ├── dot_tmux.conf           # → ~/.tmux.conf
 ├── dot_p10k.zsh            # → ~/.p10k.zsh
-├── dot_bashrc              # → ~/.bashrc
 ├── dot_vimrc               # → ~/.vimrc
 ├── scripts/
 │   ├── macos/              # macOS utility scripts → ~/.local/bin/
