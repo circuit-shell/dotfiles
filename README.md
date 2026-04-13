@@ -28,11 +28,11 @@ sh -c "$(curl -fsLS get.chezmoi.io)"
 One command bootstraps the entire setup:
 
 ```sh
-chezmoi init --apply https://github.com/circuit-shell/dotfiles
+chezmoi init --apply --source ~/github.com/circuit-shell/dotfiles https://github.com/circuit-shell/dotfiles
 ```
 
 This will:
-1. Clone the repo to `~/.local/share/chezmoi`
+1. Clone the repo to `~/github.com/circuit-shell/dotfiles`
 2. Prompt for your name and email (stored locally, not committed)
 3. Deploy all dotfiles appropriate for your OS
 4. Create a `~/.zsh/helper/private.sh` stub for private config
