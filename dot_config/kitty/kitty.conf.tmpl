@@ -66,10 +66,23 @@ map ctrl+c copy_or_interrupt
 map ctrl+v paste_from_clipboard
 
 # =============================================================================
-# Scrolling
+# scrolling
 # =============================================================================
 map page_up   scroll_page_up
 map page_down scroll_page_down
+
+# =============================================================================
+# Keycodes
+# =============================================================================
+
+# Send codes for tmux ctrl+tab
+map ctrl+shift+tab send_text all \x1b[27;6;9~
+map ctrl+tab       send_text all \x1b[27;5;9~
+
+# Disable reload config shortcut (conflicts with tmux)
+map ctrl+shift+r no_op
+
+
 
 # =============================================================================
 # OS-Specific
@@ -89,13 +102,6 @@ shell zsh --login -c "if command -v tmux >/dev/null 2>&1; then tmux attach || tm
 hide_window_decorations titlebar-only
 background_opacity 0.8
 background_blur 6
-
-# Send codes for tmux ctrl+tab
-map ctrl+shift+tab send_text all \x1b[27;6;9~
-map ctrl+tab       send_text all \x1b[27;5;9~
-
-# Disable reload config shortcut (conflicts with tmux)
-map ctrl+shift+r no_op
 {{ else -}}
 # --- Linux ---
 font_family      JetBrains Mono Nerd Font
