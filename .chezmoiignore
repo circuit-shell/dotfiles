@@ -7,6 +7,7 @@ CLAUDE.md
 nvim-keybindings.md
 brew
 scripts
+themes
 
 # Reference files — not deployed
 dot_zsh/helper/private.sh.example
@@ -23,7 +24,3 @@ dot_zsh/helper/private.sh.example
 .config/mako/**
 {{ end }}
 
-# macOS-only — excluded on Linux
-{{ if ne .chezmoi.os "darwin" }}
-.config/kitty/kitty.conf
-{{ end }}
