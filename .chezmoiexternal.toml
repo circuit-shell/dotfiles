@@ -1,0 +1,4 @@
+[".zsh/helper/zsh-vi-mode"]
+  type = "git-repo"
+  url  = "https://github.com/jeffreytse/zsh-vi-mode.git"
+  refreshPeriod = "168h"

@@ -4,67 +4,125 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) — a symlink farm manager. Each subdirectory is a "stow package" containing files mirroring their intended locations in `$HOME`.
+Personal dotfiles managed with [chezmoi](https://chezmoi.io) — a dotfile manager that handles OS-aware templating, private config, and one-command bootstraps. The repo is the single source of truth; files are deployed (copied, not symlinked) to `$HOME` via `chezmoi apply`.
+
+**Supported platforms:** macOS · Arch Linux · Fedora / generic Linux
 
 ## Structure
 
 ```
 dotfiles/
-├── macos/          # macOS-specific (brew, kitty, scripts)
-├── idempotent/     # Cross-platform (bash, nvim, p10k, tmux, vim, vscode, zsh)
-└── arch/           # Arch Linux-specific (hyprland, kitty, scripts)
+├── .chezmoi.toml.tmpl         # Init-time prompts (name, email); persists sourceDir
+├── .chezmoiignore             # OS-conditional exclusions (template)
+├── .chezmoiexternal.toml      # External resources (zsh-vi-mode plugin)
+├── .chezmoiscripts/           # Setup scripts (run_once_*, run_onchange_*)
+├── dot_config/
+│   ├── nvim/                  # → ~/.config/nvim/
+│   ├── kitty/kitty.conf.tmpl  # → ~/.config/kitty/kitty.conf  (OS-variant template)
+│   ├── hypr/                  # → ~/.config/hypr/    (Linux only)
+│   ├── waybar/                # → ~/.config/waybar/  (Linux only)
+│   ├── wofi/                  # → ~/.config/wofi/    (Linux only)
+│   └── mako/                  # → ~/.config/mako/    (Linux only)
+├── dot_zshrc                  # → ~/.zshrc
+├── dot_zsh/helper/            # → ~/.zsh/helper/
+├── dot_tmux.conf              # → ~/.tmux.conf
+├── dot_p10k.zsh               # → ~/.p10k.zsh
+├── dot_vimrc                  # → ~/.vimrc
+├── scripts/
+│   ├── macos/                 # macOS utility scripts → ~/.local/bin/ (via run_onchange_)
+│   └── linux/                 # Linux utility scripts → ~/.local/bin/ (via run_onchange_)
+└── brew/
+    └── Brewfile
 ```
 
-## Installing / Uninstalling Configs
+### chezmoi naming conventions
 
-From the repo root, use `stow` with the package path relative to the target:
+| Source prefix | Meaning |
+|---|---|
+| `dot_` | Leading `.` in target (`dot_zshrc` → `~/.zshrc`) |
+| `.tmpl` suffix | Processed as Go template before writing |
+| `run_once_` | Script runs once per machine (tracked in state DB) |
+| `run_onchange_` | Script re-runs when its content changes |
+
+## Key Configs and Their Locations
+
+| File | Source | Target | Platform |
+|---|---|---|---|
+| zsh | `dot_zshrc`, `dot_zsh/helper/` | `~/.zshrc`, `~/.zsh/helper/` | all |
+| tmux | `dot_tmux.conf` | `~/.tmux.conf` | all |
+| nvim | `dot_config/nvim/` | `~/.config/nvim/` | all |
+| kitty | `dot_config/kitty/kitty.conf.tmpl` | `~/.config/kitty/kitty.conf` | macOS (template) |
+| p10k | `dot_p10k.zsh` | `~/.p10k.zsh` | all |
+| vim | `dot_vimrc` | `~/.vimrc` | all |
+| hyprland | `dot_config/hypr/` | `~/.config/hypr/` | Linux only |
+| waybar | `dot_config/waybar/` | `~/.config/waybar/` | Linux only |
+| wofi | `dot_config/wofi/` | `~/.config/wofi/` | Linux only |
+| scripts | `scripts/macos/` or `scripts/linux/` | `~/.local/bin/` | OS-specific |
+
+## Daily Commands
 
 ```sh
-# macOS — install a package (e.g., kitty)
-stow -v -d macos -t ~ kitty
+# Check what's out of sync:
+chezmoi status
 
-# macOS — uninstall
-stow -v -d macos -t ~ -D kitty
+# Preview changes before writing:
+chezmoi diff
 
-# Cross-platform (idempotent) — install zsh config
-stow -v -d idempotent -t ~ zsh
+# Apply everything:
+chezmoi apply
 
-# Arch Linux
-stow -v -d arch -t ~ hyprland
+# Pull latest from remote and apply:
+chezmoi update
 ```
 
-The `-d` flag sets the stow directory; `-t` sets the target (typically `~`). Some packages have `.stow-local-ignore` to exclude non-symlink files (e.g., `extensions.txt` in vscode).
+## Making Changes
+
+The repo is the source of truth — edit here, then apply.
+
+```sh
+# Find the source path for a deployed file:
+chezmoi source-path ~/.zshrc
+# → /Users/you/github.com/circuit-shell/dotfiles/dot_zshrc
+
+# Or just open the repo directly:
+nvim ~/github.com/circuit-shell/dotfiles/dot_zshrc
+
+# Apply a single file or directory:
+chezmoi apply ~/.zshrc
+chezmoi apply ~/.config/nvim
+
+# After editing, commit and push:
+cd $(chezmoi source-path)
+git add -A && git commit -m "feat: ..."
+git push
+```
 
 ## macOS Package Management
 
 ```sh
-# Install all packages from Brewfile
-brew bundle --file=macos/brew/Brewfile
+# Install all packages from Brewfile:
+brew bundle --file="$(chezmoi source-path)/brew/Brewfile"
 
-# Dump current packages to Brewfile
-brew bundle dump --file=macos/brew/Brewfile --force
+# Update Brewfile after installing new packages:
+brew bundle dump --file="$(chezmoi source-path)/brew/Brewfile" --force
 ```
-
-## Key Configs and Their Locations
-
-| Package | Stow dir | Symlinked to |
-|---|---|---|
-| `zsh` | `idempotent` | `~/.zshrc`, `~/.zsh/` |
-| `nvim` | `idempotent` | `~/.config/nvim/` |
-| `tmux` | `idempotent` | `~/.tmux.conf` |
-| `kitty` | `macos` or `arch` | `~/.config/kitty/` |
-| `p10k` | `idempotent` | `~/.p10k.zsh` |
-| `vscode` | `idempotent` | `~/.config/Code/User/settings.json` |
-| `hyprland` | `arch` | `~/.config/hypr/`, `~/.config/waybar/`, etc. |
 
 ## Architecture Notes
 
-**Zsh startup** (`idempotent/zsh/.zshrc`) auto-runs `git pull` on the dotfiles repo every shell session, lazy-loads helpers from `idempotent/zsh/helper/` (aliases, functions, git-plugin, history-settings, private), and does OS detection (`Darwin` / `Linux`) for conditional config.
+**OS detection** happens via Go templates in `.tmpl` files. Use `{{ if eq .chezmoi.os "darwin" }}` for macOS-only config and `{{ else }}` for Linux. The kitty config (`dot_config/kitty/kitty.conf.tmpl`) uses this to set font, shell path, and decorations per platform.
 
-**Private config** — `idempotent/zsh/helper/private.sh` is gitignored. Copy `private.sh.example` to create it.
+**OS-conditional ignores** are in `.chezmoiignore` (also a template). Patterns match against TARGET paths (e.g., `.config/hypr/**`), not source paths. Linux-only directories are excluded on macOS; the macOS kitty config is excluded on Linux.
 
-**Neovim** (`idempotent/nvim/.config/nvim/`) is fully Lua-based using [Lazy.nvim](https://github.com/folke/lazy.nvim). Plugin specs live in `lua/plugins/`. Prerequisites: Node.js via Volta, Angular language server (`@angular/language-server`).
+**Private config** — `~/.zsh/helper/private.sh` is created as an empty stub by `run_once_create-private-sh.sh` on first apply. It is gitignored. Copy from a backup or use `dot_zsh/helper/private.sh.example` as a reference.
 
-**Tmux** uses `Ctrl+A` as prefix (not the default `Ctrl+B`). Config at `idempotent/tmux/.tmux.conf`; the `.sh` variant (`tmux.conf.sh`) is a shell-executable version used for OS-conditional clipboard commands — stow ignores it via `.stow-local-ignore`.
+**Zsh startup** (`dot_zshrc`) auto-runs `git pull` on the dotfiles repo every shell session, lazy-loads helpers from `dot_zsh/helper/` (aliases, functions, git-plugin, history-settings, private), and does OS detection for conditional PATH/tool setup.
 
-**Kitty** auto-attaches to tmux on startup (configured in `kitty.conf`). macOS variant uses `background_opacity 0.9` and titlebar-only decorations; Arch variant differs for that platform.
+**Neovim** (`dot_config/nvim/`) is fully Lua-based using [Lazy.nvim](https://github.com/folke/lazy.nvim). Plugin specs live in `lua/plugins/`. Prerequisites: Node.js via Volta, Angular language server (`@angular/language-server`). The `lazy-lock.json` is gitignored (machine-local).
+
+**Tmux** uses `Ctrl+A` as prefix (not the default `Ctrl+B`).
+
+**Kitty** auto-attaches to tmux on startup (configured in `kitty.conf.tmpl`).
+
+**Scripts** — macOS scripts in `scripts/macos/` are copied to `~/.local/bin/` by `run_onchange_deploy-scripts.sh.tmpl` whenever the script directory contents change.
+
+**External plugins** — `zsh-vi-mode` is fetched from GitHub and kept in `~/.zsh/helper/zsh-vi-mode/` via `.chezmoiexternal.toml` (refreshed every 7 days).
