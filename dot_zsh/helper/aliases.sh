@@ -10,9 +10,6 @@ alias -- -='cd -'  # Previous directory
 
 # Directory shortcuts
 alias home='cd ~'
-alias gh='cd ~/github.com'
-alias dt='cd ~/Desktop'
-alias dl='cd ~/Downloads'
 
 # Directory operations
 alias md="mkdir -p"
