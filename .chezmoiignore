@@ -1,5 +1,7 @@
-# Neovim plugin lock — machine-local
+# Neovim machine-local
+.config/nvim/lazy-lock.json
 dot_config/nvim/lazy-lock.json
+nvim.log
 
 # Repo-level files — not dotfiles, never deployed to home
 README.md
@@ -10,6 +12,7 @@ scripts
 themes
 
 # Reference files — not deployed
+.zsh/helper/private.sh.example
 dot_zsh/helper/private.sh.example
 
 # Linux-only configs — excluded on macOS
