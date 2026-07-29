@@ -13,7 +13,7 @@ inactive_tab_foreground         #BBBBBB
 inactive_tab_background         #303030
 # black
 color0  #191919
-color8  #3D3839
+color8  #606060
 # red
 color1  #DE6E7C
 color9  #E8838F
@@ -64,6 +64,7 @@ mouse_map left doubleclick no_op
 # =============================================================================
 map ctrl+c copy_or_interrupt
 map ctrl+v paste_from_clipboard
+map cmd+v paste_from_clipboard
 
 # =============================================================================
 # scrolling
@@ -99,6 +100,8 @@ map ctrl+kp_0        change_font_size all 0
 # =============================================================================
 {{ if eq .chezmoi.os "darwin" -}}
 # --- macOS ---
+macos_option_as_alt yes
+
 font_family      FiraMono Nerd Font Mono
 font_size        15.0
 bold_font        auto

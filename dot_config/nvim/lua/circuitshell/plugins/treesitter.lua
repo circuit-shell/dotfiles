@@ -1,69 +1,84 @@
 return {
-	{
-		"nvim-treesitter/nvim-treesitter",
-		branch = "master", -- Use old stable version
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    event = { "BufReadPre", "BufNewFile" },
+    build = ":TSUpdate",
+    dependencies = {
+      "windwp/nvim-ts-autotag",
+    },
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        -- Added to satisfy LuaLS type annotations:
+        modules = {},
+        sync_install = false,
+        ignore_install = {},
 
-		event = { "BufReadPre", "BufNewFile" },
-		build = ":TSUpdate",
-		dependencies = {
-			"windwp/nvim-ts-autotag",
-		},
-		config = function()
-			local treesitter = require("nvim-treesitter.configs")
-			treesitter.setup({
-				highlight = { enable = true },
-				indent = { enable = true },
-				autotag = { enable = true },
-				modules = {},
-				ignore_install = {},
-				auto_install = false,
-				sync_install = false,
-				-- ensure these language parsers are installed
-				folds = { enable = true },
-				ensure_installed = {
-					"json",
-					"javascript",
-					"typescript",
-					"tsx",
-					"astro",
-					"yaml",
-					"html",
-					"css",
-					"markdown",
-					"markdown_inline",
-					"bash",
-					"lua",
-					"vim",
-					"dockerfile",
-					"gitignore",
-					"query",
-					"vimdoc",
-					"c",
-					"java",
-					"go",
-					"python",
-					"rust",
-					"ruby",
-					"php",
-					"bash",
-					"angular",
-					"http",
-					-- "latex",
-					"scss",
-					"svelte",
-					"typst",
-					"vue",
-				},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "<C-space>",
-						node_incremental = "<C-space>",
-						scope_incremental = false,
-						node_decremental = "<bs>",
-					},
-				},
-			})
-		end,
-	},
+        ensure_installed = {
+          "angular",
+          "astro",
+          "bash",
+          "c",
+          "css",
+          "dockerfile",
+          "gitignore",
+          "go",
+          "html",
+          "http",
+          "java",
+          "javascript",
+          "json",
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "php",
+          "python",
+          "query",
+          "ruby",
+          "rust",
+          "scss",
+          "svelte",
+          "tsx",
+          "typescript",
+          "typst",
+          "vim",
+          "vimdoc",
+          "vue",
+          "yaml",
+        },
+        auto_install = false,
+      })
+
+      local selection_stack = {}
+
+      local function select_node(node)
+        local sr, sc, er, ec = node:range()
+        vim.fn.setpos("'<", { 0, sr + 1, sc + 1, 0 })
+        vim.fn.setpos("'>", { 0, er + 1, ec, 0 })
+        vim.cmd("normal! gv")
+      end
+
+      vim.keymap.set({ "n", "x" }, "<C-space>", function()
+        local node = vim.treesitter.get_node()
+        if not node then return end
+
+        if vim.fn.mode() ~= "n" then
+          table.insert(selection_stack, node)
+          node = node:parent()
+          if not node then return end
+        else
+          selection_stack = {}
+        end
+
+        select_node(node)
+      end, { desc = "Incremental treesitter selection" })
+
+      vim.keymap.set("x", "<bs>", function()
+        local prev = table.remove(selection_stack)
+        if not prev then return end
+
+        select_node(prev)
+      end, { desc = "Shrink treesitter selection" })
+    end,
+  },
 }
