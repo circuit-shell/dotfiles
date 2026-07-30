@@ -1,84 +1,52 @@
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "main",
-    event = { "BufReadPre", "BufNewFile" },
-    build = ":TSUpdate",
-    dependencies = {
-      "windwp/nvim-ts-autotag",
-    },
-    config = function()
-      require("nvim-treesitter.configs").setup({
-        -- Added to satisfy LuaLS type annotations:
-        modules = {},
-        sync_install = false,
-        ignore_install = {},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		event = { "BufReadPre", "BufNewFile" },
+		build = ":TSUpdate",
+		dependencies = {
+			"windwp/nvim-ts-autotag",
+		},
+		config = function()
+			require("nvim-treesitter").setup({})
 
-        ensure_installed = {
-          "angular",
-          "astro",
-          "bash",
-          "c",
-          "css",
-          "dockerfile",
-          "gitignore",
-          "go",
-          "html",
-          "http",
-          "java",
-          "javascript",
-          "json",
-          "lua",
-          "markdown",
-          "markdown_inline",
-          "php",
-          "python",
-          "query",
-          "ruby",
-          "rust",
-          "scss",
-          "svelte",
-          "tsx",
-          "typescript",
-          "typst",
-          "vim",
-          "vimdoc",
-          "vue",
-          "yaml",
-        },
-        auto_install = false,
-      })
+			local current_node = nil
+			local node_stack = {}
 
-      local selection_stack = {}
+			local function select_node(node)
+				local sr, sc, er, ec = node:range()
+				vim.cmd("normal! \27")
+				vim.api.nvim_win_set_cursor(0, { sr + 1, sc })
+				vim.cmd("normal! v")
+				vim.api.nvim_win_set_cursor(0, { er + 1, math.max(0, ec - 1) })
+				current_node = node
+			end
 
-      local function select_node(node)
-        local sr, sc, er, ec = node:range()
-        vim.fn.setpos("'<", { 0, sr + 1, sc + 1, 0 })
-        vim.fn.setpos("'>", { 0, er + 1, ec, 0 })
-        vim.cmd("normal! gv")
-      end
+			vim.keymap.set({ "n", "x" }, "<C-space>", function()
+				if vim.fn.mode() ~= "n" and current_node then
+					local parent = current_node:parent()
+					if not parent then
+						return
+					end
+					table.insert(node_stack, current_node)
+					select_node(parent)
+				else
+					local node = vim.treesitter.get_node()
+					if not node then
+						return
+					end
+					node_stack = {}
+					select_node(node)
+				end
+			end, { desc = "Incremental treesitter selection" })
 
-      vim.keymap.set({ "n", "x" }, "<C-space>", function()
-        local node = vim.treesitter.get_node()
-        if not node then return end
-
-        if vim.fn.mode() ~= "n" then
-          table.insert(selection_stack, node)
-          node = node:parent()
-          if not node then return end
-        else
-          selection_stack = {}
-        end
-
-        select_node(node)
-      end, { desc = "Incremental treesitter selection" })
-
-      vim.keymap.set("x", "<bs>", function()
-        local prev = table.remove(selection_stack)
-        if not prev then return end
-
-        select_node(prev)
-      end, { desc = "Shrink treesitter selection" })
-    end,
-  },
+			vim.keymap.set("x", "<bs>", function()
+				local prev = table.remove(node_stack)
+				if not prev then
+					return
+				end
+				select_node(prev)
+			end, { desc = "Shrink treesitter selection" })
+		end,
+	},
 }
